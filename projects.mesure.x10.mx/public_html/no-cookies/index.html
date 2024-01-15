@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .popup {
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+        }
+        .popup-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888888;
+            width: 30%;
+            font-weight: bolder;
+        }
+        .popup-content button {
+            display: block;
+            margin: 0 auto;
+        }
+        .show {
+            display: block;
+        }
+    </style>
+    <title>No Cookies</title>
+    <link rel="icon" type="image/x-icon" href="../project-images/no-cookies.png">
+</head>
+ 
+<body>
+    <h1>No cookies</h1>
+    <p>This site does not use cookies. To read more about why we made this decision, <a href="why">click here</a>. To view the credits of this site, <a href="credits">click here</a>.</p>
+    <div id="myPopup" class="popup">
+        <div class="popup-content">
+            <h1 style="color:green;">No Cookies</h1>
+            <p>This site does not use any cookies anywhere, and there is no way to make it save cookies.</p>
+            <input type="checkbox" id="dontShowAgain"><label for="dontShowAgain">Don't show this again</label>
+            <br><br>
+            <button id="closePopup">Okay, got it!</button>
+        </div>
+    </div>
+ 
+    <script>
+        setTimeout('myPopup.classList.add("show")', 1000);
+        closePopup.addEventListener("click", function () {
+            myPopup.classList.remove("show");
+        });
+        window.addEventListener("click", function (event) {
+            if (event.target == myPopup) {
+                myPopup.classList.remove("show");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+/*
+- 
+- TWELVE OF CODE
+- --------------
+- 
+- Twelve of Code © 2024 by Mesure73L is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
+- Source code is available at https://github.com/Mesure73L/My-Website/tree/main.
+- 
+- Thank you for your understanding.
+- 
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Roboto Mono&display=swap');
+
+*,
+input::file-selector-button {
+    font-family: 'Roboto Mono', monospace;
+}
+
+body {
+    background-color: #000721;
+    color: white;
+    overflow-y: scroll
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/***************
+|              |
+|    FORMAT    |
+|              |
+***************/
+
+
+.bold {
+    font-weight: bold;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.green {
+    color: #00bd08;
+}
+
+.red {
+    color: #ff1313;
+}
+
+.blue {
+    color: #009eff;
+}
+
+.yellow {
+    color: #d5d300;
+}
+
+.left {
+    text-align: left;
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+
+/***************
+|              |
+|  FONT SIZES  |
+|              |
+***************/
+
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.3em;
+}
+
+h4 {
+    font-size: 1em;
+}
+
+h5 {
+    font-size: 0.8em;
+}
+
+h6 {
+    font-size: 0.7em;
+}
+
+p {
+    font-size: 16px;
+}
+
+input {
+    font-size: 15px;
+}
+
+
+/***************
+|              |
+|    SELECT    |
+|              |
+***************/
+
+
+[data-unreleased] td,
+[data-unreleased] td:hover {
+    opacity: 0.3;
+    cursor: not-allowed !important;
+}
+
+.select {
+    width: 50%;
+    text-align: center;
+    margin: auto;
+}
+
+.select td {
+    background-color: #000e43;
+}
+
+.select td:hover {
+    background-color: #00135b;
+    cursor: pointer;
+}
+
+.select-active td,
+.select-active td:hover {
+    background-color: #001b82;
+}
+
+.completed {
+    color: #d5d300;
+}
+
+.notCompleted {
+    color: #2a2c32;
+}
+
+.noDisplay {
+    display: none;
+}
+
+
+/***************
+|              |
+|   SETTINGS   |
+|              |
+***************/
+
+
+#settings {
+    float: right;
+    top: 0;
+    margin-top: -10px;
+    cursor: pointer;
+}
+
+#editSettings {
+    text-align: center;
+    margin: auto;
+    width: 80%;
+    background-color: #000e43;
+    padding: 10px;
+}
+
+body {
+    margin-top: -10px;
+}
+
+#editSettings input,
+#editSettings button,
+#editSettings textarea {
+    background-color: #000721;
+    border: none;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: white;
+    outline: 1px solid white;
+    resize: none;
+}
+
+#editSettings input:focus,
+#editSettings textarea:focus {
+    outline: 2px solid white;
+}
+
+#editSettings textarea {
+    width: 300px;
+    height: 150px;
+}
+
+#editSettings button {
+    font-size: 16px;
+    outline: none;
+    border: 2px solid white;
+}
+
+#editSettings textarea:disabled {
+    background-color: #000610;
+    outline: 1px solid #999999;
+    color: #999999;
+}
+
+label {
+    cursor: text;
+}
+
+.syearnote {
+    text-align: center;
+}
+
+/* Scrollbar */
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #004FB3 #000721;
+}
+
+*::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 0px;
+    background-color: #000721;
+}
+
+*::-webkit-scrollbar-track:hover {
+    background-color: #000a30;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    background-color: #004FB3;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: #0078BC;
+}
+
+*::-webkit-scrollbar-thumb:active {
+    background-color: #0081E1;
+}

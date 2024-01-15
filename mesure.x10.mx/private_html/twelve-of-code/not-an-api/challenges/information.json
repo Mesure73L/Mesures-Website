@@ -1,0 +1,188 @@
+{
+    "2023": {
+        "note": {
+            "title": "Test",
+            "description": "2023 is a test year. The challenges are easy and are only for testing the website."
+        },
+        "overall": true,
+        "months": ["dec"],
+        "dec": {
+            "overall": true,
+            "1": true,
+            "2": true,
+            "3": true
+        }
+    },
+    "2024": {
+        "note": {
+            "title": "Preview",
+            "description": "2024 is a preview year. There are only 6 challenges over 2 months."
+        },
+        "overall": true,
+        "months": ["mar", "aug"],
+        "mar": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "aug": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        }
+    },
+    "2025": {
+        "overall": false,
+        "months": ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"],
+        "jan": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "feb": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "mar": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "apr": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "may": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "jun": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "jul": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "aug": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "sep": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "oct": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "nov": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "dec": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        }
+    },
+    "2026": {
+        "overall": false,
+        "months": ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"],
+        "jan": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "feb": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "mar": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "apr": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "may": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "jun": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "jul": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "aug": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "sep": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "oct": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "nov": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        },
+        "dec": {
+            "overall": false,
+            "1": false,
+            "2": false,
+            "3": false
+        }
+    }
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .popup {
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+        }
+        .popup-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888888;
+            width: 30%;
+            font-weight: bolder;
+        }
+        .popup-content button {
+            display: block;
+            margin: 0 auto;
+        }
+        .show {
+            display: block;
+        }
+        body {
+            color: white;
+            background-color: black;
+        }
+    </style>
+    <title>Dark Mode</title>
+    <link rel="icon" type="image/x-icon" href="../project-images/dark-mode.png">
+</head>
+ 
+<body>
+    <h1>Dark Mode</h1>
+    <button onclick="myPopup.classList.add('show')">Switch to Light Mode</button>
+    <div id="myPopup" class="popup">
+        <div class="popup-content">
+            <center><img src="animation.gif" width="70%"></center>
+            <button id="closePopup">Cancel Switch</button>
+        </div>
+    </div>
+ 
+    <script>
+        closePopup.addEventListener("click", function () {
+            myPopup.classList.remove("show");
+        });
+        window.addEventListener("click", function (event) {
+            if (event.target == myPopup) {
+                myPopup.classList.remove("show");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+div .title,
+div .description,
+div .date,
+div button {
+    display: inline;
+}
+
+div img {
+    display: none;
+    padding-right: 10px;
+}
+
+hr {
+    display: block;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+div {
+    overflow: hidden;
+}
+
+button {
+    width: 150px;
+    height: 35px;
+    cursor: pointer;
+    background-color: darkblue;
+    color: white;
+    border: 3px solid white;
+}
+
+button:hover {
+    background-color: white;
+    color: darkblue;
+}
+
+@media screen and (min-width: 600px) {
+    div img {
+        width: 525px;
+        display: inline;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    div {
+        text-align: center;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    div img {
+        width: 250px;
+        margin-left: 0px;
+        float: left;
+    }
+
+    div {
+        text-align: left;
+    }
+}

@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css?family=Titillium Web&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Oxygen&display=swap');
+
+body {
+  color: #ffffff;
+  background-color: #232323;
+}
+
+h1 {
+  text-align: center;
+  font-size: 40px;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  font-size: 8px;
+}
+
+body {
+  font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Titillium Web', sans-serif;
+}
+
+body, button {
+  font-family: 'Oxygen', sans-serif;
+}
+
+a {
+  color: yellow;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+code {
+  background-color: black;
+  color: #00ff00;
+}
+
+code:hover {
+  color: aqua;
+}
+
+#content {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 50px;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+}
+
+
+.container {
+  position: relative;
+  padding-bottom: 50.625%
+}
+
+.responsive-iframe {
+  margin-left: 5%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 90%;
+  height: 100%;
+}
+
+@media (min-width: 600px) {
+    h1 {
+      text-align: center;
+      font-size: 60px;
+    }
+  
+    h2 {
+      font-size: 50px;
+    }
+  
+    h3 {
+      font-size: 40px;
+    }
+  
+    h4 {
+      font-size: 32px;
+    }
+  
+    h5 {
+      font-size: 24px;
+    }
+  
+    h6 {
+      font-size: 12px;
+    }
+  
+    body {
+      font-size: 18px;
+    }
+}
+
+@media (min-width: 800px) {
+  img {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1000px) {
+  .container {
+    padding-bottom: 28.125%
+  }
+  .responsive-iframe {
+    width: 50%;
+    margin-left: 25%;
+  }
+}
