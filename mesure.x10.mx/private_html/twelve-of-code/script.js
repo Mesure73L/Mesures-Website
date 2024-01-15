@@ -37,7 +37,7 @@ function ajax(url) {
     });
 }
 
-ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}${random(1000000000, 9999999999)}${crypto.randomUUID()}`)
+ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
     .then(function (result) {
         info = JSON.parse(result);
         createDOMYears();
