@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>401 Authorization Required</title>
+  <link href="https://mesure.x10.mx/public_assets/main.css" rel="stylesheet" type="text/css" />
+  <link href="error.css" rel="stylesheet" type="text/css" />
+  <script src="error.js" defer></script>
+</head>
+
+<body>
+  <h1>Error</h1>
+  <h2>401 Authorization Required</h2>
+  <p>This server could not verify that you are smart enough to access this page.</p>
+  <hr>
+  <i><!--#echo var="HTTP_HOST" --></i>
+</body>
+
+</html>

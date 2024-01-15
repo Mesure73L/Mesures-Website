@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>400 Bad Request</title>
+  <link href="https://mesure.x10.mx/public_assets/main.css" rel="stylesheet" type="text/css" />
+  <link href="error.css" rel="stylesheet" type="text/css" />
+  <script src="error.js" defer></script>
+</head>
+
+<body>
+  <h1>Error</h1>
+  <h2>400 Bad Request</h2>
+  <p>There was an error in your request, just like your life.</p>
+  <hr>
+  <i><!--#echo var="HTTP_HOST" --></i>
+</body>
+
+</html>

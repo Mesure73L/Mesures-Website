@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>500 Internal Server Error</title>
+  <link href="https://mesure.x10.mx/public_assets/main.css" rel="stylesheet" type="text/css" />
+  <link href="error.css" rel="stylesheet" type="text/css" />
+  <script src="error.js" defer></script>
+</head>
+
+<body>
+  <h1>Error</h1>
+  <h2>500 Internal Server Error</h2>
+  <p>The server encountered an internal error. This was probably your fault, idiot.</p>
+  <hr>
+  <i><!--#echo var="HTTP_HOST" --></i>
+</body>
+
+</html>
