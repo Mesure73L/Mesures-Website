@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+</head>
+<body>
+
+<!-- Your content -->
+<p class="time">Wednesday, December 6, 2023 at 8:15 AM UTC</p>
+<p class="time">Thursday, December 7, 2023 at 3:30 PM</p>
+
+<!-- Add the script at the end of your body -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get all elements with the "time" class
+        var timeElements = document.getElementsByClassName("time");
+
+        // Iterate through each element and convert UTC time to local time
+        for (var i = 0; i < timeElements.length; i++) {
+            var utcTimeString = timeElements[i].textContent;
+
+            // Check if "UTC" is mentioned in the timestamp
+            var includesUtc = utcTimeString.includes("UTC");
+
+            // Parse the UTC time string
+            var utcTime = new Date(utcTimeString.replace(/(at|UTC)/g, '').trim());
+
+            // Check if the parsed date is valid
+            if (!isNaN(utcTime.getTime())) {
+                // Convert UTC time to local time
+                var localTime = new Intl.DateTimeFormat(undefined, {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    timeZoneName: includesUtc ? 'short' : undefined
+                }).format(utcTime);
+
+                // Update the element with the local time
+                timeElements[i].textContent = localTime;
+            } else {
+                console.error("Invalid date format:", utcTimeString);
+            }
+        }
+    });
+</script>
+</body>
+</html>
