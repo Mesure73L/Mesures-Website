@@ -10,4 +10,8 @@ Link doesn't work? <https://mesure.x10.mx>
 <!-- hi i saw you were online 47 minutes ago btw my school blocked your website haha it wasn't blocked a week ago 
 
 im still online, idk what to do
+
+i want to work on the 12oc thing but this morning my computer didn't have internet for some reason so i couldn't commit the code to github
+
+so i created a testing branch with the partially complete code but i don't remember what i need to put in it
 -->
