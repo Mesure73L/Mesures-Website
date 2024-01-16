@@ -13,5 +13,5 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ftp.mesure.x10.mx
-        username: MainFTP@mesure.x10.mx
+        username: GitHub@mesure.x10.mx
         password: ${{ secrets.ftp_password }}
