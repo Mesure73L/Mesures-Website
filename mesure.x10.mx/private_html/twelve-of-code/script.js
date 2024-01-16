@@ -41,6 +41,7 @@ ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
     .then(function (result) {
         info = JSON.parse(result);
         createDOMYears();
+        highlightChallenges();
     })
     .catch(function (err) {
         console.error(err);
@@ -69,7 +70,10 @@ function getCookie(cname) {
     }
     return "";
 }
-cookieToSet = {2024: {may: {1: false, 2: false, 3: false}, aug: {1: false, 2: false, 3: false}}};
+cookieToSet = {
+    2023: {dec: {1: false, 2: false, 3: false}},
+    2024: {may: {1: false, 2: false, 3: false}, aug: {1: false, 2: false, 3: false}},
+};
 if (getCookie("completed") == "") {
     setCookie("completed", cookieToSet, 60);
 } else {
@@ -259,13 +263,51 @@ document.getElementById("schallenge-3").addEventListener("click", () => {
 });
 
 // Highlighting Completed Challenges
+const completedChallenges = getCookie("completed");
+let highlightedYears = [];
+let partialYears = [];
+function highlightChallenges() {
+    for (const year in completedChallenges) {
+        let yearCount = 0;
+        let partial = false;
+        const yearCookieObj = completedChallenges[year];
+        for (const month in yearObj) {
+            let monthCount = 0;
+            const monthCookieObj = yearCookieObj[month];
+            for (const challenge in monthCookieObj) {
+                challengeValue = monthCookieObj[challenge];
+                if (challengeValue) {
+                    monthCount++;
+                    partial = true;
+                }
+            }
+            if (monthCount === 3) {
+                yearCount++;
+            }
+        }
+        if (yearCount === info[year].months.length) {
+            highlightedYears.push(year);
+        } else if (partial) {
+            partialYears.push(year);
+        }
+    }
+    // Highlighting Completed/In Progress Years
+    for (let i = 0; i < highlightedYears.length; i++) {
+        const yearElmt = document.getElementById("syear-" + highlightedYears[i]);
+        yearElmt.classList.add("completed");
+    }
+    for (let i = 0; i < partialYears.length; i++) {
+        const yearElmt = document.getElementById("syear-" + partialYears[i]);
+        yearElmt.classList.add("in-progress");
+    }
+}
 
 // Preventing Double Click
 
-var elements = document.getElementsByClassName("noDouble");
+var noDoubleElements = document.getElementsByClassName("noDouble");
 
-for (var i = 0; i < elements.length; i++) {
-    elements[i].addEventListener(
+for (var i = 0; i < noDoubleElements.length; i++) {
+    noDoubleElements[i].addEventListener(
         "mousedown",
         function (event) {
             if (event.detail > 1) {
