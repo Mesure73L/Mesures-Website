@@ -258,6 +258,8 @@ document.getElementById("schallenge-3").addEventListener("click", () => {
     challengeSelect("3");
 });
 
+// Highlighting Completed Challenges
+
 // Preventing Double Click
 
 var elements = document.getElementsByClassName("noDouble");
@@ -340,4 +342,4 @@ document.getElementById('data').addEventListener('click', () => {
     } catch {
         document.getElementById('data').value = previousData;
     }
-});
+});*/
