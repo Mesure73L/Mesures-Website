@@ -327,7 +327,7 @@ function editData() {
 
 /*let previousData = btoa(JSON.stringify({'completed': getCookie('completed'), 'user': getCookie('user')}));
 
-document.getElementById('data').addEventListener('click' () => {
+document.getElementById('data').addEventListener('click', () => {
     let content = JSON.parse(atob(document.getElementById('data').value));
     try {
         setCookie('completed', content['completed'], 60);
@@ -340,4 +340,4 @@ document.getElementById('data').addEventListener('click' () => {
     } catch {
         document.getElementById('data').value = previousData;
     }
-});*/
+});
