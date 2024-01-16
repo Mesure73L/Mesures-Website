@@ -14,4 +14,7 @@ im still online, idk what to do
 i want to work on the 12oc thing but this morning my computer didn't have internet for some reason so i couldn't commit the code to github
 
 so i created a testing branch with the partially complete code but i don't remember what i need to put in it
+
+btw how are you accessing this
+i'm on vscode.dev
 -->
