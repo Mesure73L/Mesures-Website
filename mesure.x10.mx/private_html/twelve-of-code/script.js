@@ -23,7 +23,7 @@ function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Released
+// Ajax
 
 function ajax(url) {
     return new Promise(function (resolve, reject) {
@@ -258,13 +258,9 @@ document.getElementById("schallenge-3").addEventListener("click", () => {
     challengeSelect("3");
 });
 
-// Double Click
+// Preventing Double Click
 
 var elements = document.getElementsByClassName("noDouble");
-
-var myFunction = function () {
-    var attribute = this.getAttribute("data-myattribute");
-};
 
 for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener(
