@@ -1,4 +1,3 @@
-<!-- This comment is here to test if pushing to x10hosting works. -->
 # Mesure's Website
 
 This is the source code for my website.
