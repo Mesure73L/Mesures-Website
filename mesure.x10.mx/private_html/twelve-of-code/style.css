@@ -133,7 +133,7 @@ input {
 
 .in-progress td,
 .in-progress td:hover {
-    color: lightgreen !important;
+    color: #29d362 !important;
 }
 
 td::after {
