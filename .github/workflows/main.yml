@@ -4,6 +4,7 @@ jobs:
   web-deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     steps:
     - name: Get latest code
       uses: actions/checkout@v3
@@ -12,5 +13,5 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ftp.mesure.x10.mx
-        username: MainFTP@mesure.x10.mx
+        username: GitHub@mesure.x10.mx
         password: ${{ secrets.ftp_password }}
