@@ -102,6 +102,7 @@ function yearSelect(year) {
         });
         if (year == syearActive) {
             document.getElementById("select-month").classList.add("noDisplay");
+            document.getElementById("select-challenge").classList.add("noDisplay")
             document.getElementById(`syear-${year}`).classList.remove("select-active");
             syearActive = null;
         } else {
