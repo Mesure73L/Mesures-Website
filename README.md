@@ -19,4 +19,4 @@ Link doesn't work? <https://x10hosting.com>
 
 I recieved some help with this website from RobotSlayer.
 -->
-<!-- Add that if you want to -->
+<!-- Add that if you want to. -->
