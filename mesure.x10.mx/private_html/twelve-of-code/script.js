@@ -10,11 +10,17 @@
 - 
 */
 
-let syearActive;
-let smonthActive;
-let schallengeActive;
-let info;
+let syearActive,
+    smonthActive,
+    schallengeActive,
+    info,
+    cookieToSet,
+    highlightedYears = [],
+    partialYears = [],
+    highlightedMonths = {},
+    partialMonths = {};
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+const completedChallenges = getCookie("completed");
 
 document.getElementById("select-year").classList.remove("noDisplay");
 document.getElementById("noJavaScript").classList.add("noDisplay");
@@ -23,7 +29,7 @@ function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Released
+// Ajax
 
 function ajax(url) {
     return new Promise(function (resolve, reject) {
@@ -37,10 +43,11 @@ function ajax(url) {
     });
 }
 
-ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}${random(1000000000,9999999999)}${crypto.randomUUID()}`)
+ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
     .then(function (result) {
         info = JSON.parse(result);
         createDOMYears();
+        highlightChallenges();
     })
     .catch(function (err) {
         console.error(err);
@@ -69,7 +76,10 @@ function getCookie(cname) {
     }
     return "";
 }
-cookieToSet = {2024: {may: {1: false, 2: false, 3: false}, aug: {1: false, 2: false, 3: false}}};
+cookieToSet = {
+    2023: {dec: {1: false, 2: false, 3: false}},
+    2024: {may: {1: false, 2: false, 3: false}, aug: {1: false, 2: false, 3: false}},
+};
 if (getCookie("completed") == "") {
     setCookie("completed", cookieToSet, 60);
 } else {
@@ -116,6 +126,41 @@ function yearSelect(year) {
                         document.getElementById(`smonth-${activeMonths[i]}`).removeAttribute("data-unreleased");
                     }
                 }
+                const currentMonth = document.getElementById(`smonth-${activeMonths[i]}`);
+                // Highlighting Completed/In Progress Months
+                if (highlightedMonths[year]) {
+                    if (highlightedMonths[year].includes(activeMonths[i])) {
+                        currentMonth.classList.add("completed");
+                        if (currentMonth.classList.contains("in-progress")) {
+                            currentMonth.classList.remove("in-progress");
+                        }
+                    } else if (currentMonth.classList.contains("completed")) {
+                        currentMonth.classList.remove("completed");
+                    } else if (currentMonth.classList.contains("in-progress")) {
+                        currentMonth.classList.remove("in-progres");
+                    }
+                }
+                if (partialMonths[year]) {
+                    if (partialMonths[year].includes(activeMonths[i])) {
+                        currentMonth.classList.add("in-progress");
+                        if (currentMonth.classList.contains("completed")) {
+                            currentMonth.classList.remove("completed");
+                        }
+                    } else if (currentMonth.classList.contains("completed")) {
+                        currentMonth.classList.remove("completed");
+                    } else if (currentMonth.classList.contains("in-progress")) {
+                        currentMonth.classList.remove("in-progres");
+                    }
+                }
+                if (!(highlightedMonths[year] || partialMonths[year])) {
+                    console.log(currentMonth);
+                    if (currentMonth.classList.contains("completed")) {
+                        currentMonth.classList.remove("completed");
+                    }
+                    if (currentMonth.classList.contains("in-progress")) {
+                        currentMonth.classList.remove("in-progress");
+                    }
+                }
             }
             if (document.getElementById(`syearnote-${year}`)) {
                 document.getElementById(`syearnote-${year}`).classList.remove("noDisplay");
@@ -147,6 +192,19 @@ function monthSelect(month) {
         for (let j = 1; j <= 3; j++) {
             if (info[syearActive][month][j.toString()] == false) {
                 document.getElementById("schallenge-" + j.toString()).setAttribute("data-unreleased", "");
+            }
+            if (completedChallenges[syearActive]) {
+                if (completedChallenges[syearActive][month]) {
+                    if (completedChallenges[syearActive][month][j.toString()]) {
+                        document.getElementById("schallenge-" + j.toString()).classList.add("completed");
+                    } else {
+                        document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
+                    }
+                } else {
+                    document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
+                }
+            } else {
+                document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
             }
         }
     }
@@ -258,16 +316,62 @@ document.getElementById("schallenge-3").addEventListener("click", () => {
     challengeSelect("3");
 });
 
-// Double Click
+// Highlighting Completed Challenges
+function highlightChallenges() {
+    for (const year in completedChallenges) {
+        let yearCount = 0;
+        let partial = false;
+        const yearCookieObj = completedChallenges[year];
+        for (const month in yearCookieObj) {
+            let monthCount = 0;
+            let partialMonth = false;
+            const monthCookieObj = yearCookieObj[month];
+            for (const challenge in monthCookieObj) {
+                challengeValue = monthCookieObj[challenge];
+                if (challengeValue) {
+                    monthCount++;
+                    partial = true;
+                    partialMonth = true;
+                }
+            }
+            if (monthCount === 3) {
+                yearCount++;
+                if (highlightedMonths[year]) {
+                    highlightedMonths[year].push(month);
+                } else {
+                    highlightedMonths[year] = [month];
+                }
+            } else if (partialMonth) {
+                if (partialMonths[year]) {
+                    partialMonths[year].push(month);
+                } else {
+                    partialMonths[year] = [month];
+                }
+            }
+        }
+        if (yearCount === info[year].months.length) {
+            highlightedYears.push(year);
+        } else if (partial) {
+            partialYears.push(year);
+        }
+    }
+    // Highlighting Completed/In Progress Years
+    for (let i = 0; i < highlightedYears.length; i++) {
+        const yearElmt = document.getElementById("syear-" + highlightedYears[i]);
+        yearElmt.classList.add("completed");
+    }
+    for (let i = 0; i < partialYears.length; i++) {
+        const yearElmt = document.getElementById("syear-" + partialYears[i]);
+        yearElmt.classList.add("in-progress");
+    }
+}
 
-var elements = document.getElementsByClassName("noDouble");
+// Preventing Double Click
 
-var myFunction = function () {
-    var attribute = this.getAttribute("data-myattribute");
-};
+var noDoubleElements = document.getElementsByClassName("noDouble");
 
-for (var i = 0; i < elements.length; i++) {
-    elements[i].addEventListener(
+for (var i = 0; i < noDoubleElements.length; i++) {
+    noDoubleElements[i].addEventListener(
         "mousedown",
         function (event) {
             if (event.detail > 1) {
@@ -331,7 +435,7 @@ function editData() {
 
 /*let previousData = btoa(JSON.stringify({'completed': getCookie('completed'), 'user': getCookie('user')}));
 
-document.getElementById('data').addEventListener('click' () => {
+document.getElementById('data').addEventListener('click', () => {
     let content = JSON.parse(atob(document.getElementById('data').value));
     try {
         setCookie('completed', content['completed'], 60);

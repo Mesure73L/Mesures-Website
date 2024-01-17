@@ -126,6 +126,38 @@ input {
     cursor: not-allowed !important;
 }
 
+.completed td,
+.completed td:hover {
+    color: yellow !important;
+}
+
+.in-progress td,
+.in-progress td:hover {
+    color: #29d362 !important;
+}
+
+td::after {
+    content: " ";
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+.completed:hover {
+    opacity: 0.9;
+}
+
+.completed td::after {
+    content: "***";
+}
+
+#select-challenge .completed td::after {
+    content: "*";
+}
+
+.in-progress td::after {
+    content: "...";
+}
+
 .select {
     width: 50%;
     text-align: center;
@@ -144,10 +176,6 @@ input {
 .select-active td,
 .select-active td:hover {
     background-color: #001b82;
-}
-
-.completed {
-    color: #d5d300;
 }
 
 .notCompleted {
