@@ -14,3 +14,7 @@ To host this website, I use x10hosting.
 
 [![Go to x10hosting](https://github.com/Mesure73L/Mesures-Website/assets/115181664/ce7312be-77f1-4e1a-83cb-51fa31c10edd)](https://x10hosting.com)
 Link doesn't work? <https://x10hosting.com>
+
+## Credits
+
+This website was made by Mesure73L, with **a lot** of help from @BeepBot99.
