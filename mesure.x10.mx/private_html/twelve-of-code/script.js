@@ -20,6 +20,7 @@ let syearActive,
     highlightedMonths = {},
     partialMonths = {};
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+const completedChallenges = getCookie("completed");
 
 document.getElementById("select-year").classList.remove("noDisplay");
 document.getElementById("noJavaScript").classList.add("noDisplay");
@@ -192,6 +193,19 @@ function monthSelect(month) {
             if (info[syearActive][month][j.toString()] == false) {
                 document.getElementById("schallenge-" + j.toString()).setAttribute("data-unreleased", "");
             }
+            if (completedChallenges[syearActive]) {
+                if (completedChallenges[syearActive][month]) {
+                    if (completedChallenges[syearActive][month][j.toString()]) {
+                        document.getElementById("schallenge-" + j.toString()).classList.add("completed");
+                    } else {
+                        document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
+                    }
+                } else {
+                    document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
+                }
+            } else {
+                document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
+            }
         }
     }
 }
@@ -303,7 +317,6 @@ document.getElementById("schallenge-3").addEventListener("click", () => {
 });
 
 // Highlighting Completed Challenges
-const completedChallenges = getCookie("completed");
 function highlightChallenges() {
     for (const year in completedChallenges) {
         let yearCount = 0;

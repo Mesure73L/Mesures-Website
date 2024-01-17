@@ -150,6 +150,10 @@ td::after {
     content: "***";
 }
 
+#select-challenge .completed td::after {
+    content: "*";
+}
+
 .in-progress td::after {
     content: "...";
 }
