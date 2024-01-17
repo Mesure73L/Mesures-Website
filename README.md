@@ -1,4 +1,12 @@
 # Mesure's Website
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/mesure73l/mesures-website)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/mesure73l/mesures-website)
+![GitHub forks](https://img.shields.io/github/forks/mesure73l/mesures-website?style=flat)
+
+![GitHub contributors](https://img.shields.io/github/contributors/mesure73l/mesures-website)
+![GitHub issues](https://img.shields.io/github/issues/mesure73l/mesures-website)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/mesure73l/mesures-website)
+
 
 This is the source code for my website.
 Licensed with CC BY-NC-SA 4.0.
