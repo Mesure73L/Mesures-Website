@@ -10,10 +10,15 @@
 - 
 */
 
-let syearActive;
-let smonthActive;
-let schallengeActive;
-let info;
+let syearActive,
+    smonthActive,
+    schallengeActive,
+    info,
+    cookieToSet,
+    highlightedYears = [],
+    partialYears = [],
+    highlightedMonths = {},
+    partialMonths = {};
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
 document.getElementById("select-year").classList.remove("noDisplay");
@@ -118,6 +123,41 @@ function yearSelect(year) {
                 } else {
                     if (document.getElementById(`smonth-${activeMonths[i]}`).hasAttribute("data-unreleased")) {
                         document.getElementById(`smonth-${activeMonths[i]}`).removeAttribute("data-unreleased");
+                    }
+                }
+                const currentMonth = document.getElementById(`smonth-${activeMonths[i]}`);
+                // Highlighting Completed/In Progress Months
+                if (highlightedMonths[year]) {
+                    if (highlightedMonths[year].includes(activeMonths[i])) {
+                        currentMonth.classList.add("completed");
+                        if (currentMonth.classList.contains("in-progress")) {
+                            currentMonth.classList.remove("in-progress");
+                        }
+                    } else if (currentMonth.classList.contains("completed")) {
+                        currentMonth.classList.remove("completed");
+                    } else if (currentMonth.classList.contains("in-progress")) {
+                        currentMonth.classList.remove("in-progres");
+                    }
+                }
+                if (partialMonths[year]) {
+                    if (partialMonths[year].includes(activeMonths[i])) {
+                        currentMonth.classList.add("in-progress");
+                        if (currentMonth.classList.contains("completed")) {
+                            currentMonth.classList.remove("completed");
+                        }
+                    } else if (currentMonth.classList.contains("completed")) {
+                        currentMonth.classList.remove("completed");
+                    } else if (currentMonth.classList.contains("in-progress")) {
+                        currentMonth.classList.remove("in-progres");
+                    }
+                }
+                if (!(highlightedMonths[year] || partialMonths[year])) {
+                    console.log(currentMonth);
+                    if (currentMonth.classList.contains("completed")) {
+                        currentMonth.classList.remove("completed");
+                    }
+                    if (currentMonth.classList.contains("in-progress")) {
+                        currentMonth.classList.remove("in-progress");
                     }
                 }
             }
@@ -264,25 +304,36 @@ document.getElementById("schallenge-3").addEventListener("click", () => {
 
 // Highlighting Completed Challenges
 const completedChallenges = getCookie("completed");
-let highlightedYears = [];
-let partialYears = [];
 function highlightChallenges() {
     for (const year in completedChallenges) {
         let yearCount = 0;
         let partial = false;
         const yearCookieObj = completedChallenges[year];
-        for (const month in yearObj) {
+        for (const month in yearCookieObj) {
             let monthCount = 0;
+            let partialMonth = false;
             const monthCookieObj = yearCookieObj[month];
             for (const challenge in monthCookieObj) {
                 challengeValue = monthCookieObj[challenge];
                 if (challengeValue) {
                     monthCount++;
                     partial = true;
+                    partialMonth = true;
                 }
             }
             if (monthCount === 3) {
                 yearCount++;
+                if (highlightedMonths[year]) {
+                    highlightedMonths[year].push(month);
+                } else {
+                    highlightedMonths[year] = [month];
+                }
+            } else if (partialMonth) {
+                if (partialMonths[year]) {
+                    partialMonths[year].push(month);
+                } else {
+                    partialMonths[year] = [month];
+                }
             }
         }
         if (yearCount === info[year].months.length) {
