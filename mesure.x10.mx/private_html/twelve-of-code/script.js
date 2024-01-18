@@ -13,8 +13,8 @@
 let syearActive,
     smonthActive,
     schallengeActive,
-    info,
     cookieToSet,
+    cman,
     highlightedYears = [],
     partialYears = [],
     highlightedMonths = {},
@@ -25,11 +25,7 @@ const completedChallenges = getCookie("completed");
 document.getElementById("select-year").classList.remove("noDisplay");
 document.getElementById("noJavaScript").classList.add("noDisplay");
 
-function random(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-// Ajax
+// Fetching information.json
 
 function ajax(url) {
     return new Promise(function (resolve, reject) {
@@ -45,7 +41,9 @@ function ajax(url) {
 
 ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
     .then(function (result) {
-        info = JSON.parse(result);
+        cman = new CookieManager(JSON.parse(result));
+        // Steps to do when information.json loads
+        initializeCookies();
         createDOMYears();
         highlightChallenges();
     })
@@ -54,47 +52,21 @@ ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
     });
 
 // Cookies
-
-function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-    let expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + btoa(JSON.stringify(cvalue)) + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-    let name = cname + "=";
-    let ca = document.cookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == " ") {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return JSON.parse(atob(c.substring(name.length, c.length)));
-        }
+function initializeCookies() {
+    if (cman.completed === "") {
+        cman.completed = cman.blankCookie;
+    } else {
+        cman.completed = cman.completed;
     }
-    return "";
-}
-cookieToSet = {
-    2023: {dec: {1: false, 2: false, 3: false}},
-    2024: {may: {1: false, 2: false, 3: false}, aug: {1: false, 2: false, 3: false}},
-};
-if (getCookie("completed") == "") {
-    setCookie("completed", cookieToSet, 60);
-} else {
-    setCookie("completed", getCookie("completed"), 60);
-}
 
-cookieToSet = {username: `User-${random(1000000000, 9999999999)}`, seed: random(1000000000, 9999999999)};
-if (getCookie("user") == "") {
-    setCookie("user", cookieToSet, 60);
-} else {
-    setCookie("user", getCookie("user"), 60);
+    if (cman.user === "") {
+        cman.user = cman.blankUserCokie;
+    } else {
+        cman.user = cman.user;
+    }
 }
 
 // Date Selection
-
 function yearSelect(year) {
     if (!document.getElementById(`syear-${year}`).hasAttribute("data-unreleased")) {
         Array.from(document.getElementsByClassName("syearnote")).forEach(element => {

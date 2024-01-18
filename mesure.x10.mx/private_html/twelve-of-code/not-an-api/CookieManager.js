@@ -24,6 +24,9 @@ class CookieManager {
         }
         return "";
     }
+    random(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
     get completed() {
         this._completed = this.getCookie("completed");
         return this._completed;
@@ -70,5 +73,8 @@ class CookieManager {
             }
         }
         return blankCookie;
+    }
+    get blankUserCookie() {
+        return {username: `User-${random(1000000000, 9999999999)}`, seed: random(1000000000, 9999999999)};
     }
 }
