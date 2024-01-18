@@ -15,14 +15,11 @@ let syearActive,
     schallengeActive,
     cookieToSet,
     cman,
-    completedChallenges,
     highlightedYears = [],
     partialYears = [],
     highlightedMonths = {},
     partialMonths = {};
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-document.getElementById("select-year").classList.remove("noDisplay");
-document.getElementById("noJavaScript").classList.add("noDisplay");
 
 // Fetching information.json
 function ajax(url) {
@@ -37,6 +34,7 @@ function ajax(url) {
     });
 }
 
+// Fetching information.json and initializing the page
 ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
     .then(function (result) {
         cman = new CookieManager(JSON.parse(result));
@@ -45,13 +43,14 @@ ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
         createDOMYears();
         highlightChallenges();
         initializeSettings();
-        completedChallenges = cman.completed;
+        document.getElementById("noJavaScript").classList.add("noDisplay");
     })
     .catch(function (err) {
+        // Logging any errors with initialization to the console
         console.error(err);
     });
 
-// Cookies
+// Initializing the cookies
 function initializeCookies() {
     if (cman.completed === "") {
         cman.completed = cman.blankCookie;
@@ -166,9 +165,9 @@ function monthSelect(month) {
             if (cman.information[syearActive][month][j.toString()] == false) {
                 document.getElementById("schallenge-" + j.toString()).setAttribute("data-unreleased", "");
             }
-            if (completedChallenges[syearActive]) {
-                if (completedChallenges[syearActive][month]) {
-                    if (completedChallenges[syearActive][month][j.toString()]) {
+            if (cman.completed[syearActive]) {
+                if (cman.completed[syearActive][month]) {
+                    if (cman.completed[syearActive][month][j.toString()]) {
                         document.getElementById("schallenge-" + j.toString()).classList.add("completed");
                     } else {
                         document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
@@ -291,10 +290,10 @@ document.getElementById("schallenge-3").addEventListener("click", () => {
 
 // Highlighting Completed Challenges
 function highlightChallenges() {
-    for (const year in completedChallenges) {
+    for (const year in cman.completed) {
         let yearCount = 0;
         let partial = false;
-        const yearCookieObj = completedChallenges[year];
+        const yearCookieObj = cman.completed[year];
         for (const month in yearCookieObj) {
             let monthCount = 0;
             let partialMonth = false;
