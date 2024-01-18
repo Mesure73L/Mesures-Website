@@ -21,7 +21,6 @@ let syearActive,
     highlightedMonths = {},
     partialMonths = {};
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-
 document.getElementById("select-year").classList.remove("noDisplay");
 document.getElementById("noJavaScript").classList.add("noDisplay");
 
