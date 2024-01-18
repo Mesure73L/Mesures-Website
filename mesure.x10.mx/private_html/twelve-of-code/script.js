@@ -15,18 +15,17 @@ let syearActive,
     schallengeActive,
     cookieToSet,
     cman,
+    completedChallenges,
     highlightedYears = [],
     partialYears = [],
     highlightedMonths = {},
     partialMonths = {};
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-const completedChallenges = getCookie("completed");
 
 document.getElementById("select-year").classList.remove("noDisplay");
 document.getElementById("noJavaScript").classList.add("noDisplay");
 
 // Fetching information.json
-
 function ajax(url) {
     return new Promise(function (resolve, reject) {
         var xhr = new XMLHttpRequest();
@@ -46,6 +45,8 @@ ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
         initializeCookies();
         createDOMYears();
         highlightChallenges();
+        initializeSettings();
+        completedChallenges = cman.completed;
     })
     .catch(function (err) {
         console.error(err);
@@ -84,7 +85,7 @@ function yearSelect(year) {
             }
             document.getElementById(`syear-${year}`).classList.add("select-active");
             document.getElementById("select-month").classList.remove("noDisplay");
-            let activeMonths = info[year].months;
+            let activeMonths = cman.information[year].months;
             for (i = 0; i < months.length; i++) {
                 document.getElementById(`smonth-${months[i]}`).classList.add("noDisplay");
                 if (document.getElementById(`smonth-${months[i]}`).classList.contains("select-active")) {
@@ -93,7 +94,7 @@ function yearSelect(year) {
             }
             for (i = 0; i < activeMonths.length; i++) {
                 document.getElementById(`smonth-${activeMonths[i]}`).classList.remove("noDisplay");
-                if (info[year][activeMonths[i]].overall == false) {
+                if (cman.information[year][activeMonths[i]].overall == false) {
                     document.getElementById(`smonth-${activeMonths[i]}`).setAttribute("data-unreleased", "");
                 } else {
                     if (document.getElementById(`smonth-${activeMonths[i]}`).hasAttribute("data-unreleased")) {
@@ -127,7 +128,6 @@ function yearSelect(year) {
                     }
                 }
                 if (!(highlightedMonths[year] || partialMonths[year])) {
-                    console.log(currentMonth);
                     if (currentMonth.classList.contains("completed")) {
                         currentMonth.classList.remove("completed");
                     }
@@ -164,7 +164,7 @@ function monthSelect(month) {
             challengeSelect(schallengeActive);
         }
         for (let j = 1; j <= 3; j++) {
-            if (info[syearActive][month][j.toString()] == false) {
+            if (cman.information[syearActive][month][j.toString()] == false) {
                 document.getElementById("schallenge-" + j.toString()).setAttribute("data-unreleased", "");
             }
             if (completedChallenges[syearActive]) {
@@ -210,17 +210,17 @@ function createDOMYears() {
     const yearContainer = document.getElementById("select-year");
     const noteContainer = document.getElementById("notes");
 
-    for (const year in info) {
+    for (const year in cman.information) {
         const yearElement = document.createElement("tr");
         yearElement.id = "syear-" + year;
         yearContainer.appendChild(yearElement);
         const yearText = document.createElement("td");
         yearText.innerText = year;
-        if ("note" in info[year]) {
-            if ("title" in info[year].note) {
-                yearText.innerText += ` (${info[year].note.title})`;
+        if ("note" in cman.information[year]) {
+            if ("title" in cman.information[year].note) {
+                yearText.innerText += ` (${cman.information[year].note.title})`;
             }
-            if ("description" in info[year].note) {
+            if ("description" in cman.information[year].note) {
                 const descriptionElement = document.createElement("div");
                 descriptionElement.classList.add("syearnote");
                 descriptionElement.classList.add("noDisplay");
@@ -229,7 +229,7 @@ function createDOMYears() {
                 descriptionElement.appendChild(document.createElement("br"));
                 const descriptionText = document.createElement("p");
                 descriptionText.classList.add("blue");
-                descriptionText.innerText = info[year].note.description;
+                descriptionText.innerText = cman.information[year].note.description;
                 descriptionElement.appendChild(descriptionText);
             }
         }
@@ -237,7 +237,7 @@ function createDOMYears() {
         yearElement.addEventListener("click", () => {
             yearSelect(year);
         });
-        if (info[year].overall == false) {
+        if (cman.information[year].overall == false) {
             yearElement.setAttribute("data-unreleased", "");
         }
     }
@@ -323,7 +323,7 @@ function highlightChallenges() {
                 }
             }
         }
-        if (yearCount === info[year].months.length) {
+        if (yearCount === cman.information[year].months.length) {
             highlightedYears.push(year);
         } else if (partial) {
             partialYears.push(year);
@@ -341,9 +341,7 @@ function highlightChallenges() {
 }
 
 // Preventing Double Click
-
 var noDoubleElements = document.getElementsByClassName("noDouble");
-
 for (var i = 0; i < noDoubleElements.length; i++) {
     noDoubleElements[i].addEventListener(
         "mousedown",
@@ -358,52 +356,52 @@ for (var i = 0; i < noDoubleElements.length; i++) {
 
 // Settings
 
-let username = getCookie("user")["username"];
-let seed = getCookie("user")["seed"];
-
-document.getElementById("settings").addEventListener("click", () => {
-    document.getElementById("editSettings").classList.toggle("noDisplay");
-    document.getElementById("input-username").value = username;
-    document.getElementById("input-seed").value = seed;
-    editData();
-});
-
-document.getElementById("input-username").addEventListener("change", () => {
-    username = document.getElementById("input-username").value;
-    setCookie("user", {username: username, seed: seed}, 60);
-    document.getElementById("message-username").classList.add("green");
-    document.getElementById("musername-br").classList.remove("noDisplay");
-    document.getElementById("message-username").innerText = "Username updated!";
-    setTimeout('document.getElementById("message-username").innerText = "";', 5000);
-    setTimeout('document.getElementById("message-username").classList.remove("green");', 5000);
-    setTimeout('document.getElementById("musername-br").classList.add("noDisplay");', 5000);
-    editData();
-});
-
-document.getElementById("input-seed").addEventListener("change", () => {
-    if (/[1-9]\d{9}/.test(document.getElementById("input-seed").value)) {
-        seed = document.getElementById("input-seed").value;
-        setCookie("user", {username: username, seed: seed}, 60);
-        document.getElementById("message-seed").classList.add("green");
-        document.getElementById("mseed-br").classList.remove("noDisplay");
-        document.getElementById("message-seed").innerText = "Seed updated!";
-        setTimeout('document.getElementById("message-seed").innerText = "";', 5000);
-        setTimeout('document.getElementById("message-seed").classList.remove("green");', 5000);
-        setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
-    } else {
-        document.getElementById("message-seed").classList.add("red");
-        document.getElementById("mseed-br").classList.remove("noDisplay");
-        document.getElementById("message-seed").innerText = "Invalid seed!";
+function initializeSettings() {
+    let username = cman.user.username;
+    let seed = cman.user.seed;
+    document.getElementById("settings").addEventListener("click", () => {
+        document.getElementById("editSettings").classList.toggle("noDisplay");
+        document.getElementById("input-username").value = username;
         document.getElementById("input-seed").value = seed;
-        setTimeout('document.getElementById("message-seed").innerText = "";', 5000);
-        setTimeout('document.getElementById("message-seed").classList.remove("red");', 5000);
-        setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
-    }
-    editData();
-});
+        editData();
+    });
 
+    document.getElementById("input-username").addEventListener("change", () => {
+        username = document.getElementById("input-username").value;
+        cman.user = {username: username, seed: seed};
+        document.getElementById("message-username").classList.add("green");
+        document.getElementById("musername-br").classList.remove("noDisplay");
+        document.getElementById("message-username").innerText = "Username updated!";
+        setTimeout('document.getElementById("message-username").innerText = "";', 5000);
+        setTimeout('document.getElementById("message-username").classList.remove("green");', 5000);
+        setTimeout('document.getElementById("musername-br").classList.add("noDisplay");', 5000);
+        editData();
+    });
+
+    document.getElementById("input-seed").addEventListener("change", () => {
+        if (/[1-9]\d{9}/.test(document.getElementById("input-seed").value)) {
+            seed = document.getElementById("input-seed").value;
+            cman.user = {username: username, seed: seed};
+            document.getElementById("message-seed").classList.add("green");
+            document.getElementById("mseed-br").classList.remove("noDisplay");
+            document.getElementById("message-seed").innerText = "Seed updated!";
+            setTimeout('document.getElementById("message-seed").innerText = "";', 5000);
+            setTimeout('document.getElementById("message-seed").classList.remove("green");', 5000);
+            setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
+        } else {
+            document.getElementById("message-seed").classList.add("red");
+            document.getElementById("mseed-br").classList.remove("noDisplay");
+            document.getElementById("message-seed").innerText = "Invalid seed!";
+            document.getElementById("input-seed").value = seed;
+            setTimeout('document.getElementById("message-seed").innerText = "";', 5000);
+            setTimeout('document.getElementById("message-seed").classList.remove("red");', 5000);
+            setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
+        }
+        editData();
+    });
+}
 function editData() {
-    let content = btoa(JSON.stringify({completed: getCookie("completed"), user: getCookie("user")}));
+    let content = btoa(JSON.stringify({completed: cman.completed, user: cman.user}));
     document.getElementById("data").value = content;
 }
 

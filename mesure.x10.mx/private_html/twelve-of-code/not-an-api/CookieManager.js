@@ -1,16 +1,16 @@
 class CookieManager {
     constructor(information) {
         this.information = information;
-        this._completed = getCookie("completed");
-        this._user = getCookie("user");
+        this._completed = this.getCookie("completed");
+        this._user = this.getCookie("user");
     }
-    static setCookie(cname, cvalue, exdays) {
+    setCookie(cname, cvalue, exdays) {
         const d = new Date();
         d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
         let expires = "expires=" + d.toUTCString();
         document.cookie = cname + "=" + btoa(JSON.stringify(cvalue)) + ";" + expires + ";path=/";
     }
-    static getCookie(cname) {
+    getCookie(cname) {
         let name = cname + "=";
         let ca = document.cookie.split(";");
         for (let i = 0; i < ca.length; i++) {
@@ -24,7 +24,7 @@ class CookieManager {
         }
         return "";
     }
-    static random(min, max) {
+    random(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     get completed() {
@@ -42,7 +42,7 @@ class CookieManager {
     }
     set user(cookieValue) {
         this._user = cookieValue;
-        this.setCookie("completed", _user, 60);
+        this.setCookie("completed", this._user, 60);
         return cookieValue;
     }
     updateChallengesStatus(challengeLocation, newChallengeStatus) {
