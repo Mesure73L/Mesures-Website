@@ -11,7 +11,7 @@
 */
 const active = {};
 let cman;
-let highlightedYears = [],
+let yearsToHighlight = [],
     partialYears = [],
     monthsToHighlight = {},
     partialMonths = {};
@@ -67,7 +67,7 @@ function yearSelect(year) {
     // If the selected year is released,
     if (!yearElement.hasAttribute("data-unreleased")) {
         // Hide all year notes
-        Array.from(document.getElementsByClassName("syearnote")).forEach((element) => {
+        Array.from(document.getElementsByClassName("syearnote")).forEach(element => {
             element.classList.add("noDisplay");
         });
         // If the user clicked on the active year, hide everything
@@ -178,15 +178,21 @@ function monthSelect(month) {
                 document.getElementById("schallenge-" + j.toString()).classList.remove("select-active");
             }
             if (cman.completed[active.year]) {
+                // If the completed cookie includes the current year,
                 if (cman.completed[active.year][month]) {
+                    // Then, if the completed cookie includes the current month,
                     if (cman.completed[active.year][month][j.toString()]) {
+                        // Then, if the current challenge is completed, add the completed class.
                         document.getElementById("schallenge-" + j.toString()).classList.add("completed");
                     } else {
+                        // Otherwise, remove the completed class if it has it.
                         document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
                     }
+                    // If the completed cookie does not include the current month, the remove the completed class if it has it.
                 } else {
                     document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
                 }
+                // Otherwise, if the completed cookie does not include the current year, then remove the completed class if it has it.
             } else {
                 document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
             }
@@ -194,33 +200,45 @@ function monthSelect(month) {
     }
 }
 
+// Challenge Selection
 function challengeSelect(challenge) {
-    if (!document.getElementById(`schallenge-${challenge}`).hasAttribute("data-unreleased")) {
+    const challengeElement = document.getElementById(`schallenge-${challenge}`);
+    // If the challenge is released,
+    if (!challengeElement.hasAttribute("data-unreleased")) {
+        // Then, if the challenge that was clicked is the active challenge, then hide everything.
         if (challenge == active.challenge) {
             document.getElementById("challenge").classList.add("noDisplay");
             document.getElementById(`schallenge-${challenge}`).classList.remove("select-active");
             active.challenge = undefined;
         } else {
+            // Otherwise, if there is an active challenge, remove select-active from it.
             if (active.challenge) {
                 document.getElementById(`schallenge-${active.challenge}`).classList.remove("select-active");
             }
+            // Then, give the newly selected challenge select-active.
             document.getElementById(`schallenge-${challenge}`).classList.add("select-active");
+            // Unhide the challlenge.
             document.getElementById("challenge").classList.remove("noDisplay");
-            active.challenge = `${challenge}`;
+            // Then, set the active challenge to the current challenge.
+            active.challenge = challenge;
             fetch(`https://mesure.x10.mx/twelve-of-code/not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`)
-                .then((res) => res.text())
-                .then((text) => {
+                .then(res => res.text())
+                .then(text => {
+                    // Next, set the contents of the challenge element to the challenge specified at the challenge page for the selected challenge.
                     document.getElementById("challenge").innerHTML = text;
                 });
         }
     }
 }
 
+// Function for creating the year elements from information.json
 function createDOMYears() {
     const yearContainer = document.getElementById("select-year");
     const noteContainer = document.getElementById("notes");
 
+    // For every year in information.json,
     for (const year in cman.information) {
+        // Create a year element, with a title and description if there is one.
         const yearElement = document.createElement("tr");
         yearElement.id = "syear-" + year;
         yearContainer.appendChild(yearElement);
@@ -244,50 +262,21 @@ function createDOMYears() {
             }
         }
         yearElement.appendChild(yearText);
+        // Add an event listener to call yearSelect() when it is clicked.
         yearElement.addEventListener("click", () => {
             yearSelect(year);
         });
+        // If the year is unreleased, give it data-unreleased.
         if (cman.information[year].overall == false) {
             yearElement.setAttribute("data-unreleased", "");
         }
     }
 }
-
-document.getElementById("smonth-jan").addEventListener("click", () => {
-    monthSelect("jan");
-});
-document.getElementById("smonth-feb").addEventListener("click", () => {
-    monthSelect("feb");
-});
-document.getElementById("smonth-mar").addEventListener("click", () => {
-    monthSelect("mar");
-});
-document.getElementById("smonth-apr").addEventListener("click", () => {
-    monthSelect("apr");
-});
-document.getElementById("smonth-may").addEventListener("click", () => {
-    monthSelect("may");
-});
-document.getElementById("smonth-jun").addEventListener("click", () => {
-    monthSelect("jun");
-});
-document.getElementById("smonth-jul").addEventListener("click", () => {
-    monthSelect("jul");
-});
-document.getElementById("smonth-aug").addEventListener("click", () => {
-    monthSelect("aug");
-});
-document.getElementById("smonth-sep").addEventListener("click", () => {
-    monthSelect("sep");
-});
-document.getElementById("smonth-oct").addEventListener("click", () => {
-    monthSelect("oct");
-});
-document.getElementById("smonth-nov").addEventListener("click", () => {
-    monthSelect("nov");
-});
-document.getElementById("smonth-dec").addEventListener("click", () => {
-    monthSelect("dec");
+// Add event listeners to all the months and challenges.
+months.forEach(month => {
+    document.getElementById("smonth-" + month).addEventListener("click", () => {
+        monthSelect(month);
+    });
 });
 
 document.getElementById("schallenge-1").addEventListener("click", () => {
@@ -302,11 +291,13 @@ document.getElementById("schallenge-3").addEventListener("click", () => {
 
 // Highlighting Completed Challenges
 function highlightChallenges() {
+    // For each year, count the number of challenges.
     for (const year in cman.completed) {
         let yearCount = 0;
         let partial = false;
         const yearCookieObj = cman.completed[year];
         for (const month in yearCookieObj) {
+            // For each month,
             let monthCount = 0;
             let partialMonth = false;
             const monthCookieObj = yearCookieObj[month];
@@ -318,6 +309,7 @@ function highlightChallenges() {
                     partialMonth = true;
                 }
             }
+            // If all 3 challenges are completed, append it to monthsToHighlight.
             if (monthCount === 3) {
                 yearCount++;
                 if (monthsToHighlight[year]) {
@@ -325,6 +317,7 @@ function highlightChallenges() {
                 } else {
                     monthsToHighlight[year] = [month];
                 }
+                // Otherwise, if not all 3 challenges are completed, but at least one is, append it to partialMonths.
             } else if (partialMonth) {
                 if (partialMonths[year]) {
                     partialMonths[year].push(month);
@@ -333,24 +326,27 @@ function highlightChallenges() {
                 }
             }
         }
+        // For each year, if all months are completed, append it to yearsToHighlight.
         if (yearCount === cman.information[year].months.length) {
-            highlightedYears.push(year);
+            yearsToHighlight.push(year);
         } else if (partial) {
+            // Otherwise, if not all months are completed, but at least one is, append it to partialYears.
             partialYears.push(year);
         }
     }
-    // Highlighting Completed/In Progress Years
-    for (let i = 0; i < highlightedYears.length; i++) {
-        const yearElmt = document.getElementById("syear-" + highlightedYears[i]);
+    // For each year that is in yearsToHighlight, add completed to it.
+    for (let i = 0; i < yearsToHighlight.length; i++) {
+        const yearElmt = document.getElementById("syear-" + yearsToHighlight[i]);
         yearElmt.classList.add("completed");
     }
+    // For each year that is in partialYears, add in-progress to it.
     for (let i = 0; i < partialYears.length; i++) {
         const yearElmt = document.getElementById("syear-" + partialYears[i]);
         yearElmt.classList.add("in-progress");
     }
 }
 
-// Preventing Double Click
+// Preventing Double Click on elements with class noDouble
 const noDoubleElements = document.getElementsByClassName("noDouble");
 for (let i = 0; i < noDoubleElements.length; i++) {
     noDoubleElements[i].addEventListener(
@@ -365,7 +361,6 @@ for (let i = 0; i < noDoubleElements.length; i++) {
 }
 
 // Settings
-
 function initializeSettings() {
     let username = cman.user.username;
     let seed = cman.user.seed;
