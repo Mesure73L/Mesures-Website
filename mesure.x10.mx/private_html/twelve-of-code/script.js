@@ -77,6 +77,8 @@ function yearSelect(year) {
             document.getElementById("challenge").classList.add("noDisplay");
             yearElement.classList.remove("select-active");
             active.year = undefined;
+            active.month = undefined;
+            active.challenge = undefined;
         } else {
             // Otherwise, make the previous active year not active anymore
             if (active.year) {
@@ -88,12 +90,16 @@ function yearSelect(year) {
             document.getElementById("select-month").classList.remove("noDisplay");
             // activeMonths is an array of the months that should be shown for the chosen year
             let activeMonths = cman.information[year].months;
-            for (i = 0; i < months.length; i++) {
+            for (let i = 0; i < months.length; i++) {
                 // For every month, hide it, and remove select-active if it has it
                 document.getElementById(`smonth-${months[i]}`).classList.add("noDisplay");
                 document.getElementById(`smonth-${months[i]}`).classList.remove("select-active");
             }
-            for (i = 0; i < activeMonths.length; i++) {
+            for (let i = 1; i <= 3; i++) {
+                // For every challenge, if it has select-active, remove it.
+                document.getElementById(`schallenge-${i.toString()}`).classList.remove("select-active");
+            }
+            for (let i = 0; i < activeMonths.length; i++) {
                 const currentMonth = document.getElementById(`smonth-${activeMonths[i]}`);
                 // For every active month, show it. Then, if it is unreleased, give it data-unreleased. Otherwise, remove data-unreleased if it has it.
                 currentMonth.classList.remove("noDisplay");
@@ -128,7 +134,12 @@ function yearSelect(year) {
             if (document.getElementById(`syearnote-${year}`)) {
                 document.getElementById(`syearnote-${year}`).classList.remove("noDisplay");
             }
-            active.year = `${year}`;
+            // Make the active year the selected year.
+            active.year = year;
+            // Make the active challenge and active month not active anymore.
+            active.month = undefined;
+            active.challenge = undefined;
+            // Hide the challenge selector.
             document.getElementById("select-challenge").classList.add("noDisplay");
         }
     }
@@ -150,16 +161,21 @@ function monthSelect(month) {
             if (active.month) {
                 document.getElementById(`smonth-${active.month}`).classList.remove("select-active");
             }
+            // Then, make the selected month active.
             document.getElementById(`smonth-${month}`).classList.add("select-active");
+            // Unhide the challenge selector.
             document.getElementById("select-challenge").classList.remove("noDisplay");
-            active.month = `${month}`;
-        }
-        if (active.challenge) {
-            challengeSelect(active.challenge);
+            // Make the active month the selected month.
+            active.month = month;
+            // Make the active challenge not active anymore.
+            active.challenge = undefined;
         }
         for (let j = 1; j <= 3; j++) {
             if (cman.information[active.year][month][j.toString()] == false) {
+                // For every challenge, if it is unreleased, give it data-unreleased.
                 document.getElementById("schallenge-" + j.toString()).setAttribute("data-unreleased", "");
+                // Then, if it has select-active, remove select-active.
+                document.getElementById("schallenge-" + j.toString()).classList.remove("select-active");
             }
             if (cman.completed[active.year]) {
                 if (cman.completed[active.year][month]) {
