@@ -4,13 +4,13 @@ class CookieManager {
         this._completed = getCookie("completed");
         this._user = getCookie("user");
     }
-    setCookie(cname, cvalue, exdays) {
+    static setCookie(cname, cvalue, exdays) {
         const d = new Date();
         d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
         let expires = "expires=" + d.toUTCString();
         document.cookie = cname + "=" + btoa(JSON.stringify(cvalue)) + ";" + expires + ";path=/";
     }
-    getCookie(cname) {
+    static getCookie(cname) {
         let name = cname + "=";
         let ca = document.cookie.split(";");
         for (let i = 0; i < ca.length; i++) {
@@ -24,7 +24,7 @@ class CookieManager {
         }
         return "";
     }
-    random(min, max) {
+    static random(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     get completed() {
