@@ -9,22 +9,18 @@
 - Thank you for your understanding.
 - 
 */
-
-let syearActive,
-    smonthActive,
-    schallengeActive,
-    cookieToSet,
-    cman,
-    highlightedYears = [],
+const active = {};
+let cman;
+let highlightedYears = [],
     partialYears = [],
-    highlightedMonths = {},
+    monthsToHighlight = {},
     partialMonths = {};
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
 // Fetching information.json
 function ajax(url) {
     return new Promise(function (resolve, reject) {
-        var xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
         xhr.onload = function () {
             resolve(this.responseText);
         };
@@ -34,11 +30,11 @@ function ajax(url) {
     });
 }
 
-// Fetching information.json and initializing the page
+// Initializing the page
 ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
     .then(function (result) {
         cman = new CookieManager(JSON.parse(result));
-        // Steps to do when information.json loads
+        // Steps to do after information.json loads
         initializeCookies();
         createDOMYears();
         highlightChallenges();
@@ -65,109 +61,109 @@ function initializeCookies() {
     }
 }
 
-// Date Selection
+// Year Selection
 function yearSelect(year) {
-    if (!document.getElementById(`syear-${year}`).hasAttribute("data-unreleased")) {
-        Array.from(document.getElementsByClassName("syearnote")).forEach(element => {
+    const yearElement = document.getElementById(`syear-${year}`);
+    // If the selected year is released,
+    if (!yearElement.hasAttribute("data-unreleased")) {
+        // Hide all year notes
+        Array.from(document.getElementsByClassName("syearnote")).forEach((element) => {
             element.classList.add("noDisplay");
         });
-        if (year == syearActive) {
+        // If the user clicked on the active year, hide everything
+        if (year == active.year) {
             document.getElementById("select-month").classList.add("noDisplay");
             document.getElementById("select-challenge").classList.add("noDisplay");
             document.getElementById("challenge").classList.add("noDisplay");
-            document.getElementById(`syear-${year}`).classList.remove("select-active");
-            syearActive = null;
+            yearElement.classList.remove("select-active");
+            active.year = undefined;
         } else {
-            if (syearActive) {
-                document.getElementById(`syear-${syearActive}`).classList.remove("select-active");
+            // Otherwise, make the previous active year not active anymore
+            if (active.year) {
+                document.getElementById(`syear-${active.year}`).classList.remove("select-active");
             }
+            // Then, make the new year active
             document.getElementById(`syear-${year}`).classList.add("select-active");
+            // Unhide the month selector
             document.getElementById("select-month").classList.remove("noDisplay");
+            // activeMonths is an array of the months that should be shown for the chosen year
             let activeMonths = cman.information[year].months;
             for (i = 0; i < months.length; i++) {
+                // For every month, hide it, and remove select-active if it has it
                 document.getElementById(`smonth-${months[i]}`).classList.add("noDisplay");
-                if (document.getElementById(`smonth-${months[i]}`).classList.contains("select-active")) {
-                    document.getElementById(`smonth-${months[i]}`).classList.remove("select-active");
-                }
+                document.getElementById(`smonth-${months[i]}`).classList.remove("select-active");
             }
             for (i = 0; i < activeMonths.length; i++) {
-                document.getElementById(`smonth-${activeMonths[i]}`).classList.remove("noDisplay");
-                if (cman.information[year][activeMonths[i]].overall == false) {
-                    document.getElementById(`smonth-${activeMonths[i]}`).setAttribute("data-unreleased", "");
-                } else {
-                    if (document.getElementById(`smonth-${activeMonths[i]}`).hasAttribute("data-unreleased")) {
-                        document.getElementById(`smonth-${activeMonths[i]}`).removeAttribute("data-unreleased");
-                    }
-                }
                 const currentMonth = document.getElementById(`smonth-${activeMonths[i]}`);
+                // For every active month, show it. Then, if it is unreleased, give it data-unreleased. Otherwise, remove data-unreleased if it has it.
+                currentMonth.classList.remove("noDisplay");
+                if (cman.information[year][activeMonths[i]].overall == false) {
+                    currentMonth.setAttribute("data-unreleased", "");
+                } else {
+                    currentMonth.removeAttribute("data-unreleased");
+                }
                 // Highlighting Completed/In Progress Months
-                if (highlightedMonths[year]) {
-                    if (highlightedMonths[year].includes(activeMonths[i])) {
+                if (monthsToHighlight[year]) {
+                    // If monthsToHighlight includes the current year,
+                    if (monthsToHighlight[year].includes(activeMonths[i])) {
+                        // Then, if it includes the current active month, add completed.
                         currentMonth.classList.add("completed");
-                        if (currentMonth.classList.contains("in-progress")) {
-                            currentMonth.classList.remove("in-progress");
-                        }
-                    } else if (currentMonth.classList.contains("completed")) {
+                    } else {
+                        // Otherwise, remove completed
                         currentMonth.classList.remove("completed");
-                    } else if (currentMonth.classList.contains("in-progress")) {
-                        currentMonth.classList.remove("in-progres");
                     }
                 }
                 if (partialMonths[year]) {
+                    // If partialMonths includes the current year,
                     if (partialMonths[year].includes(activeMonths[i])) {
+                        // Then, if it includes the current active month, add in-progress.
                         currentMonth.classList.add("in-progress");
-                        if (currentMonth.classList.contains("completed")) {
-                            currentMonth.classList.remove("completed");
-                        }
-                    } else if (currentMonth.classList.contains("completed")) {
-                        currentMonth.classList.remove("completed");
-                    } else if (currentMonth.classList.contains("in-progress")) {
+                    } else {
+                        // Otherwise, remove in-progress.
                         currentMonth.classList.remove("in-progres");
                     }
                 }
-                if (!(highlightedMonths[year] || partialMonths[year])) {
-                    if (currentMonth.classList.contains("completed")) {
-                        currentMonth.classList.remove("completed");
-                    }
-                    if (currentMonth.classList.contains("in-progress")) {
-                        currentMonth.classList.remove("in-progress");
-                    }
-                }
             }
+            // If the current year has a note, then show it
             if (document.getElementById(`syearnote-${year}`)) {
                 document.getElementById(`syearnote-${year}`).classList.remove("noDisplay");
             }
-            syearActive = `${year}`;
+            active.year = `${year}`;
             document.getElementById("select-challenge").classList.add("noDisplay");
         }
     }
 }
 
+// Month Selection
 function monthSelect(month) {
-    if (!document.getElementById(`smonth-${month}`).hasAttribute("data-unreleased")) {
-        if (month == smonthActive) {
+    const monthElement = document.getElementById(`smonth-${month}`);
+    // If the selected month is released,
+    if (!monthElement.hasAttribute("data-unreleased")) {
+        // If the month that was clicked on is the active month, hide everything.
+        if (month == active.month) {
             document.getElementById("select-challenge").classList.add("noDisplay");
             document.getElementById("challenge").classList.add("noDisplay");
-            document.getElementById(`smonth-${month}`).classList.remove("select-active");
-            smonthActive = null;
+            monthElement.classList.remove("select-active");
+            active.month = undefined;
         } else {
-            if (smonthActive) {
-                document.getElementById(`smonth-${smonthActive}`).classList.remove("select-active");
+            // Otherwise, if there is an active month, then make it not active anymore.
+            if (active.month) {
+                document.getElementById(`smonth-${active.month}`).classList.remove("select-active");
             }
             document.getElementById(`smonth-${month}`).classList.add("select-active");
             document.getElementById("select-challenge").classList.remove("noDisplay");
-            smonthActive = `${month}`;
+            active.month = `${month}`;
         }
-        if (schallengeActive) {
-            challengeSelect(schallengeActive);
+        if (active.challenge) {
+            challengeSelect(active.challenge);
         }
         for (let j = 1; j <= 3; j++) {
-            if (cman.information[syearActive][month][j.toString()] == false) {
+            if (cman.information[active.year][month][j.toString()] == false) {
                 document.getElementById("schallenge-" + j.toString()).setAttribute("data-unreleased", "");
             }
-            if (cman.completed[syearActive]) {
-                if (cman.completed[syearActive][month]) {
-                    if (cman.completed[syearActive][month][j.toString()]) {
+            if (cman.completed[active.year]) {
+                if (cman.completed[active.year][month]) {
+                    if (cman.completed[active.year][month][j.toString()]) {
                         document.getElementById("schallenge-" + j.toString()).classList.add("completed");
                     } else {
                         document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
@@ -184,20 +180,20 @@ function monthSelect(month) {
 
 function challengeSelect(challenge) {
     if (!document.getElementById(`schallenge-${challenge}`).hasAttribute("data-unreleased")) {
-        if (challenge == schallengeActive) {
+        if (challenge == active.challenge) {
             document.getElementById("challenge").classList.add("noDisplay");
             document.getElementById(`schallenge-${challenge}`).classList.remove("select-active");
-            schallengeActive = null;
+            active.challenge = undefined;
         } else {
-            if (schallengeActive) {
-                document.getElementById(`schallenge-${schallengeActive}`).classList.remove("select-active");
+            if (active.challenge) {
+                document.getElementById(`schallenge-${active.challenge}`).classList.remove("select-active");
             }
             document.getElementById(`schallenge-${challenge}`).classList.add("select-active");
             document.getElementById("challenge").classList.remove("noDisplay");
-            schallengeActive = `${challenge}`;
-            fetch(`https://mesure.x10.mx/twelve-of-code/not-an-api/challenges/${syearActive}/${smonthActive}/${schallengeActive}.html`)
-                .then(res => res.text())
-                .then(text => {
+            active.challenge = `${challenge}`;
+            fetch(`https://mesure.x10.mx/twelve-of-code/not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`)
+                .then((res) => res.text())
+                .then((text) => {
                     document.getElementById("challenge").innerHTML = text;
                 });
         }
@@ -308,10 +304,10 @@ function highlightChallenges() {
             }
             if (monthCount === 3) {
                 yearCount++;
-                if (highlightedMonths[year]) {
-                    highlightedMonths[year].push(month);
+                if (monthsToHighlight[year]) {
+                    monthsToHighlight[year].push(month);
                 } else {
-                    highlightedMonths[year] = [month];
+                    monthsToHighlight[year] = [month];
                 }
             } else if (partialMonth) {
                 if (partialMonths[year]) {
@@ -339,8 +335,8 @@ function highlightChallenges() {
 }
 
 // Preventing Double Click
-var noDoubleElements = document.getElementsByClassName("noDouble");
-for (var i = 0; i < noDoubleElements.length; i++) {
+const noDoubleElements = document.getElementsByClassName("noDouble");
+for (let i = 0; i < noDoubleElements.length; i++) {
     noDoubleElements[i].addEventListener(
         "mousedown",
         function (event) {
@@ -366,7 +362,7 @@ function initializeSettings() {
 
     document.getElementById("input-username").addEventListener("change", () => {
         username = document.getElementById("input-username").value;
-        cman.user = {username: username, seed: seed};
+        cman.user = { username: username, seed: seed };
         document.getElementById("message-username").classList.add("green");
         document.getElementById("musername-br").classList.remove("noDisplay");
         document.getElementById("message-username").innerText = "Username updated!";
@@ -379,7 +375,7 @@ function initializeSettings() {
     document.getElementById("input-seed").addEventListener("change", () => {
         if (/[1-9]\d{9}/.test(document.getElementById("input-seed").value)) {
             seed = document.getElementById("input-seed").value;
-            cman.user = {username: username, seed: seed};
+            cman.user = { username: username, seed: seed };
             document.getElementById("message-seed").classList.add("green");
             document.getElementById("mseed-br").classList.remove("noDisplay");
             document.getElementById("message-seed").innerText = "Seed updated!";
@@ -399,7 +395,7 @@ function initializeSettings() {
     });
 }
 function editData() {
-    let content = btoa(JSON.stringify({completed: cman.completed, user: cman.user}));
+    let content = btoa(JSON.stringify({ completed: cman.completed, user: cman.user }));
     document.getElementById("data").value = content;
 }
 
