@@ -3,7 +3,7 @@
 - TWELVE OF CODE
 - --------------
 - 
-- Twelve of Code © 2024 by Mesure73L is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
+- Twelve of Code ©️ 2024 by Mesure73L is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
 - Source code is available at https://github.com/Mesure73L/My-Website/tree/main.
 - 
 - Thank you for your understanding.
@@ -361,6 +361,7 @@ for (let i = 0; i < noDoubleElements.length; i++) {
 }
 
 // Settings
+/*
 function initializeSettings() {
     let username = cman.user.username;
     let seed = cman.user.seed;
@@ -410,7 +411,7 @@ function editData() {
     document.getElementById("data").value = content;
 }
 
-/*let previousData = btoa(JSON.stringify({'completed': getCookie('completed'), 'user': getCookie('user')}));
+let previousData = btoa(JSON.stringify({'completed': getCookie('completed'), 'user': getCookie('user')}));
 
 document.getElementById('data').addEventListener('click', () => {
     let content = JSON.parse(atob(document.getElementById('data').value));
