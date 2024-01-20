@@ -3,37 +3,24 @@
 - TWELVE OF CODE
 - --------------
 - 
-- Twelve of Code © 2024 by Mesure73L is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
+- Twelve of Code ©️ 2024 by Mesure73L is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
 - Source code is available at https://github.com/Mesure73L/My-Website/tree/main.
 - 
 - Thank you for your understanding.
 - 
 */
-
-let syearActive,
-    smonthActive,
-    schallengeActive,
-    info,
-    cookieToSet,
-    highlightedYears = [],
+const active = {};
+let cman;
+let yearsToHighlight = [],
     partialYears = [],
-    highlightedMonths = {},
+    monthsToHighlight = {},
     partialMonths = {};
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-const completedChallenges = getCookie("completed");
 
-document.getElementById("select-year").classList.remove("noDisplay");
-document.getElementById("noJavaScript").classList.add("noDisplay");
-
-function random(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-// Ajax
-
+// Fetching information.json
 function ajax(url) {
     return new Promise(function (resolve, reject) {
-        var xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
         xhr.onload = function () {
             resolve(this.responseText);
         };
@@ -43,168 +30,171 @@ function ajax(url) {
     });
 }
 
+// Initializing the page
 ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
     .then(function (result) {
-        info = JSON.parse(result);
+        cman = new CookieManager(JSON.parse(result));
+        // Steps to do after information.json loads
+        initializeCookies();
         createDOMYears();
         highlightChallenges();
+        // initializeSettings();
+        Array.from(document.getElementsByClassName("noJavaScript")).forEach(element => {
+            element.classList.add("noDisplay");
+        });
+        document.getElementById("select-year").classList.remove("noDisplay");
     })
-    .catch(function (err) {
-        console.error(err);
+    .catch(function (e) {
+        // Logging any errors with initialization to the console
+        console.error("There was an error during initialization.", e);
     });
 
-// Cookies
-
-function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-    let expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + btoa(JSON.stringify(cvalue)) + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-    let name = cname + "=";
-    let ca = document.cookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == " ") {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return JSON.parse(atob(c.substring(name.length, c.length)));
-        }
+// Initializing the cookies
+function initializeCookies() {
+    if (cman.completed == "") {
+        cman.completed = cman.blankCookie;
+    } else {
+        cman.completed = cman.completed;
     }
-    return "";
-}
-cookieToSet = {
-    2023: {dec: {1: false, 2: false, 3: false}},
-    2024: {may: {1: false, 2: false, 3: false}, aug: {1: false, 2: false, 3: false}},
-};
-if (getCookie("completed") == "") {
-    setCookie("completed", cookieToSet, 60);
-} else {
-    setCookie("completed", getCookie("completed"), 60);
+    if (cman.user == "") {
+        cman.user = cman.blankUserCookie;
+    } else {
+        cman.user = cman.user;
+    }
 }
 
-cookieToSet = {username: `User-${random(1000000000, 9999999999)}`, seed: random(1000000000, 9999999999)};
-if (getCookie("user") == "") {
-    setCookie("user", cookieToSet, 60);
-} else {
-    setCookie("user", getCookie("user"), 60);
-}
-
-// Date Selection
-
+// Year Selection
 function yearSelect(year) {
-    if (!document.getElementById(`syear-${year}`).hasAttribute("data-unreleased")) {
+    const yearElement = document.getElementById(`syear-${year}`);
+    // If the selected year is released,
+    if (!yearElement.hasAttribute("data-unreleased")) {
+        // Hide all year notes
         Array.from(document.getElementsByClassName("syearnote")).forEach(element => {
             element.classList.add("noDisplay");
         });
-        if (year == syearActive) {
+        // If the user clicked on the active year, hide everything
+        if (year == active.year) {
             document.getElementById("select-month").classList.add("noDisplay");
             document.getElementById("select-challenge").classList.add("noDisplay");
             document.getElementById("challenge").classList.add("noDisplay");
-            document.getElementById(`syear-${year}`).classList.remove("select-active");
-            syearActive = null;
+            yearElement.classList.remove("select-active");
+            active.year = undefined;
+            active.month = undefined;
+            active.challenge = undefined;
         } else {
-            if (syearActive) {
-                document.getElementById(`syear-${syearActive}`).classList.remove("select-active");
+            // Otherwise, make the previous active year not active anymore
+            if (active.year) {
+                document.getElementById(`syear-${active.year}`).classList.remove("select-active");
             }
+            // Then, make the new year active
             document.getElementById(`syear-${year}`).classList.add("select-active");
+            // Unhide the month selector
             document.getElementById("select-month").classList.remove("noDisplay");
-            let activeMonths = info[year].months;
-            for (i = 0; i < months.length; i++) {
+            // activeMonths is an array of the months that should be shown for the chosen year
+            let activeMonths = cman.information[year].months;
+            for (let i = 0; i < months.length; i++) {
+                // For every month, hide it, and remove select-active if it has it
                 document.getElementById(`smonth-${months[i]}`).classList.add("noDisplay");
-                if (document.getElementById(`smonth-${months[i]}`).classList.contains("select-active")) {
-                    document.getElementById(`smonth-${months[i]}`).classList.remove("select-active");
-                }
+                document.getElementById(`smonth-${months[i]}`).classList.remove("select-active");
             }
-            for (i = 0; i < activeMonths.length; i++) {
-                document.getElementById(`smonth-${activeMonths[i]}`).classList.remove("noDisplay");
-                if (info[year][activeMonths[i]].overall == false) {
-                    document.getElementById(`smonth-${activeMonths[i]}`).setAttribute("data-unreleased", "");
-                } else {
-                    if (document.getElementById(`smonth-${activeMonths[i]}`).hasAttribute("data-unreleased")) {
-                        document.getElementById(`smonth-${activeMonths[i]}`).removeAttribute("data-unreleased");
-                    }
-                }
+            for (let i = 1; i <= 3; i++) {
+                // For every challenge, if it has select-active, remove it.
+                document.getElementById(`schallenge-${i.toString()}`).classList.remove("select-active");
+            }
+            for (let i = 0; i < activeMonths.length; i++) {
                 const currentMonth = document.getElementById(`smonth-${activeMonths[i]}`);
+                // For every active month, show it. Then, if it is unreleased, give it data-unreleased. Otherwise, remove data-unreleased if it has it.
+                currentMonth.classList.remove("noDisplay");
+                if (cman.information[year][activeMonths[i]].overall == false) {
+                    currentMonth.setAttribute("data-unreleased", "");
+                } else {
+                    currentMonth.removeAttribute("data-unreleased");
+                }
                 // Highlighting Completed/In Progress Months
-                if (highlightedMonths[year]) {
-                    if (highlightedMonths[year].includes(activeMonths[i])) {
+                if (monthsToHighlight[year]) {
+                    // If monthsToHighlight includes the current year,
+                    if (monthsToHighlight[year].includes(activeMonths[i])) {
+                        // Then, if it includes the current active month, add completed.
                         currentMonth.classList.add("completed");
-                        if (currentMonth.classList.contains("in-progress")) {
-                            currentMonth.classList.remove("in-progress");
-                        }
-                    } else if (currentMonth.classList.contains("completed")) {
+                    } else {
+                        // Otherwise, remove completed
                         currentMonth.classList.remove("completed");
-                    } else if (currentMonth.classList.contains("in-progress")) {
-                        currentMonth.classList.remove("in-progres");
                     }
                 }
                 if (partialMonths[year]) {
+                    // If partialMonths includes the current year,
                     if (partialMonths[year].includes(activeMonths[i])) {
+                        // Then, if it includes the current active month, add in-progress.
                         currentMonth.classList.add("in-progress");
-                        if (currentMonth.classList.contains("completed")) {
-                            currentMonth.classList.remove("completed");
-                        }
-                    } else if (currentMonth.classList.contains("completed")) {
-                        currentMonth.classList.remove("completed");
-                    } else if (currentMonth.classList.contains("in-progress")) {
+                    } else {
+                        // Otherwise, remove in-progress.
                         currentMonth.classList.remove("in-progres");
                     }
                 }
-                if (!(highlightedMonths[year] || partialMonths[year])) {
-                    console.log(currentMonth);
-                    if (currentMonth.classList.contains("completed")) {
-                        currentMonth.classList.remove("completed");
-                    }
-                    if (currentMonth.classList.contains("in-progress")) {
-                        currentMonth.classList.remove("in-progress");
-                    }
-                }
             }
+            // If the current year has a note, then show it
             if (document.getElementById(`syearnote-${year}`)) {
                 document.getElementById(`syearnote-${year}`).classList.remove("noDisplay");
             }
-            syearActive = `${year}`;
+            // Make the active year the selected year.
+            active.year = year;
+            // Make the active challenge and active month not active anymore.
+            active.month = undefined;
+            active.challenge = undefined;
+            // Hide the challenge selector.
             document.getElementById("select-challenge").classList.add("noDisplay");
         }
     }
 }
 
+// Month Selection
 function monthSelect(month) {
-    if (!document.getElementById(`smonth-${month}`).hasAttribute("data-unreleased")) {
-        if (month == smonthActive) {
+    const monthElement = document.getElementById(`smonth-${month}`);
+    // If the selected month is released,
+    if (!monthElement.hasAttribute("data-unreleased")) {
+        // If the month that was clicked on is the active month, hide everything.
+        if (month == active.month) {
             document.getElementById("select-challenge").classList.add("noDisplay");
             document.getElementById("challenge").classList.add("noDisplay");
-            document.getElementById(`smonth-${month}`).classList.remove("select-active");
-            smonthActive = null;
+            monthElement.classList.remove("select-active");
+            active.month = undefined;
         } else {
-            if (smonthActive) {
-                document.getElementById(`smonth-${smonthActive}`).classList.remove("select-active");
+            // Otherwise, if there is an active month, then make it not active anymore.
+            if (active.month) {
+                document.getElementById(`smonth-${active.month}`).classList.remove("select-active");
             }
+            // Then, make the selected month active.
             document.getElementById(`smonth-${month}`).classList.add("select-active");
+            // Unhide the challenge selector.
             document.getElementById("select-challenge").classList.remove("noDisplay");
-            smonthActive = `${month}`;
-        }
-        if (schallengeActive) {
-            challengeSelect(schallengeActive);
+            // Make the active month the selected month.
+            active.month = month;
+            // Make the active challenge not active anymore.
+            active.challenge = undefined;
         }
         for (let j = 1; j <= 3; j++) {
-            if (info[syearActive][month][j.toString()] == false) {
+            if (cman.information[active.year][month][j.toString()] == false) {
+                // For every challenge, if it is unreleased, give it data-unreleased.
                 document.getElementById("schallenge-" + j.toString()).setAttribute("data-unreleased", "");
+                // Then, if it has select-active, remove select-active.
+                document.getElementById("schallenge-" + j.toString()).classList.remove("select-active");
             }
-            if (completedChallenges[syearActive]) {
-                if (completedChallenges[syearActive][month]) {
-                    if (completedChallenges[syearActive][month][j.toString()]) {
+            if (cman.completed[active.year]) {
+                // If the completed cookie includes the current year,
+                if (cman.completed[active.year][month]) {
+                    // Then, if the completed cookie includes the current month,
+                    if (cman.completed[active.year][month][j.toString()]) {
+                        // Then, if the current challenge is completed, add the completed class.
                         document.getElementById("schallenge-" + j.toString()).classList.add("completed");
                     } else {
+                        // Otherwise, remove the completed class if it has it.
                         document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
                     }
+                    // If the completed cookie does not include the current month, the remove the completed class if it has it.
                 } else {
                     document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
                 }
+                // Otherwise, if the completed cookie does not include the current year, then remove the completed class if it has it.
             } else {
                 document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
             }
@@ -212,43 +202,54 @@ function monthSelect(month) {
     }
 }
 
+// Challenge Selection
 function challengeSelect(challenge) {
-    if (!document.getElementById(`schallenge-${challenge}`).hasAttribute("data-unreleased")) {
-        if (challenge == schallengeActive) {
+    const challengeElement = document.getElementById(`schallenge-${challenge}`);
+    // If the challenge is released,
+    if (!challengeElement.hasAttribute("data-unreleased")) {
+        // Then, if the challenge that was clicked is the active challenge, then hide everything.
+        if (challenge == active.challenge) {
             document.getElementById("challenge").classList.add("noDisplay");
             document.getElementById(`schallenge-${challenge}`).classList.remove("select-active");
-            schallengeActive = null;
+            active.challenge = undefined;
         } else {
-            if (schallengeActive) {
-                document.getElementById(`schallenge-${schallengeActive}`).classList.remove("select-active");
+            // Otherwise, if there is an active challenge, remove select-active from it.
+            if (active.challenge) {
+                document.getElementById(`schallenge-${active.challenge}`).classList.remove("select-active");
             }
+            // Then, give the newly selected challenge select-active.
             document.getElementById(`schallenge-${challenge}`).classList.add("select-active");
+            // Unhide the challlenge.
             document.getElementById("challenge").classList.remove("noDisplay");
-            schallengeActive = `${challenge}`;
-            fetch(`https://mesure.x10.mx/twelve-of-code/not-an-api/challenges/${syearActive}/${smonthActive}/${schallengeActive}.html`)
+            // Then, set the active challenge to the current challenge.
+            active.challenge = challenge;
+            fetch(`https://mesure.x10.mx/twelve-of-code/not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`)
                 .then(res => res.text())
                 .then(text => {
+                    // Next, set the contents of the challenge element to the challenge specified at the challenge page for the selected challenge.
                     document.getElementById("challenge").innerHTML = text;
                 });
         }
     }
 }
 
+// Function for creating the year elements from information.json
 function createDOMYears() {
     const yearContainer = document.getElementById("select-year");
     const noteContainer = document.getElementById("notes");
-
-    for (const year in info) {
+    // For every year in information.json,
+    for (const year in cman.information) {
+        // Create a year element, with a title and description if there is one.
         const yearElement = document.createElement("tr");
         yearElement.id = "syear-" + year;
         yearContainer.appendChild(yearElement);
         const yearText = document.createElement("td");
         yearText.innerText = year;
-        if ("note" in info[year]) {
-            if ("title" in info[year].note) {
-                yearText.innerText += ` (${info[year].note.title})`;
+        if ("note" in cman.information[year]) {
+            if ("title" in cman.information[year].note) {
+                yearText.innerText += ` (${cman.information[year].note.title})`;
             }
-            if ("description" in info[year].note) {
+            if ("description" in cman.information[year].note) {
                 const descriptionElement = document.createElement("div");
                 descriptionElement.classList.add("syearnote");
                 descriptionElement.classList.add("noDisplay");
@@ -257,55 +258,26 @@ function createDOMYears() {
                 descriptionElement.appendChild(document.createElement("br"));
                 const descriptionText = document.createElement("p");
                 descriptionText.classList.add("blue");
-                descriptionText.innerText = info[year].note.description;
+                descriptionText.innerText = cman.information[year].note.description;
                 descriptionElement.appendChild(descriptionText);
             }
         }
         yearElement.appendChild(yearText);
+        // Add an event listener to call yearSelect() when it is clicked.
         yearElement.addEventListener("click", () => {
             yearSelect(year);
         });
-        if (info[year].overall == false) {
+        // If the year is unreleased, give it data-unreleased.
+        if (cman.information[year].overall == false) {
             yearElement.setAttribute("data-unreleased", "");
         }
     }
 }
-
-document.getElementById("smonth-jan").addEventListener("click", () => {
-    monthSelect("jan");
-});
-document.getElementById("smonth-feb").addEventListener("click", () => {
-    monthSelect("feb");
-});
-document.getElementById("smonth-mar").addEventListener("click", () => {
-    monthSelect("mar");
-});
-document.getElementById("smonth-apr").addEventListener("click", () => {
-    monthSelect("apr");
-});
-document.getElementById("smonth-may").addEventListener("click", () => {
-    monthSelect("may");
-});
-document.getElementById("smonth-jun").addEventListener("click", () => {
-    monthSelect("jun");
-});
-document.getElementById("smonth-jul").addEventListener("click", () => {
-    monthSelect("jul");
-});
-document.getElementById("smonth-aug").addEventListener("click", () => {
-    monthSelect("aug");
-});
-document.getElementById("smonth-sep").addEventListener("click", () => {
-    monthSelect("sep");
-});
-document.getElementById("smonth-oct").addEventListener("click", () => {
-    monthSelect("oct");
-});
-document.getElementById("smonth-nov").addEventListener("click", () => {
-    monthSelect("nov");
-});
-document.getElementById("smonth-dec").addEventListener("click", () => {
-    monthSelect("dec");
+// Add event listeners to all the months and challenges.
+months.forEach(month => {
+    document.getElementById("smonth-" + month).addEventListener("click", () => {
+        monthSelect(month);
+    });
 });
 
 document.getElementById("schallenge-1").addEventListener("click", () => {
@@ -320,11 +292,13 @@ document.getElementById("schallenge-3").addEventListener("click", () => {
 
 // Highlighting Completed Challenges
 function highlightChallenges() {
-    for (const year in completedChallenges) {
+    // For each year, count the number of challenges.
+    for (const year in cman.completed) {
         let yearCount = 0;
         let partial = false;
-        const yearCookieObj = completedChallenges[year];
+        const yearCookieObj = cman.completed[year];
         for (const month in yearCookieObj) {
+            // For each month,
             let monthCount = 0;
             let partialMonth = false;
             const monthCookieObj = yearCookieObj[month];
@@ -336,13 +310,15 @@ function highlightChallenges() {
                     partialMonth = true;
                 }
             }
+            // If all 3 challenges are completed, append it to monthsToHighlight.
             if (monthCount === 3) {
                 yearCount++;
-                if (highlightedMonths[year]) {
-                    highlightedMonths[year].push(month);
+                if (monthsToHighlight[year]) {
+                    monthsToHighlight[year].push(month);
                 } else {
-                    highlightedMonths[year] = [month];
+                    monthsToHighlight[year] = [month];
                 }
+                // Otherwise, if not all 3 challenges are completed, but at least one is, append it to partialMonths.
             } else if (partialMonth) {
                 if (partialMonths[year]) {
                     partialMonths[year].push(month);
@@ -351,28 +327,29 @@ function highlightChallenges() {
                 }
             }
         }
-        if (yearCount === info[year].months.length) {
-            highlightedYears.push(year);
+        // For each year, if all months are completed, append it to yearsToHighlight.
+        if (yearCount === cman.information[year].months.length) {
+            yearsToHighlight.push(year);
         } else if (partial) {
+            // Otherwise, if not all months are completed, but at least one is, append it to partialYears.
             partialYears.push(year);
         }
     }
-    // Highlighting Completed/In Progress Years
-    for (let i = 0; i < highlightedYears.length; i++) {
-        const yearElmt = document.getElementById("syear-" + highlightedYears[i]);
+    // For each year that is in yearsToHighlight, add completed to it.
+    for (let i = 0; i < yearsToHighlight.length; i++) {
+        const yearElmt = document.getElementById("syear-" + yearsToHighlight[i]);
         yearElmt.classList.add("completed");
     }
+    // For each year that is in partialYears, add in-progress to it.
     for (let i = 0; i < partialYears.length; i++) {
         const yearElmt = document.getElementById("syear-" + partialYears[i]);
         yearElmt.classList.add("in-progress");
     }
 }
 
-// Preventing Double Click
-
-var noDoubleElements = document.getElementsByClassName("noDouble");
-
-for (var i = 0; i < noDoubleElements.length; i++) {
+// Preventing Double Click on elements with class noDouble
+const noDoubleElements = document.getElementsByClassName("noDouble");
+for (let i = 0; i < noDoubleElements.length; i++) {
     noDoubleElements[i].addEventListener(
         "mousedown",
         function (event) {
@@ -385,57 +362,57 @@ for (var i = 0; i < noDoubleElements.length; i++) {
 }
 
 // Settings
-
-let username = getCookie("user")["username"];
-let seed = getCookie("user")["seed"];
-
-document.getElementById("settings").addEventListener("click", () => {
-    document.getElementById("editSettings").classList.toggle("noDisplay");
-    document.getElementById("input-username").value = username;
-    document.getElementById("input-seed").value = seed;
-    editData();
-});
-
-document.getElementById("input-username").addEventListener("change", () => {
-    username = document.getElementById("input-username").value;
-    setCookie("user", {username: username, seed: seed}, 60);
-    document.getElementById("message-username").classList.add("green");
-    document.getElementById("musername-br").classList.remove("noDisplay");
-    document.getElementById("message-username").innerText = "Username updated!";
-    setTimeout('document.getElementById("message-username").innerText = "";', 5000);
-    setTimeout('document.getElementById("message-username").classList.remove("green");', 5000);
-    setTimeout('document.getElementById("musername-br").classList.add("noDisplay");', 5000);
-    editData();
-});
-
-document.getElementById("input-seed").addEventListener("change", () => {
-    if (/[1-9]\d{9}/.test(document.getElementById("input-seed").value)) {
-        seed = document.getElementById("input-seed").value;
-        setCookie("user", {username: username, seed: seed}, 60);
-        document.getElementById("message-seed").classList.add("green");
-        document.getElementById("mseed-br").classList.remove("noDisplay");
-        document.getElementById("message-seed").innerText = "Seed updated!";
-        setTimeout('document.getElementById("message-seed").innerText = "";', 5000);
-        setTimeout('document.getElementById("message-seed").classList.remove("green");', 5000);
-        setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
-    } else {
-        document.getElementById("message-seed").classList.add("red");
-        document.getElementById("mseed-br").classList.remove("noDisplay");
-        document.getElementById("message-seed").innerText = "Invalid seed!";
+/*
+function initializeSettings() {
+    let username = cman.user.username;
+    let seed = cman.user.seed;
+    document.getElementById("settings").addEventListener("click", () => {
+        document.getElementById("editSettings").classList.toggle("noDisplay");
+        document.getElementById("input-username").value = username;
         document.getElementById("input-seed").value = seed;
-        setTimeout('document.getElementById("message-seed").innerText = "";', 5000);
-        setTimeout('document.getElementById("message-seed").classList.remove("red");', 5000);
-        setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
-    }
-    editData();
-});
+        editData();
+    });
 
+    document.getElementById("input-username").addEventListener("change", () => {
+        username = document.getElementById("input-username").value;
+        cman.user = { username: username, seed: seed };
+        document.getElementById("message-username").classList.add("green");
+        document.getElementById("musername-br").classList.remove("noDisplay");
+        document.getElementById("message-username").innerText = "Username updated!";
+        setTimeout('document.getElementById("message-username").innerText = "";', 5000);
+        setTimeout('document.getElementById("message-username").classList.remove("green");', 5000);
+        setTimeout('document.getElementById("musername-br").classList.add("noDisplay");', 5000);
+        editData();
+    });
+
+    document.getElementById("input-seed").addEventListener("change", () => {
+        if (/[1-9]\d{9}/.test(document.getElementById("input-seed").value)) {
+            seed = document.getElementById("input-seed").value;
+            cman.user = { username: username, seed: seed };
+            document.getElementById("message-seed").classList.add("green");
+            document.getElementById("mseed-br").classList.remove("noDisplay");
+            document.getElementById("message-seed").innerText = "Seed updated!";
+            setTimeout('document.getElementById("message-seed").innerText = "";', 5000);
+            setTimeout('document.getElementById("message-seed").classList.remove("green");', 5000);
+            setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
+        } else {
+            document.getElementById("message-seed").classList.add("red");
+            document.getElementById("mseed-br").classList.remove("noDisplay");
+            document.getElementById("message-seed").innerText = "Invalid seed!";
+            document.getElementById("input-seed").value = seed;
+            setTimeout('document.getElementById("message-seed").innerText = "";', 5000);
+            setTimeout('document.getElementById("message-seed").classList.remove("red");', 5000);
+            setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
+        }
+        editData();
+    });
+}
 function editData() {
-    let content = btoa(JSON.stringify({completed: getCookie("completed"), user: getCookie("user")}));
+    let content = btoa(JSON.stringify({ completed: cman.completed, user: cman.user }));
     document.getElementById("data").value = content;
 }
 
-/*let previousData = btoa(JSON.stringify({'completed': getCookie('completed'), 'user': getCookie('user')}));
+let previousData = btoa(JSON.stringify({'completed': getCookie('completed'), 'user': getCookie('user')}));
 
 document.getElementById('data').addEventListener('click', () => {
     let content = JSON.parse(atob(document.getElementById('data').value));

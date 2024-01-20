@@ -17,11 +17,12 @@
         <title>Twelve of Code - Mesure73L</title>
         <meta content="Twelve of Code" property="og:title" />
         <meta
-            content="Mesure73L&#39;s yearly coding challenge called Twelve of Code. 100% free, no sign-up required."
+            content="Mesure73L's yearly coding challenge called Twelve of Code. 100% free, no sign-up required."
             property="og:description" />
         <meta content="#000721" data-react-helmet="true" name="theme-color" />
         <link rel="icon" type="image/x-icon" href="./favicon.png" />
         <link rel="stylesheet" href="./style.css" />
+        <script src="./not-an-api/CookieManager.js"></script>
     </head>
     <body>
         <!-- Settings -->
@@ -61,14 +62,23 @@
             will be saved locally.
         </p>
         <br />
-        <p class="red" id="noJavaScript">
-            We have detected that your browser is not running our JavaScript. Please enable JavaScript in your browser to be able to use
-            Twelve of Code.
+        <div class="loading-animation-container noJavaScript">
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <p class="red noJavaScript">
+            The challenge selector is loading. If this takes more than 5 seconds, try
+            <a href="javascript:window.location.reload()" style="text-decoration: underline">reloading the page</a> and confirm that
+            JavaScript is enabled in your browser and you have a stable internet connection.
         </p>
 
         <!-- Select -->
 
-        <table class="select noDisplay noDouble" id="select-year">
+        <table class="select noDouble noDisplay" id="select-year">
             <tr>
                 <th>--- SELECT YEAR ---</th>
             </tr>
@@ -169,7 +179,6 @@
             </a>
             .
         </p>
-
         <script src="script.js"></script>
     </body>
 </html>
