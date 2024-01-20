@@ -19,7 +19,12 @@ class CookieManager {
                 c = c.substring(1);
             }
             if (c.indexOf(name) == 0) {
-                return JSON.parse(atob(c.substring(name.length, c.length)));
+                try {
+                    return JSON.parse(atob(c.substring(name.length, c.length)));
+                } catch (e) {
+                    console.warn('There was an error with retrieving a cookie, setting it to "".', e);
+                    return "";
+                }
             }
         }
         return "";
@@ -42,26 +47,17 @@ class CookieManager {
     }
     set user(cookieValue) {
         this._user = cookieValue;
-        this.setCookie("completed", this._user, 60);
+        this.setCookie("user", this._user, 60);
         return cookieValue;
     }
-    updateChallengesStatus(challengeLocation, newChallengeStatus) {
+    updateChallengeStatus(challengeLocation, newChallengeStatus) {
         const newCookie = this._completed;
-        if (newCookie[challengeLocation[0]]) {
-            if (newCookie[challengeLocation[0]][challengeLocation[1]]) {
-                newCookie[challengeLocation[0]][challengeLocation[1]][challengeLocation[2]] = newChallengeStatus;
-            } else {
-                newCookie[challengeLocation[0]][challengeLocation[1]] = {1: false, 2: false, 3: false};
-                newCookie[challengeLocation[0]][challengeLocation[1]][challengeLocation[2]] = newChallengeStatus;
-            }
-        } else {
-            newCookie[challengeLocation[0]] = {};
-            for (let i = 0; i < this.information[challengeLocation[0]].months.length; i++) {
-                const currentMonth = this.information[challengeLocation[0]].months[i];
-                newCookie[challengeLocation[0]][currentMonth] = {1: false, 2: false, 3: false};
-            }
+        try {
             newCookie[challengeLocation[0]][challengeLocation[1]][challengeLocation[2]] = newChallengeStatus;
+        } catch (e) {
+            console.warn("Attempted to update a challenge that doesn't exist.", e);
         }
+        this.completed = newCookie;
     }
     get blankCookie() {
         const blankCookie = {};
@@ -75,6 +71,6 @@ class CookieManager {
         return blankCookie;
     }
     get blankUserCookie() {
-        return {username: `User-${random(1000000000, 9999999999)}`, seed: random(1000000000, 9999999999)};
+        return {username: `User-${this.random(1000000000, 9999999999)}`, seed: this.random(1000000000, 9999999999)};
     }
 }

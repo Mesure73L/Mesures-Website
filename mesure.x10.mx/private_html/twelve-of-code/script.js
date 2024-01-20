@@ -38,24 +38,26 @@ ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
         initializeCookies();
         createDOMYears();
         highlightChallenges();
-        initializeSettings();
-        document.getElementById("noJavaScript").classList.add("noDisplay");
+        // initializeSettings();
+        Array.from(document.getElementsByClassName("noJavaScript")).forEach(element => {
+            element.classList.add("noDisplay");
+        });
+        document.getElementById("select-year").classList.remove("noDisplay");
     })
-    .catch(function (err) {
+    .catch(function (e) {
         // Logging any errors with initialization to the console
-        console.error(err);
+        console.error("There was an error during initialization.", e);
     });
 
 // Initializing the cookies
 function initializeCookies() {
-    if (cman.completed === "") {
+    if (cman.completed == "") {
         cman.completed = cman.blankCookie;
     } else {
         cman.completed = cman.completed;
     }
-
-    if (cman.user === "") {
-        cman.user = cman.blankUserCokie;
+    if (cman.user == "") {
+        cman.user = cman.blankUserCookie;
     } else {
         cman.user = cman.user;
     }
@@ -235,7 +237,6 @@ function challengeSelect(challenge) {
 function createDOMYears() {
     const yearContainer = document.getElementById("select-year");
     const noteContainer = document.getElementById("notes");
-
     // For every year in information.json,
     for (const year in cman.information) {
         // Create a year element, with a title and description if there is one.

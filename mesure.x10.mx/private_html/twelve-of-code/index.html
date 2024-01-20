@@ -10,7 +10,7 @@
 - 
 -->
 
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
@@ -62,14 +62,23 @@
             will be saved locally.
         </p>
         <br />
-        <p class="red" id="noJavaScript">
-            We have detected that your browser is not running our JavaScript. Please enable JavaScript in your browser to be able to use
-            Twelve of Code.
+        <div class="loading-animation-container noJavaScript">
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <p class="red noJavaScript">
+            The challenge selector is loading. If this takes more than 5 seconds, try
+            <a href="javascript:window.location.reload()" style="text-decoration: underline">reloading the page</a> and confirm that
+            JavaScript is enabled in your browser and you have a stable internet connection.
         </p>
 
         <!-- Select -->
 
-        <table class="select noDouble" id="select-year">
+        <table class="select noDouble noDisplay" id="select-year">
             <tr>
                 <th>--- SELECT YEAR ---</th>
             </tr>
