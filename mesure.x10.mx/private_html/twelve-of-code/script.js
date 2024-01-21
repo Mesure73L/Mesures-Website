@@ -38,7 +38,7 @@ ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
         initializeCookies();
         createDOMYears();
         highlightChallenges();
-        // initializeSettings();
+        initializeSettings();
         Array.from(document.getElementsByClassName("noJavaScript")).forEach(element => {
             element.classList.add("noDisplay");
         });
@@ -362,69 +362,74 @@ for (let i = 0; i < noDoubleElements.length; i++) {
 }
 
 // Settings
-/*
 function initializeSettings() {
     let username = cman.user.username;
     let seed = cman.user.seed;
-    document.getElementById("settings").addEventListener("click", () => {
-        document.getElementById("editSettings").classList.toggle("noDisplay");
-        document.getElementById("input-username").value = username;
-        document.getElementById("input-seed").value = seed;
+    let previousData = btoa(JSON.stringify({completed: cman.completed, user: cman.user}));
+    const settingsButton = document.getElementById("settings");
+    const settingsBox = document.getElementById("editSettings");
+    const usernameInput = document.getElementById("input-username");
+    const seedInput = document.getElementById("input-seed");
+    const dataInput = document.getElementById("data");
+    editData();
+
+    // Adding an event listener for when the settings button is clicked
+    settingsButton.addEventListener("click", () => {
+        settingsBox.classList.toggle("noDisplay");
+        usernameInput.value = username;
+        seedInput.value = seed;
         editData();
     });
 
-    document.getElementById("input-username").addEventListener("change", () => {
-        username = document.getElementById("input-username").value;
-        cman.user = { username: username, seed: seed };
-        document.getElementById("message-username").classList.add("green");
-        document.getElementById("musername-br").classList.remove("noDisplay");
-        document.getElementById("message-username").innerText = "Username updated!";
-        setTimeout('document.getElementById("message-username").innerText = "";', 5000);
-        setTimeout('document.getElementById("message-username").classList.remove("green");', 5000);
-        setTimeout('document.getElementById("musername-br").classList.add("noDisplay");', 5000);
+    // Adding an event listener for when the username input is changed
+    usernameInput.addEventListener("change", () => {
+        username = usernameInput.value;
+        cman.user = {username: username, seed: seed};
+        // document.getElementById("musername-br").classList.remove("noDisplay");
+        // setTimeout('document.getElementById("musername-br").classList.add("noDisplay");', 5000);
         editData();
     });
 
-    document.getElementById("input-seed").addEventListener("change", () => {
-        if (/[1-9]\d{9}/.test(document.getElementById("input-seed").value)) {
-            seed = document.getElementById("input-seed").value;
-            cman.user = { username: username, seed: seed };
-            document.getElementById("message-seed").classList.add("green");
-            document.getElementById("mseed-br").classList.remove("noDisplay");
-            document.getElementById("message-seed").innerText = "Seed updated!";
-            setTimeout('document.getElementById("message-seed").innerText = "";', 5000);
-            setTimeout('document.getElementById("message-seed").classList.remove("green");', 5000);
-            setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
+    // Adding an event listener for when the seed input is changed
+    seedInput.addEventListener("change", () => {
+        // If the seed follows the correct format,
+        if (/^[1-9]\d{9}$/.test(seedInput.value)) {
+            // Then set the seed to its value.
+            seed = seedInput.value;
+            cman.user = {username: username, seed: seed};
+            // document.getElementById("mseed-br").classList.remove("noDisplay");
+            // setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
         } else {
-            document.getElementById("message-seed").classList.add("red");
-            document.getElementById("mseed-br").classList.remove("noDisplay");
-            document.getElementById("message-seed").innerText = "Invalid seed!";
-            document.getElementById("input-seed").value = seed;
-            setTimeout('document.getElementById("message-seed").innerText = "";', 5000);
-            setTimeout('document.getElementById("message-seed").classList.remove("red");', 5000);
-            setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
+            // document.getElementById("mseed-br").classList.remove("noDisplay");
+            seedInput.value = seed;
+            // setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
         }
         editData();
     });
-}
-function editData() {
-    let content = btoa(JSON.stringify({ completed: cman.completed, user: cman.user }));
-    document.getElementById("data").value = content;
-}
 
-let previousData = btoa(JSON.stringify({'completed': getCookie('completed'), 'user': getCookie('user')}));
+    // Adding an event listener for when the data input is changed
+    document.getElementById("data").addEventListener("change", () => {
+        try {
+            let content = JSON.parse(atob(dataInput.value));
+            cman.completed = content.completed;
+            cman.user = content.user;
+            let username = cman.user.username;
+            let seed = cman.user.seed;
+            usernameInput.value = username;
+            seedInput.value = seed;
+            previousData = btoa(JSON.stringify({completed: cman.completed, user: cman.user}));
+            highlightChallenges();
+        } catch (e) {
+            console.info("An improper string was put into data.", e);
+            document.getElementById("data").value = previousData;
+            cman.completed = previousData.completed;
+            cman.user = previousData.user;
+        }
+    });
 
-document.getElementById('data').addEventListener('click', () => {
-    let content = JSON.parse(atob(document.getElementById('data').value));
-    try {
-        setCookie('completed', content['completed'], 60);
-        setCookie('user', content['user'], 60);
-        let username = getCookie('user')['username']
-        let seed = getCookie('user')['seed'];
-        document.getElementById('input-username').value = username;
-        document.getElementById('input-seed').value = seed;
-        previousData = btoa(JSON.stringify({'completed': getCookie('completed'), 'user': getCookie('user')}));
-    } catch {
-        document.getElementById('data').value = previousData;
+    // Function to edit the data element
+    function editData() {
+        let content = btoa(JSON.stringify({completed: cman.completed, user: cman.user}));
+        document.getElementById("data").value = content;
     }
-});*/
+}

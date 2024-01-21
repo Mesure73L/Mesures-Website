@@ -207,6 +207,7 @@ td::after {
     width: 80%;
     background-color: #000e43;
     padding: 10px;
+    padding-bottom: 40px;
 }
 
 body {
