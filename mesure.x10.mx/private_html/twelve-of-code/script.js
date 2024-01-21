@@ -415,8 +415,15 @@ function initializeSettings() {
             cman.user = content.user;
             let username = cman.user.username;
             let seed = cman.user.seed;
-            usernameInput.value = username;
-            seedInput.value = seed;
+            if (username && seed) {
+                usernameInput.value = username;
+                seedInput.value = seed;
+            } else {
+                console.info("An improper string was put into data.", e);
+                document.getElementById("data").value = previousData;
+                cman.completed = previousData.completed;
+                cman.user = previousData.user;
+            }
             previousData = btoa(JSON.stringify({completed: cman.completed, user: cman.user}));
             highlightChallenges();
         } catch (e) {
