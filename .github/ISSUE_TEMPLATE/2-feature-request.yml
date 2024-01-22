@@ -1,0 +1,41 @@
+name: Feature Request
+description: Suggest a new feature to be added.
+labels:
+  - quality of life
+  - suggestion
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem were you having?
+      description: Only fill out if your suggestion is related to a problem.
+      placeholder: 'Example: I don''t like dark theme.'
+  - type: textarea
+    id: solution
+    attributes:
+      label: What solution would you like?
+      description: Provide as much detail as possible.
+      placeholder: 'Example: Add a switch to change to light theme.'
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What alternatives have you considered?
+      description: Provide as much detail as possible. Do not respond with "don't do this."
+      placeholder: 'Example: Use the user''s preference for theme.'
+  - type: dropdown
+    id: site-page
+    attributes:
+      label: What page is this for?
+      description: Leave blank if none apply.
+      multiple: true
+      options:
+        - main site
+        - blog
+        - projects
+        - twelve of code
+  - type: markdown
+    attributes:
+      value: >-
+        [Thread
+        Guidelines](https://github.com/Mesure73L/Mesures-Website/discussions/21)
+        apply.
