@@ -1,0 +1,16 @@
+name: Blank Template
+description: Create a blank template
+body:
+  - type: textarea
+    id: contents
+    attributes:
+      label: Issue Contents
+      description: Enter whatever information you need.
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: >-
+        [Thread
+        Guidelines](https://github.com/Mesure73L/Mesures-Website/discussions/21)
+        apply.
