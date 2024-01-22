@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest an idea for this project
 title: "[IDEA] Very briefly describe your idea."
-labels: quality of life
+labels: quality of life, suggestion
 assignees: ''
 
 ---
