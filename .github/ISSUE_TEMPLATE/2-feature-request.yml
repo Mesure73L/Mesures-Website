@@ -26,17 +26,6 @@ body:
       placeholder: 'Example: Use the user''s preference for theme.'
     validations:
       required: true
-  - type: dropdown
-    id: site-page
-    attributes:
-      label: What page is this for?
-      description: Leave blank if none apply.
-      multiple: true
-      options:
-        - main site
-        - blog
-        - projects
-        - twelve of code
   - type: textarea
     id: pros-and-cons
     attributes:
