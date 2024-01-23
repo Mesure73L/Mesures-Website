@@ -16,12 +16,35 @@ body:
       label: What solution would you like?
       description: Provide as much detail as possible.
       placeholder: 'Example: Add a switch to change to light theme.'
+    validations:
+      required: true
   - type: textarea
     id: alternatives
     attributes:
       label: What alternatives have you considered?
       description: Provide as much detail as possible. Do not respond with "don't do this."
       placeholder: 'Example: Use the user''s preference for theme.'
+    validations:
+      required: true
+  - type: dropdown
+    id: site-page
+    attributes:
+      label: What page is this for?
+      description: Leave blank if none apply.
+      multiple: true
+      options:
+        - main site
+        - blog
+        - projects
+        - twelve of code
+  - type: textarea
+    id: pros-and-cons
+    attributes:
+      label: What are some pros and cons of doing this?
+      description: Provide as much detail as possible.
+      placeholder: 'Example:\nPros:\n- Light theme is too bright for some people\n\nCons:\nMore customizability is always a good thing'
+    validations:
+      required: true
   - type: dropdown
     id: site-page
     attributes:
