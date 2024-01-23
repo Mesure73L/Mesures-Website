@@ -26,4 +26,4 @@ Link doesn't work? <https://x10hosting.com>
 
 ## Credits
 
-This website was made by Mesure73L, with **a lot** of help from @BeepBot99.
+This website was made by Mesure73L, with **a lot** of help from **[@BeepBot99](https://github.com/BeepBot99)**.
