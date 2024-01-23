@@ -31,7 +31,7 @@ body:
     attributes:
       label: What are some pros and cons of doing this?
       description: Provide as much detail as possible.
-      placeholder: 'Example:\nPros:\n- Light theme is too bright for some people\n\nCons:\nMore customizability is always a good thing'
+      placeholder: 'Example: Light theme is too bright for some users, but more customizability is always good'
     validations:
       required: true
   - type: dropdown
