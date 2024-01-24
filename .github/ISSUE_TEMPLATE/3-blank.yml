@@ -1,5 +1,5 @@
 name: Blank Template
-description: Create a blank template
+description: Create a blank template.
 body:
   - type: textarea
     id: contents
