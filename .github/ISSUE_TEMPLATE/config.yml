@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: ⚠ Code of Conduct
+  - name: Code of Conduct
     url: https://github.com/Mesure73L/Mesures-Website/blob/main/CODE_OF_CONDUCT.md
     about: Please read our Code of Conduct before creating an issue.
-  - name: ❓ Support Discussion Category
+  - name: Support Discussion Category
     url: https://github.com/Mesure73L/Mesures-Website/discussions/new?category=b-support
     about: Please ask a question here instead.
