@@ -10,13 +10,27 @@
 - 
 */
 const active = {};
+let a;
 let cman;
 let yearsToHighlight = [],
     partialYears = [],
     monthsToHighlight = {},
     partialMonths = {};
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-
+const ErrorToast = Swal.mixin({
+    icon: "error",
+    confirmButtonText: "Continue",
+    confirmButtonColor: "#009eff",
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: toast => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+    }
+});
 // Fetching information.json
 function ajax(url) {
     return new Promise(function (resolve, reject) {
@@ -385,9 +399,8 @@ function initializeSettings() {
     usernameInput.addEventListener("change", () => {
         username = usernameInput.value;
         cman.user = {username: username, seed: seed};
-        // document.getElementById("musername-br").classList.remove("noDisplay");
-        // setTimeout('document.getElementById("musername-br").classList.add("noDisplay");', 5000);
         editData();
+        console.log(100, previousData);
     });
 
     // Adding an event listener for when the seed input is changed
@@ -397,40 +410,71 @@ function initializeSettings() {
             // Then set the seed to its value.
             seed = seedInput.value;
             cman.user = {username: username, seed: seed};
-            // document.getElementById("mseed-br").classList.remove("noDisplay");
-            // setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
         } else {
-            // document.getElementById("mseed-br").classList.remove("noDisplay");
             seedInput.value = seed;
-            // setTimeout('document.getElementById("mseed-br").classList.add("noDisplay");', 5000);
+            ErrorToast.fire({
+                title: "Error: Invalid Seed",
+                text: "The seed must be a 10 digit number that doesn't start with 0."
+            });
         }
         editData();
     });
 
     // Adding an event listener for when the data input is changed
-    document.getElementById("data").addEventListener("change", () => {
+    dataInput.addEventListener("change", () => {
         try {
+            alert(0);
             let content = JSON.parse(atob(dataInput.value));
+            alert(1);
             cman.completed = content.completed;
+            alert(2);
             cman.user = content.user;
+            alert(3);
             let username = cman.user.username;
+            alert(4);
             let seed = cman.user.seed;
+            alert(5);
             if (username && seed) {
-                usernameInput.value = username;
-                seedInput.value = seed;
+                if (/^[1-9]\d{9}$/.test(seed)) {
+                    alert(1.1);
+                    usernameInput.value = username;
+                    seedInput.value = seed;
+                } else {
+                    alert(1.2);
+                    console.info("An improper string was put into data.");
+                    document.getElementById("data").value = previousData;
+                    cman.completed = previousData.completed;
+                    cman.user = previousData.user;
+                    ErrorToast.fire({
+                        title: "Error: Invalid Data",
+                        text: "The data you have entered is invalid."
+                    });
+                }
             } else {
-                console.info("An improper string was put into data.", e);
+                alert(2.1);
+                console.info("An improper string was put into data.");
                 document.getElementById("data").value = previousData;
                 cman.completed = previousData.completed;
                 cman.user = previousData.user;
+                ErrorToast.fire({
+                    title: "Error: Invalid Data",
+                    text: "The data you have entered is invalid."
+                });
             }
             previousData = btoa(JSON.stringify({completed: cman.completed, user: cman.user}));
             highlightChallenges();
         } catch (e) {
+            a = JSON.parse(atob(previousData));
+            console.log(a);
+            alert("logged");
             console.info("An improper string was put into data.", e);
             document.getElementById("data").value = previousData;
             cman.completed = previousData.completed;
             cman.user = previousData.user;
+            ErrorToast.fire({
+                title: "Error: Invalid Data",
+                text: "The data you have entered is invalid."
+            });
         }
     });
 
@@ -438,5 +482,6 @@ function initializeSettings() {
     function editData() {
         let content = btoa(JSON.stringify({completed: cman.completed, user: cman.user}));
         document.getElementById("data").value = content;
+        previousData = content;
     }
 }
