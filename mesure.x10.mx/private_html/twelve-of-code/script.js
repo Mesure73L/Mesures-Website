@@ -237,7 +237,7 @@ function challengeSelect(challenge) {
             document.getElementById("challenge").classList.remove("noDisplay");
             // Then, set the active challenge to the current challenge.
             active.challenge = challenge;
-            fetch(`https://mesure.x10.mx/twelve-of-code/not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`)
+            fetch(`./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`)
                 .then(res => res.text())
                 .then(text => {
                     // Next, set the contents of the challenge element to the challenge specified at the challenge page for the selected challenge.
