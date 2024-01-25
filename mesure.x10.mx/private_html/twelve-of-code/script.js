@@ -52,7 +52,7 @@ ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
         initializeCookies();
         createDOMYears();
         highlightChallenges();
-        initializeSettings();
+        // initializeSettings();
         Array.from(document.getElementsByClassName("noJavaScript")).forEach(element => {
             element.classList.add("noDisplay");
         });
