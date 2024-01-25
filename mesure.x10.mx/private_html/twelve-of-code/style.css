@@ -207,6 +207,7 @@ td::after {
     width: 80%;
     background-color: #000e43;
     padding: 10px;
+    padding-bottom: 40px;
 }
 
 body {
@@ -264,6 +265,7 @@ label {
 }
 
 *::-webkit-scrollbar {
+    cursor: default;
     height: 10px;
     width: 10px;
 }
@@ -362,4 +364,24 @@ label {
     100% {
         transform: translate(24px, 0);
     }
+}
+
+/* Styling SweetAlert2 */
+.swal2-container {
+    text-align: center;
+}
+
+.swal2-popup.swal2-toast {
+    box-shadow: none !important;
+}
+
+.swal2-toast {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    background-color: #0023a1 !important;
+}
+
+.swal2-icon {
+    margin-bottom: 1rem !important;
 }

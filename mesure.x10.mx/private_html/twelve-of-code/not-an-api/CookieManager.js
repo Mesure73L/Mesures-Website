@@ -22,11 +22,12 @@ class CookieManager {
                 try {
                     return JSON.parse(atob(c.substring(name.length, c.length)));
                 } catch (e) {
-                    console.warn('There was an error with retrieving a cookie, setting it to "".', e);
+                    console.warn('There was an error retrieving a cookie, returning "" instead.', e);
                     return "";
                 }
             }
         }
+        console.warn('There was an error retrieving a cookie, returning "" instead.');
         return "";
     }
     random(min, max) {
