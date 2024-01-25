@@ -41,10 +41,10 @@ body:
       description: Leave blank if none apply.
       multiple: true
       options:
-        - main site
-        - blog
-        - projects
-        - twelve of code
+        - Main Site
+        - Blog
+        - Projects
+        - Twelve of Code
   - type: markdown
     attributes:
       value: >-
