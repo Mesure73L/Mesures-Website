@@ -11,44 +11,28 @@
 -->
 
 <h2>December 2023, Challenge 1</h2>
-<p id="user-cookie">user cookie didnt load</p>
+<p>
+    Add <span id="user-seed-first-digit"></span> to
+    <span id="user-seed-last-digit"></span>.
+    <input id="result" />
+</p>
 <script src="./../../../CookieManager.js"></script>
-<script>
-    let cman;
-    // Fetching information.json
-    function ajax(url) {
-        return new Promise(function (resolve, reject) {
-            const xhr = new XMLHttpRequest();
-            xhr.onload = function () {
-                resolve(this.responseText);
-            };
-            xhr.onerror = reject;
-            xhr.open("GET", url);
-            xhr.send();
-        });
-    }
-
-    // Initializing the page
-    ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
-        .then(function (result) {
-            cman = new CookieManager(JSON.parse(result));
-            // Steps to do after information.json loads
-            initializeCookies();
-            createDOMYears();
-            highlightChallenges();
-            // initializeSettings();
-            Array.from(document.getElementsByClassName("noJavaScript")).forEach(
-                (element) => {
-                    element.classList.add("noDisplay");
-                }
-            );
-            document
-                .getElementById("select-year")
-                .classList.remove("noDisplay");
-        })
-        .catch(function (e) {
-            // Logging any errors with initialization to the console
-            console.error("There was an error during initialization.", e);
-        });
-    document.getElementById("user-cookie").innerText = cman.user;
+<script id="challenge-javascript">
+    document.getElementById("user-seed-first-digit").innerText = cman.user.seed
+        .toString()
+        .charAt(0);
+    document.getElementById("user-seed-last-digit").innerText = cman.user.seed
+        .toString()
+        .charAt(9);
+    document.getElementById("result").addEventListener("change", () => {
+        if (
+            document.getElementById("result").value ==
+            parseInt(cman.user.seed.toString().charAt(0)) +
+                parseInt(cman.user.seed.toString().charAt(9))
+        ) {
+            alert("Correct!");
+        } else {
+            alert("Incorrect.");
+        }
+    });
 </script>
