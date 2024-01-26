@@ -376,3 +376,4 @@ for (let i = 0; i < noDoubleElements.length; i++) {
 }
 
 // Settings
+function initializeSettings() {}
