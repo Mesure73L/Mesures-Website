@@ -376,4 +376,10 @@ for (let i = 0; i < noDoubleElements.length; i++) {
 }
 
 // Settings
-function initializeSettings() {}
+function initializeSettings() {
+    const settingsButton = document.getElementById("settings");
+    const settingsElement = document.getElementById("editSettings");
+    settingsButton.addEventListener("click", () => {
+        settingsElement.classList.toggle("noDisplay");
+    });
+}
