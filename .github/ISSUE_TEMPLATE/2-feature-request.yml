@@ -45,6 +45,7 @@ body:
         - Blog
         - Projects
         - Twelve of Code
+        - GitHub Repository
   - type: markdown
     attributes:
       value: >-
