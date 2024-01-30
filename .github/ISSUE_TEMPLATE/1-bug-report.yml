@@ -1,0 +1,62 @@
+name: Bug Report
+description: Let us know if something seems wrong.
+labels:
+  - bug
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Please provide as much detail as possible.
+      placeholder: 'Example: The website stopped responding after I clicked a button.'
+    validations:
+      required: true
+  - type: textarea
+    id: expected-response
+    attributes:
+      label: What did you expect to happen?
+      description: Please provide as much detail as possible.
+      placeholder: 'Example: I expected the website to respond.'
+    validations:
+      required: true
+  - type: dropdown
+    id: site-page
+    attributes:
+      label: What page was this on?
+      description: Leave blank if none apply.
+      multiple: true
+      options:
+        - Main Site
+        - Blog
+        - Projects
+        - Twelve of Code
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What browser(s) were you experiencing this on?
+      description: Choose all that apply.
+      multiple: true
+      options:
+        - Google Chrome (desktop)
+        - Mozilla Firefox (desktop)
+        - Apple Safari (desktop)
+        - Microsoft Edge (desktop)
+        - Google Chrome (mobile)
+        - Apple Safari (mobile)
+        - Other (Please specify)
+  - type: textarea
+    id: logs
+    attributes:
+      label: Enter logs
+      description: This will automatically change to a codeblock.
+      render: txt
+  - type: textarea
+    id: other-notes
+    attributes:
+      label: Other notes
+      description: Enter any other relevant information here.
+  - type: markdown
+    attributes:
+      value: >-
+        [Code of Conduct](https://github.com/Mesure73L/Mesures-Website/blob/main/CODE_OF_CONDUCT.md)
+        applies.
