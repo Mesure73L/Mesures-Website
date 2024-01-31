@@ -12,6 +12,7 @@
 const active = {};
 let a;
 let cman;
+let hashChange = true;
 let yearsToHighlight = [],
     partialYears = [],
     monthsToHighlight = {},
@@ -57,6 +58,7 @@ ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
             element.classList.add("noDisplay");
         });
         document.getElementById("select-year").classList.remove("noDisplay");
+        navigateURL();
     })
     .catch(function (e) {
         // Logging any errors with initialization to the console
@@ -77,6 +79,44 @@ function initializeCookies() {
     }
 }
 
+// See what challenge the user wants to skip to
+function navigateURL() {
+    if (window.location.hash) {
+        const hash = window.location.hash.slice(1).split('-');
+        try {
+            if (active.year) {
+                yearSelect(active.year);
+            }
+            if (active.month) {
+                monthSelect(active.month);
+            }
+            if (active.challenge) {
+                challengeSelect(active.challenge);
+            }
+            if (/\d{4}/.exec(hash[0])) {
+                yearSelect(hash[0]);
+                if (/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/.exec(hash[1])) {
+                    monthSelect(hash[1]);
+                    if (/[1-3]/.exec(hash[2])) {
+                        challengeSelect(hash[2]);
+                    }
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }    
+}
+
+window.onhashchange = function() {
+    if (hashChange) {
+        navigateURL();
+    } else {
+        hashChange = true;
+    }
+}
+
+
 // Year Selection
 function yearSelect(year) {
     const yearElement = document.getElementById(`syear-${year}`);
@@ -94,6 +134,8 @@ function yearSelect(year) {
             yearElement.classList.remove("select-active");
             active.year = undefined;
             document.getElementById("select-month").classList.add("noDisplay");
+            hashChange = false;
+            window.location.hash = '#';
         } else {
             // Otherwise, make the previous active year not active anymore
             if (active.year) {
@@ -156,6 +198,8 @@ function yearSelect(year) {
             active.challenge = undefined;
             // Hide the challenge selector.
             document.getElementById("select-challenge").classList.add("noDisplay");
+            hashChange = false;
+            window.location.hash = `${active.year}`;
         }
     }
 }
@@ -173,6 +217,8 @@ function monthSelect(month) {
             monthElement.classList.remove("select-active");
             document.getElementById("select-challenge").classList.add("noDisplay");
             active.month = undefined;
+            hashChange = false;
+            window.location.hash = `#${active.year}`;
         } else {
             // Otherwise, if there is an active month, then make it not active anymore.
             if (active.month) {
@@ -186,6 +232,8 @@ function monthSelect(month) {
             active.month = month;
             // Make the active challenge not active anymore.
             active.challenge = undefined;
+            hashChange = false;
+            window.location.hash = `${active.year}-${active.month}`;
         }
         for (let j = 1; j <= 3; j++) {
             if (cman.information[active.year][month][j.toString()] == false) {
@@ -227,6 +275,8 @@ function challengeSelect(challenge) {
             document.getElementById("challenge").classList.add("noDisplay");
             document.getElementById(`schallenge-${challenge}`).classList.remove("select-active");
             active.challenge = undefined;
+            hashChange = false;
+            window.location.hash = `#${active.year}-${active.month}`;
         } else {
             // Otherwise, if there is an active challenge, remove select-active from it.
             if (active.challenge) {
@@ -238,6 +288,8 @@ function challengeSelect(challenge) {
             document.getElementById("challenge").classList.remove("noDisplay");
             // Then, set the active challenge to the current challenge.
             active.challenge = challenge;
+            hashChange = false;
+            window.location.hash = `${active.year}-${active.month}-${active.challenge}`;
             fetch(`./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`)
                 .then(res => res.text())
                 .then(text => {
