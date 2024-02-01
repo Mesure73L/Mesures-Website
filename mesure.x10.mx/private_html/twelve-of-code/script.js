@@ -200,16 +200,34 @@ function monthSelect(month) {
             active.challenge = undefined;
         }
         for (let j = 1; j <= 3; j++) {
-            if (cman.information[active.year][month][j.toString()] == false) {
-                // For every challenge, if it is unreleased, give it data-unreleased.
+            // For every challenge, if it is unreleased, give it data-unreleased.
+            if (typeof cman.information[active.year][month][j.toString()] == "boolean") {
+                if (cman.information[active.year][month][j.toString()] == false) {
+                    document
+                        .getElementById("schallenge-" + j.toString())
+                        .setAttribute("data-unreleased", "");
+                } else {
+                    document
+                        .getElementById("schallenge-" + j.toString())
+                        .removeAttribute("data-unreleased", "");
+                }
+            } else if (typeof cman.information[active.year][month][j.toString()] == "number") {
+                if (cman.information[active.year][month][j.toString()] > Date.now()) {
+                    document
+                        .getElementById("schallenge-" + j.toString())
+                        .setAttribute("data-unreleased", "");
+                } else {
+                    document
+                        .getElementById("schallenge-" + j.toString())
+                        .removeAttribute("data-unreleased", "");
+                }
+            } else {
                 document
                     .getElementById("schallenge-" + j.toString())
-                    .setAttribute("data-unreleased", "");
-                // Then, if it has select-active, remove select-active.
-                document
-                    .getElementById("schallenge-" + j.toString())
-                    .classList.remove("select-active");
+                    .removeAttribute("data-unreleased", "");
             }
+            // Then, if it has select-active, remove select-active.
+            document.getElementById("schallenge-" + j.toString()).classList.remove("select-active");
             if (cman.completed[active.year]) {
                 // If the completed cookie includes the current year,
                 if (cman.completed[active.year][month]) {
