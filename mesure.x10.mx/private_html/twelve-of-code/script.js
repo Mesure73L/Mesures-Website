@@ -81,31 +81,39 @@ function initializeCookies() {
 
 // See what challenge the user wants to skip to
 function navigateURL() {
-    if (window.location.hash) {
-        const hash = window.location.hash.slice(1).split('-');
-        try {
-            if (active.year) {
-                yearSelect(active.year, false);
+    const hash = window.location.hash.slice(1).split('-');
+    if (active.year) {
+        yearSelect(active.year, false);
+    }
+    if (active.month) {
+        monthSelect(active.month, false);
+    }
+    if (active.challenge) {
+        challengeSelect(active.challenge, false);
+    }
+    const yearElement = document.getElementById(`syear-${hash[0]}`)
+    const monthElement = document.getElementById(`smonth-${hash[1]}`)
+    const challengeElement = document.getElementById(`schallenge-${hash[2]}`)
+    if (/\d{4}/.exec(hash[0]) && !yearElement.hasAttribute('data-unreleased')) {
+        yearSelect(hash[0], false);
+        if (/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/.exec(hash[1]) && !monthElement.hasAttribute('data-unreleased')) {
+            monthSelect(hash[1], false);
+            if (/[1-3]/.exec(hash[2]) && !challengeElement.hasAttribute('data-unreleased')) {
+                challengeSelect(hash[2], false);
+            } else {
+                window.location.hash = `#${hash[0]}-${hash[1]}`
             }
-            if (active.month) {
-                monthSelect(active.month, false);
-            }
-            if (active.challenge) {
-                challengeSelect(active.challenge, false);
-            }
-            if (/\d{4}/.exec(hash[0])) {
-                yearSelect(hash[0], false);
-                if (/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/.exec(hash[1])) {
-                    monthSelect(hash[1], false);
-                    if (/[1-3]/.exec(hash[2])) {
-                        challengeSelect(hash[2], false);
-                    }
-                }
-            }
-        } catch (e) {
-            console.log(e);
+        } else {
+            window.location.hash = `#${hash[0]}`
         }
-    }    
+    } else {
+        hashChange = false
+        window.location.hash = '#temporary';
+        setTimeout(() => {
+            hashChange = false
+            window.location.hash = '#';
+        }, 1)
+    }
 }
 
 window.onhashchange = function() {
