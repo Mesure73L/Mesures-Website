@@ -94,11 +94,11 @@ function navigateURL() {
                 challengeSelect(active.challenge, false);
             }
             if (/\d{4}/.exec(hash[0])) {
-                yearSelect(hash[0]);
+                yearSelect(hash[0], false);
                 if (/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/.exec(hash[1])) {
-                    monthSelect(hash[1]);
+                    monthSelect(hash[1], false);
                     if (/[1-3]/.exec(hash[2])) {
-                        challengeSelect(hash[2]);
+                        challengeSelect(hash[2], false);
                     }
                 }
             }
@@ -205,7 +205,7 @@ function yearSelect(year, changeHash) {
             document.getElementById("select-challenge").classList.add("noDisplay");
             if (changeHash) {
                 hashChange = false;
-                window.location.hash = `${active.year}`;
+                window.location.hash = `#${active.year}`;
             }
         }
     }
@@ -303,11 +303,11 @@ function challengeSelect(challenge, changeHash) {
             // Unhide the challlenge.
             document.getElementById("challenge").classList.remove("noDisplay");
             // Then, set the active challenge to the current challenge.
+            active.challenge = challenge;
             if (changeHash) {
-                active.challenge = challenge;
                 hashChange = false;
+                window.location.hash = `${active.year}-${active.month}-${active.challenge}`;
             }
-            window.location.hash = `${active.year}-${active.month}-${active.challenge}`;
             fetch(`./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`)
                 .then(res => res.text())
                 .then(text => {
