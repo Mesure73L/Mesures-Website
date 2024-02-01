@@ -120,8 +120,18 @@ function yearSelect(year) {
                 const currentMonth = document.getElementById(`smonth-${activeMonths[i]}`);
                 // For every active month, show it. Then, if it is unreleased, give it data-unreleased. Otherwise, remove data-unreleased if it has it.
                 currentMonth.classList.remove("noDisplay");
-                if (cman.information[year][activeMonths[i]].overall == false) {
-                    currentMonth.setAttribute("data-unreleased", "");
+                if (typeof cman.information[year][activeMonths[i]].overall == "boolean") {
+                    if (cman.information[year][activeMonths[i]].overall == false) {
+                        currentMonth.setAttribute("data-unreleased", "");
+                    } else {
+                        currentMonth.removeAttribute("data-unreleased");
+                    }
+                } else if (typeof cman.information[year][activeMonths[i]].overall == "number") {
+                    if (cman.information[year][activeMonths[i]].overall > Date.now()) {
+                        currentMonth.setAttribute("data-unreleased", "");
+                    } else {
+                        currentMonth.removeAttribute("data-unreleased");
+                    }
                 } else {
                     currentMonth.removeAttribute("data-unreleased");
                 }
