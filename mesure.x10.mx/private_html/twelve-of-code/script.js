@@ -112,7 +112,9 @@ function yearSelect(year) {
             }
             for (let i = 1; i <= 3; i++) {
                 // For every challenge, if it has select-active, remove it.
-                document.getElementById(`schallenge-${i.toString()}`).classList.remove("select-active");
+                document
+                    .getElementById(`schallenge-${i.toString()}`)
+                    .classList.remove("select-active");
             }
             for (let i = 0; i < activeMonths.length; i++) {
                 const currentMonth = document.getElementById(`smonth-${activeMonths[i]}`);
@@ -190,9 +192,13 @@ function monthSelect(month) {
         for (let j = 1; j <= 3; j++) {
             if (cman.information[active.year][month][j.toString()] == false) {
                 // For every challenge, if it is unreleased, give it data-unreleased.
-                document.getElementById("schallenge-" + j.toString()).setAttribute("data-unreleased", "");
+                document
+                    .getElementById("schallenge-" + j.toString())
+                    .setAttribute("data-unreleased", "");
                 // Then, if it has select-active, remove select-active.
-                document.getElementById("schallenge-" + j.toString()).classList.remove("select-active");
+                document
+                    .getElementById("schallenge-" + j.toString())
+                    .classList.remove("select-active");
             }
             if (cman.completed[active.year]) {
                 // If the completed cookie includes the current year,
@@ -200,14 +206,20 @@ function monthSelect(month) {
                     // Then, if the completed cookie includes the current month,
                     if (cman.completed[active.year][month][j.toString()]) {
                         // Then, if the current challenge is completed, add the completed class.
-                        document.getElementById("schallenge-" + j.toString()).classList.add("completed");
+                        document
+                            .getElementById("schallenge-" + j.toString())
+                            .classList.add("completed");
                     } else {
                         // Otherwise, remove the completed class if it has it.
-                        document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
+                        document
+                            .getElementById("schallenge-" + j.toString())
+                            .classList.remove("completed");
                     }
                     // If the completed cookie does not include the current month, the remove the completed class if it has it.
                 } else {
-                    document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
+                    document
+                        .getElementById("schallenge-" + j.toString())
+                        .classList.remove("completed");
                 }
                 // Otherwise, if the completed cookie does not include the current year, then remove the completed class if it has it.
             } else {
@@ -230,7 +242,9 @@ function challengeSelect(challenge) {
         } else {
             // Otherwise, if there is an active challenge, remove select-active from it.
             if (active.challenge) {
-                document.getElementById(`schallenge-${active.challenge}`).classList.remove("select-active");
+                document
+                    .getElementById(`schallenge-${active.challenge}`)
+                    .classList.remove("select-active");
             }
             // Then, give the newly selected challenge select-active.
             document.getElementById(`schallenge-${challenge}`).classList.add("select-active");
@@ -244,9 +258,7 @@ function challengeSelect(challenge) {
                     // Next, set the contents of the challenge element to the challenge specified at the challenge page for the selected challenge.
                     document.getElementById("challenge").innerHTML = text;
                     const F = new Function(
-                        document.getElementById(
-                            "challenge-javascript"
-                        ).innerText
+                        document.getElementById("challenge-javascript").innerText
                     );
                     F();
                 });
@@ -289,8 +301,14 @@ function createDOMYears() {
             yearSelect(year);
         });
         // If the year is unreleased, give it data-unreleased.
-        if (cman.information[year].overall == false) {
-            yearElement.setAttribute("data-unreleased", "");
+        if (typeof cman.information[year].overall == "boolean") {
+            if (cman.information[year].overall == false) {
+                yearElement.setAttribute("data-unreleased", "");
+            }
+        } else if (typeof cman.information[year].overall == "number") {
+            if (cman.information[year].overall > Date.now()) {
+                yearElement.setAttribute("data-unreleased", "");
+            }
         }
     }
 }
