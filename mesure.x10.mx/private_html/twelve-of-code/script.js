@@ -94,11 +94,11 @@ function navigateURL() {
     const yearElement = document.getElementById(`syear-${hash[0]}`)
     const monthElement = document.getElementById(`smonth-${hash[1]}`)
     const challengeElement = document.getElementById(`schallenge-${hash[2]}`)
-    if (/\d{4}/.exec(hash[0]) && !yearElement.hasAttribute('data-unreleased')) {
+    if (/^\d{4}$/.exec(hash[0]) && !yearElement.hasAttribute('data-unreleased')) {
         yearSelect(hash[0], false);
-        if (/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/.exec(hash[1]) && !monthElement.hasAttribute('data-unreleased')) {
+        if (/^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)$/.exec(hash[1]) && !monthElement.hasAttribute('data-unreleased')) {
             monthSelect(hash[1], false);
-            if (/[1-3]/.exec(hash[2]) && !challengeElement.hasAttribute('data-unreleased')) {
+            if (/^[1-3]$/.exec(hash[2]) && !challengeElement.hasAttribute('data-unreleased')) {
                 challengeSelect(hash[2], false);
             } else {
                 window.location.hash = `#${hash[0]}-${hash[1]}`
