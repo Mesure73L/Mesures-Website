@@ -5,7 +5,13 @@
             "description": "2023 is a test year. The challenges are easy and are only for testing the website."
         },
         "overall": true,
-        "months": ["dec"],
+        "months": ["nov","dec"],
+        "nov": {
+            "overall": true,
+            "1": true,
+            "2": true,
+            "3": true
+        },
         "dec": {
             "overall": true,
             "1": true,
