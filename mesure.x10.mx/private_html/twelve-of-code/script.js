@@ -12,7 +12,6 @@
 const active = {};
 let a;
 let cman;
-let hashChange = true;
 let yearsToHighlight = [],
     partialYears = [],
     monthsToHighlight = {},
@@ -58,7 +57,6 @@ ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
             element.classList.add("noDisplay");
         });
         document.getElementById("select-year").classList.remove("noDisplay");
-        navigateURL();
     })
     .catch(function (e) {
         // Logging any errors with initialization to the console
@@ -79,54 +77,8 @@ function initializeCookies() {
     }
 }
 
-// See what challenge the user wants to skip to
-function navigateURL() {
-    const hash = window.location.hash.slice(1).split('-');
-    if (active.year) {
-        yearSelect(active.year, false);
-    }
-    if (active.month) {
-        monthSelect(active.month, false);
-    }
-    if (active.challenge) {
-        challengeSelect(active.challenge, false);
-    }
-    const yearElement = document.getElementById(`syear-${hash[0]}`)
-    const monthElement = document.getElementById(`smonth-${hash[1]}`)
-    const challengeElement = document.getElementById(`schallenge-${hash[2]}`)
-    if (/^\d{4}$/.exec(hash[0]) && !yearElement.hasAttribute('data-unreleased')) {
-        yearSelect(hash[0], false);
-        if (/^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)$/.exec(hash[1]) && !monthElement.hasAttribute('data-unreleased')) {
-            monthSelect(hash[1], false);
-            if (/^[1-3]$/.exec(hash[2]) && !challengeElement.hasAttribute('data-unreleased')) {
-                challengeSelect(hash[2], false);
-            } else {
-                window.location.hash = `#${hash[0]}-${hash[1]}`
-            }
-        } else {
-            window.location.hash = `#${hash[0]}`
-        }
-    } else {
-        hashChange = false
-        window.location.hash = '#temporary';
-        setTimeout(() => {
-            hashChange = false
-            window.location.hash = '#';
-        }, 1)
-    }
-}
-
-window.onhashchange = function() {
-    if (hashChange) {
-        navigateURL();
-    } else {
-        hashChange = true;
-    }
-}
-
-
 // Year Selection
-function yearSelect(year, changeHash) {
+function yearSelect(year) {
     const yearElement = document.getElementById(`syear-${year}`);
     // If the selected year is released,
     if (!yearElement.hasAttribute("data-unreleased")) {
@@ -137,22 +89,15 @@ function yearSelect(year, changeHash) {
         // If the user clicked on the active year, hide everything
         if (year == active.year) {
             if (active.month != undefined) {
-                monthSelect(active.month, false);
+                monthSelect(active.month);
             }
             yearElement.classList.remove("select-active");
             active.year = undefined;
             document.getElementById("select-month").classList.add("noDisplay");
-            if (changeHash) {
-                hashChange = false;
-                window.location.hash = '#';
-            }
         } else {
             // Otherwise, make the previous active year not active anymore
             if (active.year) {
                 document.getElementById(`syear-${active.year}`).classList.remove("select-active");
-            }
-            if (active.challenge) {
-                challengeSelect(active.challenge, false);
             }
             // Then, make the new year active
             document.getElementById(`syear-${year}`).classList.add("select-active");
@@ -223,38 +168,27 @@ function yearSelect(year, changeHash) {
             active.challenge = undefined;
             // Hide the challenge selector.
             document.getElementById("select-challenge").classList.add("noDisplay");
-            if (changeHash) {
-                hashChange = false;
-                window.location.hash = `#${active.year}`;
-            }
         }
     }
 }
 
 // Month Selection
-function monthSelect(month, changeHash) {
+function monthSelect(month) {
     const monthElement = document.getElementById(`smonth-${month}`);
     // If the selected month is released,
     if (!monthElement.hasAttribute("data-unreleased")) {
         // If the month that was clicked on is the active month, hide everything.
         if (month == active.month) {
             if (active.challenge != undefined) {
-                challengeSelect(active.challenge, false);
+                challengeSelect(active.challenge);
             }
             monthElement.classList.remove("select-active");
             document.getElementById("select-challenge").classList.add("noDisplay");
             active.month = undefined;
-            if (changeHash) {
-                hashChange = false;
-                window.location.hash = `#${active.year}`;
-            }
         } else {
             // Otherwise, if there is an active month, then make it not active anymore.
             if (active.month) {
                 document.getElementById(`smonth-${active.month}`).classList.remove("select-active");
-            }
-            if (active.challenge) {
-                challengeSelect(active.challenge, false)
             }
             // Then, make the selected month active.
             document.getElementById(`smonth-${month}`).classList.add("select-active");
@@ -264,10 +198,6 @@ function monthSelect(month, changeHash) {
             active.month = month;
             // Make the active challenge not active anymore.
             active.challenge = undefined;
-            if (changeHash) {
-                hashChange = false;
-                window.location.hash = `${active.year}-${active.month}`;
-            }
         }
         for (let j = 1; j <= 3; j++) {
             // For every challenge, if it is unreleased, give it data-unreleased.
@@ -328,7 +258,7 @@ function monthSelect(month, changeHash) {
 }
 
 // Challenge Selection
-function challengeSelect(challenge, changeHash) {
+function challengeSelect(challenge) {
     const challengeElement = document.getElementById(`schallenge-${challenge}`);
     // If the challenge is released,
     if (!challengeElement.hasAttribute("data-unreleased")) {
@@ -337,10 +267,6 @@ function challengeSelect(challenge, changeHash) {
             document.getElementById("challenge").classList.add("noDisplay");
             document.getElementById(`schallenge-${challenge}`).classList.remove("select-active");
             active.challenge = undefined;
-            if (changeHash) {
-                hashChange = false;
-                window.location.hash = `#${active.year}-${active.month}`;
-            }
         } else {
             // Otherwise, if there is an active challenge, remove select-active from it.
             if (active.challenge) {
@@ -354,10 +280,6 @@ function challengeSelect(challenge, changeHash) {
             document.getElementById("challenge").classList.remove("noDisplay");
             // Then, set the active challenge to the current challenge.
             active.challenge = challenge;
-            if (changeHash) {
-                hashChange = false;
-                window.location.hash = `${active.year}-${active.month}-${active.challenge}`;
-            }
             fetch(`./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`)
                 .then(res => res.text())
                 .then(text => {
@@ -404,7 +326,7 @@ function createDOMYears() {
         yearElement.appendChild(yearText);
         // Add an event listener to call yearSelect() when it is clicked.
         yearElement.addEventListener("click", () => {
-            yearSelect(year, true);
+            yearSelect(year);
         });
         // If the year is unreleased, give it data-unreleased.
         if (typeof cman.information[year].overall == "boolean") {
@@ -421,18 +343,18 @@ function createDOMYears() {
 // Add event listeners to all the months and challenges.
 months.forEach(month => {
     document.getElementById("smonth-" + month).addEventListener("click", () => {
-        monthSelect(month, true);
+        monthSelect(month);
     });
 });
 
 document.getElementById("schallenge-1").addEventListener("click", () => {
-    challengeSelect("1", true);
+    challengeSelect("1");
 });
 document.getElementById("schallenge-2").addEventListener("click", () => {
-    challengeSelect("2", true);
+    challengeSelect("2");
 });
 document.getElementById("schallenge-3").addEventListener("click", () => {
-    challengeSelect("3", true);
+    challengeSelect("3");
 });
 
 // Highlighting Completed Challenges
