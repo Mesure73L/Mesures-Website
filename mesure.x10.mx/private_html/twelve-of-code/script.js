@@ -163,6 +163,7 @@ function yearSelect(year, changeHash) {
             for (let i = 0; i < months.length; i++) {
                 // For every month, hide it, and remove select-active if it has it
                 document.getElementById(`smonth-${months[i]}`).classList.add("noDisplay");
+                document.getElementById(`smonth-${months[i]}`).setAttribute("data-unreleased", "")
                 document.getElementById(`smonth-${months[i]}`).classList.remove("select-active");
             }
             for (let i = 1; i <= 3; i++) {
@@ -173,6 +174,7 @@ function yearSelect(year, changeHash) {
                 const currentMonth = document.getElementById(`smonth-${activeMonths[i]}`);
                 // For every active month, show it. Then, if it is unreleased, give it data-unreleased. Otherwise, remove data-unreleased if it has it.
                 currentMonth.classList.remove("noDisplay");
+                currentMonth.classList.remove("data-unreleased");
                 if (cman.information[year][activeMonths[i]].overall == false) {
                     currentMonth.setAttribute("data-unreleased", "");
                 } else {
