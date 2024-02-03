@@ -108,6 +108,7 @@ function yearSelect(year) {
             for (let i = 0; i < months.length; i++) {
                 // For every month, hide it, and remove select-active if it has it
                 document.getElementById(`smonth-${months[i]}`).classList.add("noDisplay");
+                document.getElementById(`smonth-${months[i]}`).setAttribute("data-unreleased", "")
                 document.getElementById(`smonth-${months[i]}`).classList.remove("select-active");
             }
             for (let i = 1; i <= 3; i++) {
@@ -132,6 +133,9 @@ function yearSelect(year) {
                     } else {
                         currentMonth.removeAttribute("data-unreleased");
                     }
+                currentMonth.classList.remove("data-unreleased");
+                if (cman.information[year][activeMonths[i]].overall == false) {
+                    currentMonth.setAttribute("data-unreleased", "");
                 } else {
                     currentMonth.removeAttribute("data-unreleased");
                 }
