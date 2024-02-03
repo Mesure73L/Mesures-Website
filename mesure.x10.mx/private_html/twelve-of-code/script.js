@@ -353,7 +353,7 @@ function challengeSelect(challenge, changeHash) {
                         );
                         F();
                     } catch (e) {
-                        console.info("No challenge-javascript element", e);
+                        console.warn("No challenge-javascript element", e);
                     }
                 });
         }
