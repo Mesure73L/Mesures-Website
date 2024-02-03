@@ -30,7 +30,6 @@ body:
         - Blog
         - Projects
         - Twelve of Code
-        - Repository
   - type: dropdown
     id: browsers
     attributes:
