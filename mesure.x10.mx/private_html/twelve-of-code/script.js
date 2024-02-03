@@ -347,10 +347,14 @@ function challengeSelect(challenge, changeHash) {
                 .then(text => {
                     // Next, set the contents of the challenge element to the challenge specified at the challenge page for the selected challenge.
                     document.getElementById("challenge").innerHTML = text;
-                    const F = new Function(
-                        document.getElementById("challenge-javascript").innerText
-                    );
-                    F();
+                    try {
+                        const F = new Function(
+                            document.getElementById("challenge-javascript").innerText
+                        );
+                        F();
+                    } catch (e) {
+                        console.info("No challenge-javascript element", e);
+                    }
                 });
         }
     }
