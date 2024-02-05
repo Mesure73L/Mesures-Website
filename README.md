@@ -9,7 +9,6 @@
 
 
 
-
 <p align="center">This is the source code for my website.<br>
 Licensed with CC BY-NC-SA 4.0.</p>
 
