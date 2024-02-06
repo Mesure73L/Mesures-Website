@@ -1,4 +1,4 @@
-name: learn-github-actions
+name: auto-merge-main
 on:
   push:
     branches:
