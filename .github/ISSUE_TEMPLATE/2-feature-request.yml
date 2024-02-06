@@ -31,7 +31,25 @@ body:
     attributes:
       label: What are some pros and cons of doing this?
       description: Provide as much detail as possible.
-      placeholder: 'Example: Light theme is too bright for some users, but more customizability is always good'
+      placeholder: >
+        #### Pros:
+
+
+        - Some users might prefer light theme
+
+        - Makes it easier to see contrast
+
+        - Easy to implement
+
+
+        #### Cons:
+
+
+        - Most users prefer dark theme
+
+        - Could get messy with the code or web layout
+        
+        - Low demand
       value: >
         #### Pros:
 
