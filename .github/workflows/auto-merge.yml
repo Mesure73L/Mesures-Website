@@ -1,13 +1,18 @@
 name: auto-merge-main
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types:
+      - closed
 jobs:
   create-pull-request:
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
     - name: Create Pull Request
-      run: gh pr create -B develop -H main --title 'Merge main into develop' --body 'Automatically merging `main` into `develop` on push to `main`. Pull request created by GitHub Actions.'
+      if: github.event.pull_request.head.ref != 'develop' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+      run: gh pr create --base develop --head main --title "Merge main into develop" --body "Automatically merging main into develop on push to main. Pull request created automatically by GitHub Actions."
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
