@@ -1,0 +1,13 @@
+name: learn-github-actions
+on:
+  push:
+    branches:
+      - main
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create Pull Request
+      run: gh pr create -B develop -H main --title 'Merge main into develop' --body 'Automatically merging `main` into `develop` on push to `main`. Pull request created by GitHub Actions.'
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
