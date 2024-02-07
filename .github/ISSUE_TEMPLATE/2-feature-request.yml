@@ -45,7 +45,6 @@ body:
         - Blog
         - Projects
         - Twelve of Code
-        - Repository
   - type: markdown
     attributes:
       value: >-
