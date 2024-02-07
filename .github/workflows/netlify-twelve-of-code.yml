@@ -14,6 +14,7 @@ jobs:
 
       - name: Deploy Twelve of Code to Netlify
         uses: nwtgck/actions-netlify@v2.0
+        permissions: read-all
         with:
           publish-dir: './'
           production-branch: main
