@@ -468,7 +468,7 @@ function createDOMYears() {
         console.log(yearElement, 4);
         // Add an event listener to call yearSelect() when it is clicked.
         yearElement.addEventListener("click", () => {
-            yearSelect(year);
+            yearSelect(year, true);
         });
         // If the year is unreleased, give it data-unreleased.
         if (typeof cman.information[year].overall == "boolean") {
