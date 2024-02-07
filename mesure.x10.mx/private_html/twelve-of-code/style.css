@@ -386,3 +386,8 @@ label {
 .swal2-icon {
     margin-bottom: 1rem !important;
 }
+
+#challenge {
+    margin: unset auto;
+    text-align: center;
+}
