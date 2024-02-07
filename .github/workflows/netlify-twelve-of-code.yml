@@ -1,7 +1,6 @@
 # .github/workflows/netlify.yml
 name: Build and Deploy to Netlify
 on:
-  push:
   pull_request:
     types: [labeled, edited, opened, reopened]
 jobs:
