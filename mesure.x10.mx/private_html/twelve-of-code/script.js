@@ -116,7 +116,7 @@ function navigateURL() {
     }
 }
 
-window.onhashchange = function() {
+window.onhashchange = function () {
     if (hashChange) {
         navigateURL();
     } else {
@@ -163,7 +163,7 @@ function yearSelect(year, changeHash) {
             for (let i = 0; i < months.length; i++) {
                 // For every month, hide it, and remove select-active if it has it
                 document.getElementById(`smonth-${months[i]}`).classList.add("noDisplay");
-                document.getElementById(`smonth-${months[i]}`).setAttribute("data-unreleased", "")
+                document.getElementById(`smonth-${months[i]}`).setAttribute("data-unreleased", "");
                 document.getElementById(`smonth-${months[i]}`).classList.remove("select-active");
             }
             for (let i = 1; i <= 3; i++) {
@@ -174,33 +174,57 @@ function yearSelect(year, changeHash) {
                 const currentMonth = document.getElementById(`smonth-${activeMonths[i]}`);
                 // For every active month, show it. Then, if it is unreleased, give it data-unreleased. Otherwise, remove data-unreleased if it has it.
                 currentMonth.classList.remove("noDisplay");
-                currentMonth.classList.remove("data-unreleased");
-                if (cman.information[year][activeMonths[i]].overall == false) {
-                    currentMonth.setAttribute("data-unreleased", "");
-                } else {
-                    currentMonth.removeAttribute("data-unreleased");
-                }
-                // Highlighting Completed/In Progress Months
-                if (monthsToHighlight[year]) {
-                    // If monthsToHighlight includes the current year,
-                    if (monthsToHighlight[year].includes(activeMonths[i])) {
-                        // Then, if it includes the current active month, add completed.
-                        currentMonth.classList.add("completed");
+                if (typeof cman.information[year][activeMonths[i]].overall == "boolean") {
+                    if (cman.information[year][activeMonths[i]].overall == false) {
+                        currentMonth.setAttribute("data-unreleased", "");
                     } else {
-                        // Otherwise, remove completed
-                        currentMonth.classList.remove("completed");
+                        currentMonth.removeAttribute("data-unreleased");
+                    }
+                } else if (typeof cman.information[year][activeMonths[i]].overall == "number") {
+                    if (cman.information[year][activeMonths[i]].overall > Date.now()) {
+                        currentMonth.setAttribute("data-unreleased", "");
+                    } else {
+                        currentMonth.removeAttribute("data-unreleased");
+                    }
+                    currentMonth.classList.remove("data-unreleased");
+                    if (cman.information[year][activeMonths[i]].overall == false) {
+                        currentMonth.setAttribute("data-unreleased", "");
+                    } else {
+                        currentMonth.removeAttribute("data-unreleased");
+                    }
+                    // Highlighting Completed/In Progress Months
+                    if (monthsToHighlight[year]) {
+                        // If monthsToHighlight includes the current year,
+                        if (monthsToHighlight[year].includes(activeMonths[i])) {
+                            // Then, if it includes the current active month, add completed.
+                            currentMonth.classList.add("completed");
+                        } else {
+                            // Otherwise, remove completed
+                            currentMonth.classList.remove("completed");
+                        }
+                    }
+                    if (partialMonths[year]) {
+                        // If partialMonths includes the current year,
+                        if (partialMonths[year].includes(activeMonths[i])) {
+                            // Then, if it includes the current active month, add in-progress.
+                            currentMonth.classList.add("in-progress");
+                        } else {
+                            // Otherwise, remove in-progress.
+                            currentMonth.classList.remove("in-progres");
+                        }
                     }
                 }
-                if (partialMonths[year]) {
-                    // If partialMonths includes the current year,
-                    if (partialMonths[year].includes(activeMonths[i])) {
-                        // Then, if it includes the current active month, add in-progress.
-                        currentMonth.classList.add("in-progress");
-                    } else {
-                        // Otherwise, remove in-progress.
-                        currentMonth.classList.remove("in-progres");
-                    }
+                // If the current year has a note, then show it
+                if (document.getElementById(`syearnote-${year}`)) {
+                    document.getElementById(`syearnote-${year}`).classList.remove("noDisplay");
                 }
+                // Make the active year the selected year.
+                active.year = year;
+                // Make the active challenge and active month not active anymore.
+                active.month = undefined;
+                active.challenge = undefined;
+                // Hide the challenge selector.
+                document.getElementById("select-challenge").classList.add("noDisplay");
             }
             // If the current year has a note, then show it
             if (document.getElementById(`syearnote-${year}`)) {
@@ -220,7 +244,6 @@ function yearSelect(year, changeHash) {
         }
     }
 }
-
 // Month Selection
 function monthSelect(month, changeHash) {
     const monthElement = document.getElementById(`smonth-${month}`);
@@ -277,13 +300,72 @@ function monthSelect(month, changeHash) {
                         // Otherwise, remove the completed class if it has it.
                         document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
                     }
-                    // If the completed cookie does not include the current month, the remove the completed class if it has it.
-                } else {
-                    document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
+                    // Then, make the selected month active.
+                    document.getElementById(`smonth-${month}`).classList.add("select-active");
+                    // Unhide the challenge selector.
+                    document.getElementById("select-challenge").classList.remove("noDisplay");
+                    // Make the active month the selected month.
+                    active.month = month;
+                    // Make the active challenge not active anymore.
+                    active.challenge = undefined;
                 }
-                // Otherwise, if the completed cookie does not include the current year, then remove the completed class if it has it.
-            } else {
-                document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
+                for (let j = 1; j <= 3; j++) {
+                    // For every challenge, if it is unreleased, give it data-unreleased.
+                    if (typeof cman.information[active.year][month][j.toString()] == "boolean") {
+                        if (cman.information[active.year][month][j.toString()] == false) {
+                            document
+                                .getElementById("schallenge-" + j.toString())
+                                .setAttribute("data-unreleased", "");
+                        } else {
+                            document
+                                .getElementById("schallenge-" + j.toString())
+                                .removeAttribute("data-unreleased", "");
+                        }
+                    } else if (typeof cman.information[active.year][month][j.toString()] == "number") {
+                        if (cman.information[active.year][month][j.toString()] > Date.now()) {
+                            document
+                                .getElementById("schallenge-" + j.toString())
+                                .setAttribute("data-unreleased", "");
+                        } else {
+                            document
+                                .getElementById("schallenge-" + j.toString())
+                                .removeAttribute("data-unreleased", "");
+                        }
+                    } else {
+                        document
+                            .getElementById("schallenge-" + j.toString())
+                            .removeAttribute("data-unreleased", "");
+                    }
+                    // Then, if it has select-active, remove select-active.
+                    document
+                        .getElementById("schallenge-" + j.toString())
+                        .classList.remove("select-active");
+                    if (cman.completed[active.year]) {
+                        // If the completed cookie includes the current year,
+                        if (cman.completed[active.year][month]) {
+                            // Then, if the completed cookie includes the current month,
+                            if (cman.completed[active.year][month][j.toString()]) {
+                                // Then, if the current challenge is completed, add the completed class.
+                                document
+                                    .getElementById("schallenge-" + j.toString())
+                                    .classList.add("completed");
+                            } else {
+                                // Otherwise, remove the completed class if it has it.
+                                document
+                                    .getElementById("schallenge-" + j.toString())
+                                    .classList.remove("completed");
+                            }
+                            // If the completed cookie does not include the current month, the remove the completed class if it has it.
+                        } else {
+                            document
+                                .getElementById("schallenge-" + j.toString())
+                                .classList.remove("completed");
+                        }
+                        // Otherwise, if the completed cookie does not include the current year, then remove the completed class if it has it.
+                    } else {
+                        document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
+                    }
+                }
             }
         }
     }
@@ -366,14 +448,31 @@ function createDOMYears() {
         yearElement.appendChild(yearText);
         // Add an event listener to call yearSelect() when it is clicked.
         yearElement.addEventListener("click", () => {
-            yearSelect(year, true);
+            yearSelect(year);
         });
         // If the year is unreleased, give it data-unreleased.
-        if (cman.information[year].overall == false) {
-            yearElement.setAttribute("data-unreleased", "");
+        if (typeof cman.information[year].overall == "boolean") {
+            if (cman.information[year].overall == false) {
+                yearElement.setAttribute("data-unreleased", "");
+            }
+        } else if (typeof cman.information[year].overall == "number") {
+            if (cman.information[year].overall > Date.now()) {
+                yearElement.setAttribute("data-unreleased", "");
+            }
         }
     }
+
+    yearElement.appendChild(yearText);
+    // Add an event listener to call yearSelect() when it is clicked.
+    yearElement.addEventListener("click", () => {
+        yearSelect(year, true);
+    });
+    // If the year is unreleased, give it data-unreleased.
+    if (cman.information[year].overall == false) {
+        yearElement.setAttribute("data-unreleased", "");
+    }
 }
+
 // Add event listeners to all the months and challenges.
 months.forEach(month => {
     document.getElementById("smonth-" + month).addEventListener("click", () => {

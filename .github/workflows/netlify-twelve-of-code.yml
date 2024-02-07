@@ -3,25 +3,27 @@ name: Build and Deploy to Netlify
 on:
   push:
   pull_request:
+    types: [labeled, edited, opened, reopened]
 jobs:
   build:
+    if: contains(github.event.pull_request.labels.*.name, 'twelve of code')
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
 
       # ( Build to ./dist or other directory... )
 
-      - name: Deploy to Netlify
+      - name: Deploy Twelve of Code to Netlify
         uses: nwtgck/actions-netlify@v2.0
         with:
           publish-dir: './'
-          production-branch: master
+          production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
-          enable-pull-request-comment: false
+          enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 1
+        timeout-minutes: 0
