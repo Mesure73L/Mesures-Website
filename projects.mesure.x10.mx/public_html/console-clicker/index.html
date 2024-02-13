@@ -4,53 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Console Clicker</title>
-    <style>
-        * {
-            font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
-        }
-        #console {
-            background-color: black;
-            color: white;
-            width: 90dvw;
-            height: 90dvh;
-            margin: auto;
-            position: relative;
-            padding: 0px;
-        }
-        p {
-            margin-top: 0px;
-            margin-bottom: 0px;
-        }
-        html, body {
-            height: 100%;
-            width: 100%;
-            margin: 0px;
-            overflow: hidden;
-        }
-        #console-container {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-            height: 100%;
-            width: 100%;
-        }
-        #command {
-            position: absolute;
-            bottom: 0px;
-            width: 100%;
-            box-sizing: border-box;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.05em;
-            outline: none;
-        }
-        #command::placeholder {
-            color: gray;
-            font-style: italic;
-            opacity: 1;
-        }
-    </style>
+    <link href="./style.css" rel="stylesheet" />
 </head>
 <body>
     <div id="console-container">
@@ -59,22 +13,6 @@
         </div>
     </div>
 
-    <script>
-        const command = document.getElementById('command');
-        document.body.addEventListener("keypress", function(event) {
-            if (event.key == "Enter") {
-                event.preventDefault();
-                if (document.activeElement == document.getElementById('command')) {
-                    const paragraph = document.createElement("p");
-                    const spannode = document.createElement("span");
-                    const textnode = document.createTextNode(`> ${command.value}`);
-                    spannode.appendChild(textnode);
-                    paragraph.appendChild(spannode);
-                    document.getElementById('console').appendChild(paragraph);
-                    command.value = '';
-                }
-            }
-        });
-    </script>
+    <script src="./script.js"></script>
 </body>
 </html>
