@@ -9,6 +9,7 @@
     margin: auto;
     position: relative;
     padding: 0px;
+    overflow: scroll;
 }
 p {
     margin-top: 0px;
@@ -28,15 +29,16 @@ html, body {
     width: 100%;
 }
 #command {
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
+    position: fixed;
+    bottom: 5dvh;
+    width: 90dvw;
     box-sizing: border-box;
     background: none;
     border: none;
     color: white;
     font-size: 1.05em;
     outline: none;
+    background-color: black;
 }
 #command::placeholder {
     color: gray;

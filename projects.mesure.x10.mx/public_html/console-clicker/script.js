@@ -14,6 +14,14 @@ function addText(textInput, colorInput) {
 }
 function sendLine() {
     console.appendChild(line);
+    document.getElementById('last').remove();
+    const p = document.createElement("p");
+    const br = document.createElement('br');
+    p.appendChild(br);
+    p.id = 'last';
+    console.appendChild(p);
+    var objDiv = document.getElementById("console");
+    objDiv.scrollTop = objDiv.scrollHeight;
 }
 function runCommand(command) {
     resetLine();
@@ -32,7 +40,7 @@ sendLine();
 document.body.addEventListener("keypress", function(event) {
     if (event.key == "Enter") {
         event.preventDefault();
-        if (document.activeElement == document.getElementById('command')) {
+        if (document.activeElement == document.getElementById('command') && /( +)?(?=[^ ])( +)?/.test(command.value)) {
             resetLine();
             addText(`> ${command.value}`, 'white');
             sendLine();
