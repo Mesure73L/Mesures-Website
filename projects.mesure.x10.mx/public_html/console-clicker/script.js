@@ -1,5 +1,6 @@
 const console = document.getElementById('console');
-const command = document.getElementById('command');
+const logs = document.getElementById('logs');
+let command = document.getElementById('command');
 let line = document.createElement('p');
 
 function resetLine() {
@@ -13,21 +14,42 @@ function addText(textInput, colorInput) {
     line.appendChild(span);
 }
 function sendLine() {
-    console.appendChild(line);
+    logs.appendChild(line);
     document.getElementById('last').remove();
     const p = document.createElement("p");
     const br = document.createElement('br');
     p.appendChild(br);
     p.id = 'last';
-    console.appendChild(p);
+    logs.appendChild(p);
     var objDiv = document.getElementById("console");
     objDiv.scrollTop = objDiv.scrollHeight;
 }
-function runCommand(command) {
+function error(message) {
     resetLine();
     addText('Error: ', 'darkred');
-    addText('Unknown Command', 'red');
+    addText(message, 'red');
     sendLine();
+}
+function clear() {
+    logs.innerHTML = '<p id="last"><br></p>';
+    resetLine();
+    addText('The console was cleared.', 'white');
+    sendLine();
+}
+function runCommand(command) {
+    if (command == 'clear') {
+        resetLine();
+        addText('Are you sure you want to clear the console? ', 'white');
+        addText('This cannot be undone.', 'red');
+        addText(' Run ', 'white');
+        addText('clear confirm', 'lightblue');
+        addText(' to confirm this choice.', 'white');
+        sendLine();
+    } else if (command == 'clear confirm') {
+        clear();
+    } else {
+        error('Unknown Command');
+    }
 }
 
 resetLine();

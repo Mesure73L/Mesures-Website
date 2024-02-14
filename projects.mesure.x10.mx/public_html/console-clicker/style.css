@@ -10,10 +10,12 @@
     position: relative;
     padding: 0px;
     overflow: scroll;
+    padding-bottom: 8px;
 }
 p {
     margin-top: 0px;
     margin-bottom: 0px;
+    font-size: 16px;
 }
 html, body {
     height: 100%;
@@ -36,9 +38,11 @@ html, body {
     background: none;
     border: none;
     color: white;
-    font-size: 1.05em;
+    font-size: 16px;
     outline: none;
     background-color: black;
+    border-top: 2px solid white;
+    margin-bottom: -8px;
 }
 #command::placeholder {
     color: gray;
