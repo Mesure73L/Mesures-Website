@@ -202,6 +202,11 @@ function cmdbuy(type, amount) {
         }
     }
 }
+function cpsClick() {
+    clicks += cps;
+    setTimeout('cpsClick()', 1000);
+}
+cpsClick();
 
 resetLine();
 addText('Loading ', 'lightgreen');
