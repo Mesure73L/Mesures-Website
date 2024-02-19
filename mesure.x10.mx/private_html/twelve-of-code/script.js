@@ -32,6 +32,13 @@ const ErrorToast = Swal.mixin({
         toast.onmouseleave = Swal.resumeTimer;
     }
 });
+
+Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
+    element.addEventListener("mouseout", () => {
+        element.classList.add("hovered");
+    });
+});
+
 // Fetching information.json
 function ajax(url) {
     return new Promise(function (resolve, reject) {
@@ -485,12 +492,16 @@ function initializeSettings() {
 
     settingsButton.addEventListener("click", () => {
         settingsElement.classList.toggle("noDisplay");
+        Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
+            element.classList.remove("hovered");
+        });
+
         if (!cman.user.username) {
-            cman.user.username = `User-${cman.random(1000000000, 9999999999)}`;
+            cman.user.username = cman.blankUserCookie.username;
         }
         if (!cman.user.seed) {
             const userCookie = cman.user;
-            userCookie.seed = cman.random(1000000000, 9999999999);
+            userCookie.seed = cman.blankUserCookie.seed;
             cman.user = userCookie;
         }
         usernameInput.value = cman.user.username;
