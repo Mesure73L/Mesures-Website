@@ -242,6 +242,13 @@ body {
     outline: none;
     border: 2px solid white;
     margin: 0 0.5rem;
+    transition: all 100ms ease-out;
+}
+
+#editSettings button:hover {
+    background-color: white;
+    color: #000721;
+    opacity: 0.8;
 }
 
 #editSettings textarea:disabled {
