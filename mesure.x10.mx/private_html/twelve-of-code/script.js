@@ -493,7 +493,7 @@ function copy(text) {
         document.execCommand("copy");
         document.body.removeChild(tempInput);
     } else {
-        navigator.clipboard.writeText(text).catch(function () {
+        navigator.clipboard.writeText(text).catch(() => {
             const tempInput = document.createElement("input");
             tempInput.value = text;
             document.body.appendChild(tempInput);
@@ -562,6 +562,7 @@ function initializeSettings() {
             ErrorToast.fire("The seed must be a 10 digit number that doesn't start with a 1.");
         }
     });
+
     // Event listener for when the export data button is clicked
     exportDataButton.addEventListener("click", () => {
         const inputValue = btoa(
@@ -573,7 +574,6 @@ function initializeSettings() {
         Swal.fire({
             title: "Export Data",
             input: "textarea",
-            // inputLabel: "This is your save data.",
             inputValue,
             inputAttributes: {
                 "aria-label": "Export Data",
@@ -598,6 +598,28 @@ function initializeSettings() {
                     icon: "success",
                     text: "Successfully downloaded."
                 });
+            }
+        });
+    });
+
+    // Event listener for when the import data button is clicked
+    importDataButton.addEventListener("click", () => {
+        Swal.fire({
+            title: "Import Data",
+            input: "textarea",
+            // inputLabel: "Paste or upload data exported from another device or browser.",
+            inputLabel: "Remember to export your data first!",
+            inputAttributes: {
+                "aria-label": "Import Data",
+                "title": "Import Data",
+                "style": "resize:none;cursor:text"
+            },
+            showDenyButton: true,
+            denyButtonText: "Upload",
+            showCloseButton: true
+        }).then(result => {
+            if (result.isDenied) {
+                document.getElementById("hiddenFileUpload").click();
             }
         });
     });
