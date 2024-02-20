@@ -4,7 +4,7 @@
 - --------------
 - 
 - Twelve of Code © 2024 by Mesure73L is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
-- Source code is available at https://github.com/Mesure73L/My-Website/tree/main.
+- Source code is available at https://github.com/Mesure73L/mesure.x10.mx/tree/main.
 - 
 - Thank you for your understanding.
 - 
@@ -507,8 +507,10 @@ label {
 }
 
 #hiddenFileUpload {
-    display: block;
-    visibility: hidden;
-    width: 0;
-    height: 0;
+    display: none;
+}
+
+label[for="hiddenFileUpload"] {
+    width: 100%;
+    height: 100%;
 }

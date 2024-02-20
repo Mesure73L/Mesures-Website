@@ -4,7 +4,7 @@
 - --------------
 - 
 - Twelve of Code ©️ 2024 by Mesure73L is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
-- Source code is available at https://github.com/Mesure73L/My-Website/tree/main.
+- Source code is available at https://github.com/Mesure73L/mesure.x10.mx/tree/main.
 - 
 - Thank you for your understanding.
 - 
@@ -32,6 +32,7 @@ const ErrorToast = Swal.mixin({
         toast.onmouseleave = Swal.resumeTimer;
     }
 });
+let dataInputUUID;
 
 Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
     element.addEventListener("mouseout", () => {
@@ -587,12 +588,14 @@ function initializeSettings() {
             showCloseButton: true
         }).then(result => {
             if (result.isConfirmed) {
+                // When copy to clipboard is clicked
                 copy(inputValue);
                 ErrorToast.fire({
                     icon: "success",
                     text: "Successfully copied to clipboard."
                 });
             } else if (result.isDenied) {
+                // When download file is clicked
                 download(inputValue);
                 ErrorToast.fire({
                     icon: "success",
@@ -603,24 +606,68 @@ function initializeSettings() {
     });
 
     // Event listener for when the import data button is clicked
-    importDataButton.addEventListener("click", () => {
-        Swal.fire({
+    importDataButton.addEventListener("click", async () => {
+        const {value: data} = await Swal.fire({
             title: "Import Data",
             input: "textarea",
-            // inputLabel: "Paste or upload data exported from another device or browser.",
-            inputLabel: "Remember to export your data first!",
             inputAttributes: {
                 "aria-label": "Import Data",
                 "title": "Import Data",
                 "style": "resize:none;cursor:text"
             },
             showDenyButton: true,
-            denyButtonText: "Upload",
-            showCloseButton: true
-        }).then(result => {
-            if (result.isDenied) {
+            denyButtonText: `Upload`,
+            showCloseButton: true,
+            preDeny: () => {
                 document.getElementById("hiddenFileUpload").click();
+                dataInputUUID = crypto.randomUUID();
+                return dataInputUUID;
             }
         });
+        handleDataInput(data);
     });
+}
+
+// Event listener for when a file is uploaded
+document.getElementById("hiddenFileUpload").addEventListener("change", event => {
+    const file = event.target.files[0];
+    if (file.type && file.type !== "text/plain") {
+        ErrorToast.fire("Please only upload text files.");
+        return;
+    }
+    const reader = new FileReader();
+    reader.addEventListener("load", fileReaderResult => {
+        handleDataInput(fileReaderResult.target.result);
+    });
+    reader.readAsText(file);
+});
+
+// Function to handle when data is submitted
+function handleDataInput(data) {
+    if (!data) {
+        ErrorToast.fire("You did not enter any data.");
+        return false;
+    }
+    if (data !== dataInputUUID) {
+        alert("Processed.");
+        console.warn(data);
+    }
+}
+
+function validateData(data) {
+    try {
+        data = JSON.parse(atob(data));
+        if (
+            Object.keys(data).length === 2 &&
+            data.completed &&
+            data.user.username &&
+            /^[1-9]\d{9}$/.test(data.user.seed)
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch {
+        return false;
+    }
 }
