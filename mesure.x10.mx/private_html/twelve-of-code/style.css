@@ -208,6 +208,7 @@ td::after {
     background-color: #000e43;
     padding: 10px;
     padding-bottom: 40px;
+    border-radius: 1.5rem;
 }
 
 body {
@@ -511,14 +512,4 @@ label {
     animation-fill-mode: forwards;
     -webkit-animation-direction: normal, alternate;
     animation-direction: normal, alternate;
-}
-
-#border-radius,
-label[for=border-radius] {
-    position: fixed;
-    top: 0;
-}
-
-#border-radius {
-    left: 8ch;
 }
