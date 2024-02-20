@@ -10,7 +10,6 @@
 - 
 */
 const active = {};
-let a;
 let cman;
 let hashChange = true;
 let yearsToHighlight = [],
@@ -615,8 +614,9 @@ function initializeSettings() {
                 "title": "Import Data",
                 "style": "resize:none;cursor:text"
             },
+            inputPlaceholder: "Paste your data here or upload it.",
             showDenyButton: true,
-            denyButtonText: `Upload`,
+            denyButtonText: `Upload File`,
             showCloseButton: true,
             preDeny: () => {
                 document.getElementById("hiddenFileUpload").click();
@@ -649,8 +649,21 @@ function handleDataInput(data) {
         return false;
     }
     if (data !== dataInputUUID) {
-        alert("Processed.");
-        console.warn(data);
+        if (validateData(data)) {
+            data = validateData(data);
+            cman.completed = data.completed;
+            cman.user = data.user;
+            ErrorToast.fire({
+                icon: "success",
+                text: "Data successfully changed. Reloading..."
+            }).then(() => {
+                location.reload();
+            });
+        } else {
+            ErrorToast.fire({
+                html: "The data you have entered is invalid."
+            });
+        }
     }
 }
 
@@ -663,7 +676,7 @@ function validateData(data) {
             data.user.username &&
             /^[1-9]\d{9}$/.test(data.user.seed)
         ) {
-            return true;
+            return data;
         } else {
             return false;
         }
