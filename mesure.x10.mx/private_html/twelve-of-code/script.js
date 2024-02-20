@@ -507,7 +507,7 @@ function download(content) {
     const temporaryAnchor = document.createElement("a");
     const blob = new Blob([content], {type: "text/plain"});
     temporaryAnchor.href = window.URL.createObjectURL(blob);
-    temporaryAnchor.download = "penis.txt";
+    temporaryAnchor.download = "twelve-of-code-export.txt";
     temporaryAnchor.click();
 }
 
