@@ -602,3 +602,9 @@ function initializeSettings() {
         });
     });
 }
+
+document.getElementById("border-radius").addEventListener("input", () => {
+    const value = document.getElementById("border-radius").value + "rem";
+    document.getElementById("br-label").innerText = value;
+    document.getElementById("editSettings").style.borderRadius = value;
+});

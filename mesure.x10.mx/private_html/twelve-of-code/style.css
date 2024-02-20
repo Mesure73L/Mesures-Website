@@ -512,3 +512,13 @@ label {
     -webkit-animation-direction: normal, alternate;
     animation-direction: normal, alternate;
 }
+
+#border-radius,
+label[for=border-radius] {
+    position: fixed;
+    top: 0;
+}
+
+#border-radius {
+    left: 8ch;
+}
