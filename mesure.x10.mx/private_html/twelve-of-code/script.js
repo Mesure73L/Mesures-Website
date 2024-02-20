@@ -484,34 +484,74 @@ for (let i = 0; i < noDoubleElements.length; i++) {
 }
 
 // Settings
+function copy(text) {
+    if (!navigator.clipboard) {
+        const tempInput = document.createElement("input");
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+    } else {
+        navigator.clipboard.writeText(text).catch(function () {
+            const tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+        });
+    }
+}
+function download(content) {
+    const temporaryAnchor = document.createElement("a");
+    const blob = new Blob([content], {type: "text/plain"});
+    temporaryAnchor.href = window.URL.createObjectURL(blob);
+    temporaryAnchor.download = "export.txt";
+    temporaryAnchor.click();
+}
+
 function initializeSettings() {
     const settingsButton = document.getElementById("settings");
     const settingsElement = document.getElementById("editSettings");
     const usernameInput = document.getElementById("input-username");
     const seedInput = document.getElementById("input-seed");
+    const importDataButton = document.getElementById("import-data");
+    const exportDataButton = document.getElementById("export-data");
 
+    // Event listener for when the settings button is clicked
     settingsButton.addEventListener("click", () => {
+        // Toggle the display of the settings
         settingsElement.classList.toggle("noDisplay");
+        // Reset the hovered class on the import and export data buttons
         Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
             element.classList.remove("hovered");
         });
 
+        // Set the value of the username cookie to a random username if there is no username
         if (!cman.user.username) {
             cman.user.username = cman.blankUserCookie.username;
         }
+
+        // Set the value of the seed cookie to a random seed if there is no seed
         if (!cman.user.seed) {
             const userCookie = cman.user;
             userCookie.seed = cman.blankUserCookie.seed;
             cman.user = userCookie;
         }
+        // Set the values of the username and seed inputs to the values of the username and seed cookies, respectively
         usernameInput.value = cman.user.username;
         seedInput.value = cman.user.seed;
     });
+
+    // Event listener for when the username input is changed
     usernameInput.addEventListener("change", () => {
         const userCookie = cman.user;
         userCookie.username = usernameInput.value;
         cman.user = userCookie;
     });
+
+    // Event listener for when the seed input is changed
     seedInput.addEventListener("change", () => {
         if (/^[1-9]\d{9}$/.test(seedInput.value)) {
             const userCookie = cman.user;
@@ -519,6 +559,46 @@ function initializeSettings() {
             cman.user = userCookie;
         } else {
             seedInput.value = cman.user.seed;
+            ErrorToast.fire("The seed must be a 10 digit number that doesn't start with a 1.");
         }
+    });
+    // Event listener for when the export data button is clicked
+    exportDataButton.addEventListener("click", () => {
+        const inputValue = btoa(
+            JSON.stringify({
+                completed: cman.completed,
+                user: cman.user
+            })
+        );
+        Swal.fire({
+            title: "Export Data",
+            input: "textarea",
+            // inputLabel: "This is your save data.",
+            inputValue,
+            inputAttributes: {
+                "aria-label": "Export Data",
+                "title": "Export Data",
+                "style": "resize:none;cursor:text",
+                "disabled": ""
+            },
+            showDenyButton: true,
+            denyButtonText: "Download",
+            confirmButtonText: "Copy",
+            showCloseButton: true
+        }).then(result => {
+            if (result.isConfirmed) {
+                copy(inputValue);
+                ErrorToast.fire({
+                    icon: "success",
+                    text: "Successfully copied to clipboard."
+                });
+            } else if (result.isDenied) {
+                download(inputValue);
+                ErrorToast.fire({
+                    icon: "success",
+                    text: "Successfully downloaded."
+                });
+            }
+        });
     });
 }
