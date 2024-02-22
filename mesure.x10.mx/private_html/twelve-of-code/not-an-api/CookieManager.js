@@ -22,7 +22,10 @@ class CookieManager {
                 try {
                     return JSON.parse(atob(c.substring(name.length, c.length)));
                 } catch (e) {
-                    console.warn('There was an error retrieving a cookie, returning "" instead.', e);
+                    console.warn(
+                        'There was an error retrieving a cookie, returning "" instead.',
+                        e
+                    );
                     return "";
                 }
             }
@@ -53,12 +56,13 @@ class CookieManager {
     }
     updateChallengeStatus(challengeLocation, newChallengeStatus) {
         const newCookie = this._completed;
-        try {
-            newCookie[challengeLocation[0]][challengeLocation[1]][challengeLocation[2]] = newChallengeStatus;
-        } catch (e) {
-            console.warn("Attempted to update a challenge that doesn't exist.", e);
-        }
+        if (!newCookie[challengeLocation[0]]) newCookie[challengeLocation[0]] = {};
+        if (!newCookie[challengeLocation[0]][challengeLocation[1]])
+            newCookie[challengeLocation[0]][challengeLocation[1]] = {};
+        newCookie[challengeLocation[0]][challengeLocation[1]][challengeLocation[2]] =
+            newChallengeStatus;
         this.completed = newCookie;
+        location.reload();
     }
     get blankCookie() {
         const blankCookie = {};
@@ -72,6 +76,9 @@ class CookieManager {
         return blankCookie;
     }
     get blankUserCookie() {
-        return {username: `User-${this.random(1000000000, 9999999999)}`, seed: this.random(1000000000, 9999999999)};
+        return {
+            username: `User-${this.random(1000000000, 9999999999)}`,
+            seed: this.random(1000000000, 9999999999)
+        };
     }
 }

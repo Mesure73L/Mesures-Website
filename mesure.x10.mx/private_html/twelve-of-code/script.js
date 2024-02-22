@@ -4,13 +4,12 @@
 - --------------
 - 
 - Twelve of Code ©️ 2024 by Mesure73L is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
-- Source code is available at https://github.com/Mesure73L/My-Website/tree/main.
+- Source code is available at https://github.com/Mesure73L/mesure.x10.mx/tree/main.
 - 
 - Thank you for your understanding.
 - 
 */
 const active = {};
-let a;
 let cman;
 let hashChange = true;
 let yearsToHighlight = [],
@@ -32,6 +31,14 @@ const ErrorToast = Swal.mixin({
         toast.onmouseleave = Swal.resumeTimer;
     }
 });
+let dataInputUUID;
+
+Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
+    element.addEventListener("mouseout", () => {
+        element.classList.add("hovered");
+    });
+});
+
 // Fetching information.json
 function ajax(url) {
     return new Promise(function (resolve, reject) {
@@ -81,7 +88,7 @@ function initializeCookies() {
 
 // See what challenge the user wants to skip to
 function navigateURL() {
-    const hash = window.location.hash.slice(1).split('-');
+    const hash = window.location.hash.slice(1).split("-");
     if (active.year) {
         yearSelect(active.year, false);
     }
@@ -91,39 +98,41 @@ function navigateURL() {
     if (active.challenge) {
         challengeSelect(active.challenge, false);
     }
-    const yearElement = document.getElementById(`syear-${hash[0]}`)
-    const monthElement = document.getElementById(`smonth-${hash[1]}`)
-    const challengeElement = document.getElementById(`schallenge-${hash[2]}`)
-    if (/^\d{4}$/.exec(hash[0]) && !yearElement.hasAttribute('data-unreleased')) {
+    const yearElement = document.getElementById(`syear-${hash[0]}`);
+    const monthElement = document.getElementById(`smonth-${hash[1]}`);
+    const challengeElement = document.getElementById(`schallenge-${hash[2]}`);
+    if (/^\d{4}$/.exec(hash[0]) && !yearElement.hasAttribute("data-unreleased")) {
         yearSelect(hash[0], false);
-        if (/^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)$/.exec(hash[1]) && !monthElement.hasAttribute('data-unreleased')) {
+        if (
+            /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)$/.exec(hash[1]) &&
+            !monthElement.hasAttribute("data-unreleased")
+        ) {
             monthSelect(hash[1], false);
-            if (/^[1-3]$/.exec(hash[2]) && !challengeElement.hasAttribute('data-unreleased')) {
+            if (/^[1-3]$/.exec(hash[2]) && !challengeElement.hasAttribute("data-unreleased")) {
                 challengeSelect(hash[2], false);
             } else {
-                window.location.hash = `#${hash[0]}-${hash[1]}`
+                window.location.hash = `#${hash[0]}-${hash[1]}`;
             }
         } else {
-            window.location.hash = `#${hash[0]}`
+            window.location.hash = `#${hash[0]}`;
         }
     } else {
-        hashChange = false
-        window.location.hash = '#temporary';
+        hashChange = false;
+        window.location.hash = "#temporary";
         setTimeout(() => {
-            hashChange = false
-            window.location.hash = '#';
-        }, 1)
+            hashChange = false;
+            window.location.hash = "#";
+        }, 1);
     }
 }
 
-window.onhashchange = function() {
+window.onhashchange = () => {
     if (hashChange) {
         navigateURL();
     } else {
         hashChange = true;
     }
-}
-
+};
 
 // Year Selection
 function yearSelect(year, changeHash) {
@@ -144,7 +153,7 @@ function yearSelect(year, changeHash) {
             document.getElementById("select-month").classList.add("noDisplay");
             if (changeHash) {
                 hashChange = false;
-                window.location.hash = '#';
+                window.location.hash = "#";
             }
         } else {
             // Otherwise, make the previous active year not active anymore
@@ -163,12 +172,14 @@ function yearSelect(year, changeHash) {
             for (let i = 0; i < months.length; i++) {
                 // For every month, hide it, and remove select-active if it has it
                 document.getElementById(`smonth-${months[i]}`).classList.add("noDisplay");
-                document.getElementById(`smonth-${months[i]}`).setAttribute("data-unreleased", "")
+                document.getElementById(`smonth-${months[i]}`).setAttribute("data-unreleased", "");
                 document.getElementById(`smonth-${months[i]}`).classList.remove("select-active");
             }
             for (let i = 1; i <= 3; i++) {
                 // For every challenge, if it has select-active, remove it.
-                document.getElementById(`schallenge-${i.toString()}`).classList.remove("select-active");
+                document
+                    .getElementById(`schallenge-${i.toString()}`)
+                    .classList.remove("select-active");
             }
             for (let i = 0; i < activeMonths.length; i++) {
                 const currentMonth = document.getElementById(`smonth-${activeMonths[i]}`);
@@ -244,7 +255,7 @@ function monthSelect(month, changeHash) {
                 document.getElementById(`smonth-${active.month}`).classList.remove("select-active");
             }
             if (active.challenge) {
-                challengeSelect(active.challenge, false)
+                challengeSelect(active.challenge, false);
             }
             // Then, make the selected month active.
             document.getElementById(`smonth-${month}`).classList.add("select-active");
@@ -262,9 +273,13 @@ function monthSelect(month, changeHash) {
         for (let j = 1; j <= 3; j++) {
             if (cman.information[active.year][month][j.toString()] == false) {
                 // For every challenge, if it is unreleased, give it data-unreleased.
-                document.getElementById("schallenge-" + j.toString()).setAttribute("data-unreleased", "");
+                document
+                    .getElementById("schallenge-" + j.toString())
+                    .setAttribute("data-unreleased", "");
                 // Then, if it has select-active, remove select-active.
-                document.getElementById("schallenge-" + j.toString()).classList.remove("select-active");
+                document
+                    .getElementById("schallenge-" + j.toString())
+                    .classList.remove("select-active");
             }
             if (cman.completed[active.year]) {
                 // If the completed cookie includes the current year,
@@ -272,14 +287,20 @@ function monthSelect(month, changeHash) {
                     // Then, if the completed cookie includes the current month,
                     if (cman.completed[active.year][month][j.toString()]) {
                         // Then, if the current challenge is completed, add the completed class.
-                        document.getElementById("schallenge-" + j.toString()).classList.add("completed");
+                        document
+                            .getElementById("schallenge-" + j.toString())
+                            .classList.add("completed");
                     } else {
                         // Otherwise, remove the completed class if it has it.
-                        document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
+                        document
+                            .getElementById("schallenge-" + j.toString())
+                            .classList.remove("completed");
                     }
                     // If the completed cookie does not include the current month, the remove the completed class if it has it.
                 } else {
-                    document.getElementById("schallenge-" + j.toString()).classList.remove("completed");
+                    document
+                        .getElementById("schallenge-" + j.toString())
+                        .classList.remove("completed");
                 }
                 // Otherwise, if the completed cookie does not include the current year, then remove the completed class if it has it.
             } else {
@@ -306,7 +327,9 @@ function challengeSelect(challenge, changeHash) {
         } else {
             // Otherwise, if there is an active challenge, remove select-active from it.
             if (active.challenge) {
-                document.getElementById(`schallenge-${active.challenge}`).classList.remove("select-active");
+                document
+                    .getElementById(`schallenge-${active.challenge}`)
+                    .classList.remove("select-active");
             }
             // Then, give the newly selected challenge select-active.
             document.getElementById(`schallenge-${challenge}`).classList.add("select-active");
@@ -324,9 +347,7 @@ function challengeSelect(challenge, changeHash) {
                     // Next, set the contents of the challenge element to the challenge specified at the challenge page for the selected challenge.
                     document.getElementById("challenge").innerHTML = text;
                     const F = new Function(
-                        document.getElementById(
-                            "challenge-javascript"
-                        ).innerText
+                        document.getElementById("challenge-javascript").innerText
                     );
                     F();
                 });
@@ -395,6 +416,7 @@ document.getElementById("schallenge-3").addEventListener("click", () => {
 function highlightChallenges() {
     // For each year, count the number of challenges.
     for (const year in cman.completed) {
+        if (!(year in cman.information)) break;
         let yearCount = 0;
         let partial = false;
         const yearCookieObj = cman.completed[year];
@@ -463,30 +485,75 @@ for (let i = 0; i < noDoubleElements.length; i++) {
 }
 
 // Settings
+function copy(text) {
+    if (!navigator.clipboard) {
+        const tempInput = document.createElement("input");
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+    } else {
+        navigator.clipboard.writeText(text).catch(() => {
+            const tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+        });
+    }
+}
+function download(content) {
+    const temporaryAnchor = document.createElement("a");
+    const blob = new Blob([content], {type: "text/plain"});
+    temporaryAnchor.href = window.URL.createObjectURL(blob);
+    temporaryAnchor.download = "twelve-of-code-data.txt";
+    temporaryAnchor.click();
+}
+
 function initializeSettings() {
     const settingsButton = document.getElementById("settings");
     const settingsElement = document.getElementById("editSettings");
     const usernameInput = document.getElementById("input-username");
     const seedInput = document.getElementById("input-seed");
+    const importDataButton = document.getElementById("import-data");
+    const exportDataButton = document.getElementById("export-data");
 
+    // Event listener for when the settings button is clicked
     settingsButton.addEventListener("click", () => {
+        // Toggle the display of the settings
         settingsElement.classList.toggle("noDisplay");
+        window.location.hash = "#settings";
+        // Reset the hovered class on the import and export data buttons
+        Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
+            element.classList.remove("hovered");
+        });
+
+        // Set the value of the username cookie to a random username if there is no username
         if (!cman.user.username) {
-            cman.user.username = `User-${cman.random(1000000000, 9999999999)}`;
+            cman.user.username = cman.blankUserCookie.username;
         }
+
+        // Set the value of the seed cookie to a random seed if there is no seed
         if (!cman.user.seed) {
             const userCookie = cman.user;
-            userCookie.seed = cman.random(1000000000, 9999999999);
+            userCookie.seed = cman.blankUserCookie.seed;
             cman.user = userCookie;
         }
+        // Set the values of the username and seed inputs to the values of the username and seed cookies, respectively
         usernameInput.value = cman.user.username;
         seedInput.value = cman.user.seed;
     });
+
+    // Event listener for when the username input is changed
     usernameInput.addEventListener("change", () => {
         const userCookie = cman.user;
         userCookie.username = usernameInput.value;
         cman.user = userCookie;
     });
+
+    // Event listener for when the seed input is changed
     seedInput.addEventListener("change", () => {
         if (/^[1-9]\d{9}$/.test(seedInput.value)) {
             const userCookie = cman.user;
@@ -494,6 +561,151 @@ function initializeSettings() {
             cman.user = userCookie;
         } else {
             seedInput.value = cman.user.seed;
+            ErrorToast.fire("The seed must be a 10 digit number that doesn't start with a 1.");
         }
     });
+
+    // Event listener for when the export data button is clicked
+    exportDataButton.addEventListener("click", () => {
+        const inputValue = btoa(
+            JSON.stringify({
+                completed: cman.completed,
+                user: cman.user
+            })
+        );
+        Swal.fire({
+            title: "Export Data",
+            input: "textarea",
+            inputValue,
+            inputAttributes: {
+                "aria-label": "Export Data",
+                "title": "Export Data",
+                "style": "resize:none;cursor:text",
+                "disabled": ""
+            },
+            showDenyButton: true,
+            denyButtonText: "Download",
+            confirmButtonText: "Copy",
+            showCloseButton: true
+        }).then(result => {
+            if (result.isConfirmed) {
+                // When copy to clipboard is clicked
+                copy(inputValue);
+                ErrorToast.fire({
+                    icon: "success",
+                    text: "Successfully copied to clipboard."
+                });
+            } else if (result.isDenied) {
+                // When download file is clicked
+                download(inputValue);
+                ErrorToast.fire({
+                    icon: "success",
+                    text: "Successfully downloaded."
+                });
+            }
+        });
+    });
+
+    // Event listener for when the import data button is clicked
+    importDataButton.addEventListener("click", async () => {
+        const response = await Swal.fire({
+            title: "Import Data",
+            input: "textarea",
+            inputAttributes: {
+                "aria-label": "Import Data",
+                "title": "Import Data",
+                "style": "resize:none;cursor:text"
+            },
+            inputPlaceholder: "Paste your data here or upload it.",
+            showDenyButton: true,
+            denyButtonText: `Upload File`,
+            showCloseButton: true,
+            preDeny: () => {
+                document.getElementById("hiddenFileUpload").click();
+                dataInputUUID = crypto.randomUUID();
+                return dataInputUUID;
+            }
+        });
+        if (response.isConfirmed || response.isDenied) {
+            handleDataInput(response.value);
+        }
+    });
+}
+
+// Event listener for when a file is uploaded
+document.getElementById("hiddenFileUpload").addEventListener("change", event => {
+    const file = event.target.files[0];
+    if (file.type && file.type !== "text/plain") {
+        ErrorToast.fire("Please only upload text files.");
+        return;
+    }
+    const reader = new FileReader();
+    reader.addEventListener("load", fileReaderResult => {
+        handleDataInput(fileReaderResult.target.result);
+    });
+    reader.readAsText(file);
+});
+
+// Function to handle when data is submitted
+function handleDataInput(data) {
+    if (!data) {
+        ErrorToast.fire("You did not enter any data.");
+        return false;
+    }
+    if (data !== dataInputUUID) {
+        if (validateData(data)) {
+            data = validateData(data);
+            cman.completed = data.completed;
+            cman.user = data.user;
+            ErrorToast.fire({
+                icon: "success",
+                text: "Data successfully changed. Reloading..."
+            }).then(() => {
+                location.reload();
+            });
+        } else {
+            ErrorToast.fire({
+                html: "The data you have entered is invalid."
+            });
+        }
+    }
+}
+
+function validateData(data) {
+    try {
+        data = JSON.parse(atob(data));
+        if (
+            Object.keys(data).length === 2 &&
+            data.completed &&
+            data.user.username &&
+            /^[1-9]\d{9}$/.test(data.user.seed)
+        ) {
+            const completed = data.completed;
+            for (const year in completed) {
+                if (!(year in cman.information)) {
+                    delete completed[year];
+                } else {
+                    const yearObj = completed[year];
+                    for (const month in yearObj) {
+                        if (!(month in cman.information[year].months)) {
+                            delete completed[year][month];
+                        } else {
+                            const monthObj = completed[year][month];
+                            for (const challenge in monthObj) {
+                                if (!(challenge in cman.information[year][month])) {
+                                    delete completed[year][month][challenge];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            data.completed = completed;
+            return data;
+        } else {
+            return false;
+        }
+    } catch {
+        return false;
+    }
 }
