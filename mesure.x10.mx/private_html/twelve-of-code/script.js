@@ -285,16 +285,24 @@ function monthSelect(month, changeHash) {
                 // If the completed cookie includes the current year,
                 if (cman.completed[active.year][month]) {
                     // Then, if the completed cookie includes the current month,
-                    if (cman.completed[active.year][month][j.toString()]) {
+                    if (cman.completed[active.year][month][j.toString()] === true) {
                         // Then, if the current challenge is completed, add the completed class.
                         document
                             .getElementById("schallenge-" + j.toString())
                             .classList.add("completed");
+                    } else if (cman.completed[active.year][month][j.toString()] === 0.5) {
+                        // Else, if it is in progress, then add the in-progress class to it.
+                        document
+                            .getElementById("schallenge-" + j.toString())
+                            .classList.add("in-progress");
                     } else {
-                        // Otherwise, remove the completed class if it has it.
+                        // Otherwise, remove the completed and in-progress classes if it has them.
                         document
                             .getElementById("schallenge-" + j.toString())
                             .classList.remove("completed");
+                        document
+                            .getElementById("schallenge-" + j.toString())
+                            .classList.remove("in-progress");
                     }
                     // If the completed cookie does not include the current month, the remove the completed class if it has it.
                 } else {
@@ -402,14 +410,10 @@ months.forEach(month => {
     });
 });
 
-document.getElementById("schallenge-1").addEventListener("click", () => {
-    challengeSelect("1", true);
-});
-document.getElementById("schallenge-2").addEventListener("click", () => {
-    challengeSelect("2", true);
-});
-document.getElementById("schallenge-3").addEventListener("click", () => {
-    challengeSelect("3", true);
+[1, 2, 3].forEach(challenge => {
+    document.getElementById("schallenge-" + challenge).addEventListener("click", () => {
+        challengeSelect(challenge, true);
+    });
 });
 
 // Highlighting Completed Challenges
@@ -428,9 +432,11 @@ function highlightChallenges() {
             for (const challenge in monthCookieObj) {
                 challengeValue = monthCookieObj[challenge];
                 if (challengeValue) {
-                    monthCount++;
                     partial = true;
                     partialMonth = true;
+                    if (challengeValue === true) {
+                        monthCount++;
+                    }
                 }
             }
             // If all 3 challenges are completed, append it to monthsToHighlight.
@@ -653,8 +659,8 @@ function handleDataInput(data) {
         return false;
     }
     if (data !== dataInputUUID) {
-        if (validateData(data)) {
-            data = validateData(data);
+        data = validateData(data);
+        if (data) {
             cman.completed = data.completed;
             cman.user = data.user;
             ErrorToast.fire({
@@ -665,7 +671,7 @@ function handleDataInput(data) {
             });
         } else {
             ErrorToast.fire({
-                html: "The data you have entered is invalid."
+                text: "The data you have entered is invalid."
             });
         }
     }
@@ -687,7 +693,7 @@ function validateData(data) {
                 } else {
                     const yearObj = completed[year];
                     for (const month in yearObj) {
-                        if (!(month in cman.information[year].months)) {
+                        if (!(month in cman.information[year])) {
                             delete completed[year][month];
                         } else {
                             const monthObj = completed[year][month];
