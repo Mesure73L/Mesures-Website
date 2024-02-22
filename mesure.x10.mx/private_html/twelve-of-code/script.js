@@ -607,7 +607,7 @@ function initializeSettings() {
 
     // Event listener for when the import data button is clicked
     importDataButton.addEventListener("click", async () => {
-        const {value: data} = await Swal.fire({
+        const response = await Swal.fire({
             title: "Import Data",
             input: "textarea",
             inputAttributes: {
@@ -625,7 +625,9 @@ function initializeSettings() {
                 return dataInputUUID;
             }
         });
-        handleDataInput(data);
+        if (response.isConfirmed) {
+            handleDataInput(response.value);
+        }
     });
 }
 
