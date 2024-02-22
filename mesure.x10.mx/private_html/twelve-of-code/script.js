@@ -523,6 +523,7 @@ function initializeSettings() {
     settingsButton.addEventListener("click", () => {
         // Toggle the display of the settings
         settingsElement.classList.toggle("noDisplay");
+        window.location.hash = "#settings";
         // Reset the hovered class on the import and export data buttons
         Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
             element.classList.remove("hovered");
@@ -676,6 +677,27 @@ function validateData(data) {
             data.user.username &&
             /^[1-9]\d{9}$/.test(data.user.seed)
         ) {
+            const completed = data.completed;
+            for (const year in completed) {
+                if (!(year in cman.information)) {
+                    delete completed[year];
+                } else {
+                    const yearObj = completed[year];
+                    for (const month in yearObj) {
+                        if (!(month in cman.information[year].months)) {
+                            delete completed[year][month];
+                        } else {
+                            const monthObj = completed[year][month];
+                            for (const challenge in monthObj) {
+                                if (!(challenge in cman.information[year][month])) {
+                                    delete completed[year][month][challenge];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            data.completed = completed;
             return data;
         } else {
             return false;
