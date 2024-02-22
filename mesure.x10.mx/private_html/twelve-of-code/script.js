@@ -126,7 +126,7 @@ function navigateURL() {
     }
 }
 
-window.onhashchange = function () {
+window.onhashchange = () => {
     if (hashChange) {
         navigateURL();
     } else {
