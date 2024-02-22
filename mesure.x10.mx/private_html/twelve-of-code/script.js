@@ -416,6 +416,7 @@ document.getElementById("schallenge-3").addEventListener("click", () => {
 function highlightChallenges() {
     // For each year, count the number of challenges.
     for (const year in cman.completed) {
+        if (!(year in cman.information)) break;
         let yearCount = 0;
         let partial = false;
         const yearCookieObj = cman.completed[year];
@@ -507,7 +508,7 @@ function download(content) {
     const temporaryAnchor = document.createElement("a");
     const blob = new Blob([content], {type: "text/plain"});
     temporaryAnchor.href = window.URL.createObjectURL(blob);
-    temporaryAnchor.download = "twelve-of-code-export.txt";
+    temporaryAnchor.download = "twelve-of-code-data.txt";
     temporaryAnchor.click();
 }
 
