@@ -626,7 +626,7 @@ function initializeSettings() {
                 return dataInputUUID;
             }
         });
-        if (response.isConfirmed) {
+        if (response.isConfirmed || response.isDenied) {
             handleDataInput(response.value);
         }
     });
