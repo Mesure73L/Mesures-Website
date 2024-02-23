@@ -7,7 +7,6 @@
 <img src="https://img.shields.io/badge/Issues-gray?style=for-the-badge" alt="Issues"><img src="https://img.shields.io/github/issues/mesure73l/mesures-website?style=for-the-badge&amp;label=&amp;color=orange" alt="GitHub open issues"><img src="https://img.shields.io/github/issues-closed/mesure73l/mesures-website?style=for-the-badge&amp;label=&amp;color=orange" alt="GitHub closed issues">
 <img src="https://img.shields.io/badge/Pull%20Requests-gray?style=for-the-badge" alt="Pull Requests"><img src="https://img.shields.io/github/issues-pr/mesure73l/mesures-website?style=for-the-badge&amp;label=&amp;color=red" alt="GitHub open pull requests"><img src="https://img.shields.io/github/issues-pr-closed/mesure73l/mesures-website?style=for-the-badge&amp;label=&amp;color=red" alt="GitHub closed pull requests">
 
-
 <p align="center">This is the source code for my website.<br>
 Licensed with CC BY-NC-SA 4.0.</p>
 
