@@ -12,18 +12,14 @@
 
 <h2>December 2023, Challenge 1</h2>
 <p>
-    Add <span id="user-seed-first-digit"></span> to
-    <span id="user-seed-last-digit"></span>.
+    Add <span id="user-seed-first-digit"></span> to <span id="user-seed-last-digit"></span>.
     <input id="result" />
 </p>
-<script src="./../../../CookieManager.js"></script>
 <script id="challenge-javascript">
     document.getElementById("user-seed-first-digit").innerText = cman.user.seed
         .toString()
         .charAt(0);
-    document.getElementById("user-seed-last-digit").innerText = cman.user.seed
-        .toString()
-        .charAt(9);
+    document.getElementById("user-seed-last-digit").innerText = cman.user.seed.toString().charAt(9);
     document.getElementById("result").addEventListener("change", () => {
         if (
             document.getElementById("result").value ==
@@ -31,8 +27,10 @@
                 parseInt(cman.user.seed.toString().charAt(9))
         ) {
             alert("Correct!");
+            cman.updateChallengeStatus([2023, "dec", 1], true);
         } else {
             alert("Incorrect.");
+            cman.updateChallengeStatus([2023, "dec", 1], 0.5);
         }
     });
 </script>
