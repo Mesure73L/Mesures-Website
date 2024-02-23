@@ -68,6 +68,7 @@ Here are some useful resources:
 ```
 
 - [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
+- [GitHub Pull Request](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
 - [LiveShare](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) if working with other people often
 - [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) if working with Markdown often
 
