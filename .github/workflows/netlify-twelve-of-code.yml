@@ -1,4 +1,3 @@
-# .github/workflows/netlify.yml
 name: Build and Deploy to Netlify
 on:
   pull_request:
@@ -6,13 +5,10 @@ on:
 jobs:
   build:
     if: contains(github.event.pull_request.labels.*.name, 'twelve of code')
-    permissions: read-all
+    permissions: write-all
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-
-      # ( Build to ./dist or other directory... )
-
       - name: Deploy Twelve of Code to Netlify
         uses: nwtgck/actions-netlify@v2.0
         with:
