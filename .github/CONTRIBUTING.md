@@ -9,16 +9,16 @@ If you found a bug, follow these instructions:
 **Is there a security vulnerability?**
 
 - Yes
-  > Do not publicly report the issue. Instead, refer to our [Security Policy](https://github.com/Mesure73L/mesure.x10.mx/blob/main/.github/SECURITY.md).
+  - Do not publicly report the issue. Instead, refer to our [Security Policy](https://github.com/Mesure73L/mesure.x10.mx/blob/main/.github/SECURITY.md).
 - No
-  > Answer the following questions.
+  - Answer the following questions.
 
 **Do you know a patch?**
 
 - Yes
-  > Create a [bug report](https://github.com/Mesure73L/mesure.x10.mx/issues/new?assignees=&labels=bug&projects=&template=1-bug-report.yml) issue mentioning the issue, and say that you can patch it. Create a fork of the repository, make the patch, and create a pull request.
+  - Create a [bug report](https://github.com/Mesure73L/mesure.x10.mx/issues/new?assignees=&labels=bug&projects=&template=1-bug-report.yml) issue mentioning the issue, and say that you can patch it. Create a fork of the repository, make the patch, and create a pull request.
 - No
-  > Create a [bug report](https://github.com/Mesure73L/mesure.x10.mx/issues/new?assignees=&labels=bug&projects=&template=1-bug-report.yml) issue describing it with detail.
+  - Create a [bug report](https://github.com/Mesure73L/mesure.x10.mx/issues/new?assignees=&labels=bug&projects=&template=1-bug-report.yml) issue describing it with detail.
 
 ## Coding Conventions
 
@@ -68,7 +68,7 @@ Here are some useful resources:
 ```
 
 - [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
-- [GitHub Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
+- [GitHub Pull Requests & Issues](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
 - [LiveShare](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) if working with other people often
 - [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) if working with Markdown often
 
