@@ -26,11 +26,32 @@
             parseInt(cman.user.seed.toString().charAt(0)) +
                 parseInt(cman.user.seed.toString().charAt(9))
         ) {
-            alert("Correct!");
-            cman.updateChallengeStatus([2023, "dec", 1], true);
+            (async () => {
+                await Swal.fire({
+                    title: "Correct!",
+                    text: "This is a modal saying that you have successfully completed this challenge."
+                }).then(async () => {
+                    await ErrorToast.fire({
+                        text: "Challenge Completed. Reloading...",
+                        icon: "success"
+                    });
+                });
+                if (cman.completed[2023].dec[1] !== true) {
+                    cman.updateChallengeStatus([2023, "dec", 1], true);
+                }
+            })();
         } else {
-            alert("Incorrect.");
-            cman.updateChallengeStatus([2023, "dec", 1], 0.5);
+            (async () => {
+                await Swal.fire({
+                    title: "Incorrect. :(",
+                    text: "This is a modal saying that you have unsuccessfully completed this challenge."
+                }).then(async () => {
+                    await ErrorToast.fire({text: "Challenge Answered Incorrectly. Reloading..."});
+                });
+                if (cman.completed[2023].dec[1] !== 0.5) {
+                    cman.updateChallengeStatus([2023, "dec", 1], 0.5);
+                }
+            })();
         }
     });
 </script>
