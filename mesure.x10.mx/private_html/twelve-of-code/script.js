@@ -349,16 +349,9 @@ function challengeSelect(challenge, changeHash) {
                 hashChange = false;
                 window.location.hash = `${active.year}-${active.month}-${active.challenge}`;
             }
-            fetch(`./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`)
-                .then(res => res.text())
-                .then(text => {
-                    // Next, set the contents of the challenge element to the challenge specified at the challenge page for the selected challenge.
-                    document.getElementById("challenge").innerHTML = text;
-                    const F = new Function(
-                        document.getElementById("challenge-javascript").innerText
-                    );
-                    F();
-                });
+            document.getElementById(
+                "challenge"
+            ).src = `./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`;
         }
     }
 }

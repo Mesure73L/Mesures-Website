@@ -390,7 +390,9 @@ label {
 
 #challenge {
     margin: unset auto;
-    text-align: center;
+    border: 0px;
+    outline: none;
+    width: 90%;
 }
 
 @-webkit-keyframes hvr-bob {
