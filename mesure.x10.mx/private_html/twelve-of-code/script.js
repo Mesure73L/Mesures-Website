@@ -355,6 +355,7 @@ function challengeSelect(challenge, changeHash) {
             iframe.src = `./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`;
             document.getElementById("challenge").appendChild(iframe);
             iframe.style.overflowY = "visible";
+            iframe.setAttribute("scrolling", "no")
             iframe.addEventListener("load", () => {
                 iframe.height = iframe.contentWindow.document.body.scrollHeight;
             })
