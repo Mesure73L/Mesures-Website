@@ -357,7 +357,9 @@ function challengeSelect(challenge, changeHash) {
             iframe.style.overflowY = "visible";
             iframe.setAttribute("scrolling", "no")
             iframe.addEventListener("load", () => {
+                setTimeout(() => {
                 iframe.height = iframe.contentWindow.document.body.scrollHeight;
+                }, 100);
             })
         }
     }
