@@ -354,7 +354,9 @@ function challengeSelect(challenge, changeHash) {
             iframe.id = "challengeIframe";
             iframe.src = `./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`;
             document.getElementById("challenge").appendChild(iframe);
+            alert(iframe.height)
             iframe.height = iframe.contentWindow.document.body.scrollHeight;
+            alert(iframe.height)
         }
     }
 }
