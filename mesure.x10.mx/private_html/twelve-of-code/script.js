@@ -39,6 +39,11 @@ Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
     });
 });
 
+function resizeIframeToFitContent(iframe) {
+    iframe.width = iframe.contentWindow.document.body.scrollWidth;
+    iframe.height = iframe.contentWindow.document.body.scrollHeight;
+}
+
 // Fetching information.json
 function ajax(url) {
     return new Promise(function (resolve, reject) {
@@ -349,9 +354,12 @@ function challengeSelect(challenge, changeHash) {
                 hashChange = false;
                 window.location.hash = `${active.year}-${active.month}-${active.challenge}`;
             }
-            document.getElementById(
-                "challenge"
-            ).src = `./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`;
+            document.getElementById("challengeIframe").remove();
+            const iframe = document.createElement("iframe");
+            iframe.id = "challengeIframe";
+            iframe.src = `./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`;
+            iframe.onload = alert("loaded");
+            document.getElementById("challenge").appendChild(iframe);
         }
     }
 }
