@@ -358,7 +358,6 @@ function challengeSelect(challenge, changeHash) {
             const iframe = document.createElement("iframe");
             iframe.id = "challengeIframe";
             iframe.src = `./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`;
-            iframe.onload = alert("loaded");
             document.getElementById("challenge").appendChild(iframe);
         }
     }
