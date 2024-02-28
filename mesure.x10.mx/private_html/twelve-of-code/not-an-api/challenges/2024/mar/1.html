@@ -56,16 +56,12 @@ Wholly Guacamole</code></pre>
             <span class="blue"
                 >https://mesure.x10.mx/twelve-of-code/api/challenges/2024/mar/1/api.php</span
             >. However, this is not enough information. You need to input your seed and the input,
-            both as paramaters. Your starting URL is this:<br />
-            <span class="yellow"
-                >https://mesure.x10.mx/twelve-of-code/api/challenges/2024/mar/1/api.php?seed=I_NEED_HELP_TO_FIGURE_THIS_OUT&data=I_NEED_HELP_TO_FIGURE_THIS_OUT</span
-            >
+            both as paramaters.
         </p>
 
         <script src="../../../CookieManager.js"></script>
         <script src="../../../SeedManager.js"></script>
         <script>
-            const sman2024mar1 = new SeedManager(3568672067, ["randomValue"]);
             const nachoToppingBrands = [
                 "Amy's",
                 "Applegate Organics",
@@ -240,6 +236,14 @@ Wholly Guacamole</code></pre>
                 "Zaaschila",
                 "Zapp's"
             ];
+
+            let randomValues2024mar1 = [];
+
+            for (i = 0; i < Math.floor((nachoToppingBrands.length / 4) * 3); i++) {
+                randomValues2024mar1.push(`randomValue${i}`);
+            }
+
+            const sman2024mar1 = new SeedManager(window.parent.seed, randomValues2024mar1);
         </script>
     </body>
 </html>
