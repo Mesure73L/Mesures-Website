@@ -9,6 +9,7 @@
 - Thank you for your understanding.
 - 
 */
+const a = "as";
 const active = {};
 let cman;
 let hashChange = true;
@@ -37,6 +38,12 @@ Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
     element.addEventListener("mouseout", () => {
         element.classList.add("hovered");
     });
+});
+
+window.addEventListener("message", event => {
+    if (event.data === "give me your seed please") {
+        event.source.postMessage({message: "sure!", CookieManager: cman});
+    }
 });
 
 // Fetching information.json
@@ -239,7 +246,7 @@ function monthSelect(month, changeHash) {
     if (!monthElement.hasAttribute("data-unreleased")) {
         // If the month that was clicked on is the active month, hide everything.
         if (month == active.month) {
-            if (active.challenge != undefined) {
+            if (active.challenge) {
                 challengeSelect(active.challenge, false);
             }
             monthElement.classList.remove("select-active");
@@ -349,16 +356,19 @@ function challengeSelect(challenge, changeHash) {
                 hashChange = false;
                 window.location.hash = `${active.year}-${active.month}-${active.challenge}`;
             }
-            document.getElementById("challengeIframe").remove();
+            try {
+                document.getElementById("challengeIframe").remove();
+            } catch {}
             const iframe = document.createElement("iframe");
             iframe.id = "challengeIframe";
             iframe.src = `./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`;
             document.getElementById("challenge").appendChild(iframe);
             iframe.style.overflowY = "visible";
-            iframe.setAttribute("scrolling", "no")
+            iframe.setAttribute("scrolling", "no");
             iframe.addEventListener("load", () => {
-                iframe.height = iframe.contentWindow.document.body.scrollHeight + 100;
-            })
+                if (iframe.src != "about:blank")
+                    iframe.height = iframe.contentWindow.document.body.scrollHeight + 100;
+            });
         }
     }
 }
@@ -530,7 +540,6 @@ function initializeSettings() {
     settingsButton.addEventListener("click", () => {
         // Toggle the display of the settings
         settingsElement.classList.toggle("noDisplay");
-        window.location.hash = "#settings";
         // Reset the hovered class on the import and export data buttons
         Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
             element.classList.remove("hovered");
