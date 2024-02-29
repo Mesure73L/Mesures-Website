@@ -56,7 +56,45 @@ Wholly Guacamole</code></pre>
             <span class="blue"
                 >https://mesure.x10.mx/twelve-of-code/api/challenges/2024/mar/1/api.php</span
             >. However, this is not enough information. You need to input your seed and the input,
-            both as paramaters.
+            both as paramaters. Your seed is <span id="seed" class="yellow"></span> and your
+            starting input is <span id="start" class="yellow"></span>.
+        </p>
+        <p>If you did it correctly, the server will respond with something like this:</p>
+        <pre><code class="language-json">{
+    "input": {
+        "seed": YOUR_SEED,
+        "input": YOUR_INPUT
+    },
+    "output": OUTPUT_COMPANY
+}</code></pre>
+        <p>
+            The output is the name of the company that owns the company that you inputted. Keep in
+            mind that the server needs your seed to give you the correct response, and if you input
+            the seed incorrectly, you will not be able to complete the challenge.
+        </p>
+        <p>
+            With the example from before, if we started with
+            <code class="inline language-txt">Lay's</code>, and our seed is
+            <code class="inline language-txt">SIMPLE_TEST_SEED</code>, the server would output the
+            following:
+        </p>
+        <pre><code class="language-json">{
+    "input": {
+        "seed": "SIMPLE_TEST_SEED",
+        "input": "Lay's"
+    },
+    "output": "Doritos"
+}</code></pre>
+        <p>
+            Your program will have to continue this until it finds a loop. Then, it will have to
+            tell you how many companies are in the loop. With the example from before, the correct
+            answer would be <code class="inline language-txt">3</code>.
+        </p>
+        <p>
+            If you would like to test your program with the example, you can input your seed as
+            <span class="green bold">SIMPLE_TEST_SEED</span> and the API will make sure you are
+            getting the challenge from the example, so you can easily test your program and not have
+            to submit the answer until you have a working program.
         </p>
 
         <script src="../../../CookieManager.js"></script>
@@ -265,6 +303,9 @@ Wholly Guacamole</code></pre>
                     nachoToppingBrands.splice(randomBrandIndex, 1);
                 }
                 console.log(finalBrandNames); // Length is 129, 3/4 of the original.
+
+                document.getElementById("seed").innerText = seed;
+                document.getElementById("start").innerText = "NTS: Make Later";
             }
         </script>
     </body>
