@@ -40,10 +40,16 @@ Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
     });
 });
 
+// Handle messages from challenge iframes
 window.addEventListener("message", event => {
-    if (event.data === "give me your seed please") {
-        event.source.postMessage({message: "sure!", CookieManager: cman});
+    switch (event.data.request) {
+        case "seed":
+            event.source.postMessage({response: "seed", value: cman.user.seed});
+            break;
     }
+    // if (event.data ==") {
+    //     event.source.postMessage({message: "sure!", CookieManager: cman});
+    // }
 });
 
 // Fetching information.json

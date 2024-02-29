@@ -62,12 +62,14 @@ Wholly Guacamole</code></pre>
         <script src="../../../CookieManager.js"></script>
         <script src="../../../SeedManager.js"></script>
         <script>
-            let cman2024mar1;
-            parent.postMessage("give me your seed please");
+            let seed;
+            parent.postMessage({request: "seed"});
             window.addEventListener("message", event => {
-                if (event.data.message === "sure!") {
-                    cman2024mar1 = event.data.CookieManager;
-                    initializeChallenge();
+                switch (event.data.response) {
+                    case "seed":
+                        seed = event.data.value;
+                        initializeChallenge();
+                        break;
                 }
             });
             function initializeChallenge() {
@@ -253,7 +255,7 @@ Wholly Guacamole</code></pre>
                     randomValues2024mar1.push(`randomValue${i}`);
                 }
 
-                const sman2024mar1 = new SeedManager(cman2024mar1._user.seed, randomValues2024mar1);
+                const sman2024mar1 = new SeedManager(seed, randomValues2024mar1);
                 let finalBrandNames = [];
                 for (let i = 0; i < FINAL_BRANDS_NUMBER; i++) {
                     const randomBrandIndex = Math.floor(
