@@ -354,8 +354,10 @@ function challengeSelect(challenge, changeHash) {
             }
             // Then, give the newly selected challenge select-active.
             document.getElementById(`schallenge-${challenge}`).classList.add("select-active");
-            // Unhide the challlenge.
-            document.getElementById("challenge").classList.remove("noDisplay");
+            // Hide the challlenge.
+            document.getElementById("challenge").classList.add("noDisplay");
+            // Unhide the challenge load animation.
+            document.getElementById("challenge-loading").classList.remove("noDisplay");
             // Then, set the active challenge to the current challenge.
             active.challenge = challenge;
             if (changeHash) {
@@ -372,8 +374,11 @@ function challengeSelect(challenge, changeHash) {
             iframe.style.overflowY = "visible";
             iframe.setAttribute("scrolling", "no");
             iframe.addEventListener("load", () => {
-                if (iframe.src != "about:blank")
+                if (iframe.src != "about:blank") {
+                    document.getElementById("challenge").classList.remove("noDisplay");
+                    document.getElementById("challenge-loading").classList.add("noDisplay");
                     iframe.height = iframe.contentWindow.document.body.scrollHeight + 100;
+                }
             });
         }
     }
