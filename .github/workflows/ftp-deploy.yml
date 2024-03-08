@@ -18,3 +18,13 @@ jobs:
         username: TwelveOfCode@mesure.x10.mx
         password: ${{ secrets.ftp_password }}
         local-dir: ./pages/
+        exclude: |
+          **/.git
+          **/.git/**
+          **/.github/**
+          **/.vscode/**
+          CODE_OF_CONDUCT.md
+          LICENSE.md
+          README.md
+          SECURITY.md
+          LICENSE
