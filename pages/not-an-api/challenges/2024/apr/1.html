@@ -55,7 +55,7 @@ Wholly Guacamole</code></pre>
         <p>
             The API is at
             <span class="blue"
-                >https://mesure.x10.mx/twelve-of-code/api/challenges/2024/mar/1/api.php</span
+                >https://mesure.x10.mx/twelve-of-code/api/challenges/2024/apr/1/api.php</span
             >. However, this is not enough information. You need to input your seed and the input,
             both as paramaters. Your seed is <span id="seed" class="yellow"></span> and your
             starting input is <span id="start" class="yellow"></span>.
@@ -97,10 +97,10 @@ Wholly Guacamole</code></pre>
             challenge from the example, so you can easily test your program and not have to submit
             the answer until you have a working program.
         </p>
-        <label for="checkAnswer2024mar1">Amount of brands in the loop: </label>
-        <input id="checkAnswer2024mar1" type="text" class="checkAnswer" />
+        <label for="checkAnswer2024apr1">Amount of brands in the loop: </label>
+        <input id="checkAnswer2024apr1" type="text" class="checkAnswer" />
         <input
-            id="checkAnswerButton2024mar1"
+            id="checkAnswerButton2024apr1"
             type="button"
             class="checkAnswerButton"
             value="Submit" />
@@ -158,7 +158,7 @@ Wholly Guacamole</code></pre>
                     "Delallo",
                     "Desert Pepper Trading Co.",
                     "Dirty",
-                    "Dona Maria",
+                    "Dona apria",
                     "Doritos",
                     "Dragone",
                     "El Pato",
@@ -208,8 +208,8 @@ Wholly Guacamole</code></pre>
                     "Late July Snacks",
                     "Lay's",
                     "Lucerne",
-                    "Market Pantry",
-                    "Marketside",
+                    "aprket Pantry",
+                    "aprketside",
                     "Meijer",
                     "Mi Rancho",
                     "Miss Vickie's",
@@ -246,7 +246,7 @@ Wholly Guacamole</code></pre>
                     "Sabritas",
                     "Salemville",
                     "Samboy",
-                    "San Marcos",
+                    "San aprcos",
                     "Santa Sweets",
                     "Saputo",
                     "Sargento",
@@ -294,40 +294,40 @@ Wholly Guacamole</code></pre>
                     "Zapp's"
                 ];
 
-                let randomValues2024mar1 = [];
+                let randomValues2024apr1 = [];
                 const FINAL_BRANDS_NUMBER = Math.floor(nachoToppingBrands.length * (3 / 4));
 
                 for (let i = 0; i < FINAL_BRANDS_NUMBER; i++) {
-                    randomValues2024mar1.push(`randomValue${i}`);
+                    randomValues2024apr1.push(`randomValue${i}`);
                 }
 
-                let smanRandom2024mar1 = randomValues2024mar1;
-                smanRandom2024mar1.push("startingBrand");
-                const sman2024mar1 = new SeedManager(seed, smanRandom2024mar1);
+                let smanRandom2024apr1 = randomValues2024apr1;
+                smanRandom2024apr1.push("startingBrand");
+                const sman2024apr1 = new SeedManager(seed, smanRandom2024apr1);
                 let finalBrandNames = [];
                 for (let i = 0; i < FINAL_BRANDS_NUMBER; i++) {
                     const randomBrandIndex = Math.floor(
-                        sman2024mar1[`randomValue${i}`] * nachoToppingBrands.length
+                        sman2024apr1[`randomValue${i}`] * nachoToppingBrands.length
                     );
                     finalBrandNames.push(nachoToppingBrands[randomBrandIndex]);
                     nachoToppingBrands.splice(randomBrandIndex, 1);
                 }
                 const startingBrand =
                     finalBrandNames[
-                        Math.floor(sman2024mar1.startingBrand * finalBrandNames.length)
+                        Math.floor(sman2024apr1.startingBrand * finalBrandNames.length)
                     ];
                 document.getElementById("seed").innerText = seed;
                 document.getElementById("start").innerText = startingBrand;
             }
-            function checkAnswer2024mar1() {
+            function checkAnswer2024apr1() {
                 alert("incorrect");
             }
-            document.getElementById("checkAnswerButton2024mar1").addEventListener("click", () => {
-                checkAnswer2024mar1();
+            document.getElementById("checkAnswerButton2024apr1").addEventListener("click", () => {
+                checkAnswer2024apr1();
             });
-            document.getElementById("checkAnswer2024mar1").addEventListener("keypress", e => {
+            document.getElementById("checkAnswer2024apr1").addEventListener("keypress", e => {
                 if (e.code == "Enter") {
-                    checkAnswer2024mar1();
+                    checkAnswer2024apr1();
                 }
             });
         </script>
