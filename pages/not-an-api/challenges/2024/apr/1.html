@@ -76,12 +76,12 @@ Wholly Guacamole</code></pre>
         <p>
             With the example from before, if we started with
             <code class="inline language-txt">Lay's</code>, and our seed is
-            <code class="inline language-txt">SIMPLE_TEST_SEED</code>, the server would output the
+            <code class="inline language-txt">TEST_SEED</code>, the server would output the
             following:
         </p>
         <pre><code class="language-json">{
     "input": {
-        "seed": "SIMPLE_TEST_SEED",
+        "seed": "TEST_SEED",
         "input": "Lay's"
     },
     "output": "Doritos"
@@ -93,10 +93,17 @@ Wholly Guacamole</code></pre>
         </p>
         <p>
             If you would like to test your program with the example, you can input your seed as
-            <span class="green bold">SIMPLE_TEST_SEED</span> and the API will make sure you are
-            getting the challenge from the example, so you can easily test your program and not have
-            to submit the answer until you have a working program.
+            <span class="green bold">TEST_SEED</span> and the API will make sure you are getting the
+            challenge from the example, so you can easily test your program and not have to submit
+            the answer until you have a working program.
         </p>
+        <label for="checkAnswer2024mar1">Amount of brands in the loop: </label>
+        <input id="checkAnswer2024mar1" type="text" class="checkAnswer" />
+        <input
+            id="checkAnswerButton2024mar1"
+            type="button"
+            class="checkAnswerButton"
+            value="Submit" />
 
         <script src="../../../CookieManager.js"></script>
         <script src="../../../SeedManager.js"></script>
@@ -294,6 +301,9 @@ Wholly Guacamole</code></pre>
                     randomValues2024mar1.push(`randomValue${i}`);
                 }
 
+                let smanRandom2024mar1 = [];
+                smanRandom2024mar1.push(randomValues2024mar1);
+                smanRandom2024mar1.push(["startingBrand"]);
                 const sman2024mar1 = new SeedManager(seed, randomValues2024mar1);
                 let finalBrandNames = [];
                 for (let i = 0; i < FINAL_BRANDS_NUMBER; i++) {
@@ -303,11 +313,25 @@ Wholly Guacamole</code></pre>
                     finalBrandNames.push(nachoToppingBrands[randomBrandIndex]);
                     nachoToppingBrands.splice(randomBrandIndex, 1);
                 }
-                console.log(finalBrandNames); // Length is 129, 3/4 of the original.
+                const startingBrand =
+                    finalBrandNames[
+                        Math.floor(smanRandom2024mar1.startingBrand * finalBrandNames.length)
+                    ];
 
                 document.getElementById("seed").innerText = seed;
-                document.getElementById("start").innerText = "NTS: Make Later";
+                document.getElementById("start").innerText = startingBrand;
             }
+            function checkAnswer2024mar1() {
+                alert("incorrect");
+            }
+            document.getElementById("checkAnswerButton2024mar1").addEventListener("click", () => {
+                checkAnswer2024mar1();
+            });
+            document.getElementById("checkAnswer2024mar1").addEventListener("keypress", e => {
+                if (e.code == "Enter") {
+                    checkAnswer2024mar1();
+                }
+            });
         </script>
     </body>
 </html>
