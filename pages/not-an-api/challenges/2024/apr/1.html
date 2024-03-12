@@ -301,10 +301,9 @@ Wholly Guacamole</code></pre>
                     randomValues2024mar1.push(`randomValue${i}`);
                 }
 
-                let smanRandom2024mar1 = [];
-                smanRandom2024mar1.push(randomValues2024mar1);
-                smanRandom2024mar1.push(["startingBrand"]);
-                const sman2024mar1 = new SeedManager(seed, randomValues2024mar1);
+                let smanRandom2024mar1 = randomValues2024mar1;
+                smanRandom2024mar1.push("startingBrand");
+                const sman2024mar1 = new SeedManager(seed, smanRandom2024mar1);
                 let finalBrandNames = [];
                 for (let i = 0; i < FINAL_BRANDS_NUMBER; i++) {
                     const randomBrandIndex = Math.floor(
@@ -315,9 +314,8 @@ Wholly Guacamole</code></pre>
                 }
                 const startingBrand =
                     finalBrandNames[
-                        Math.floor(smanRandom2024mar1.startingBrand * finalBrandNames.length)
+                        Math.floor(sman2024mar1.startingBrand * finalBrandNames.length)
                     ];
-
                 document.getElementById("seed").innerText = seed;
                 document.getElementById("start").innerText = startingBrand;
             }
