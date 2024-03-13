@@ -57,7 +57,7 @@ Wholly Guacamole</code></pre>
             <span class="blue"
                 >https://mesure.x10.mx/twelve-of-code/api/challenges/2024/apr/1/api.php</span
             >. However, this is not enough information. You need to input your seed and the input,
-            both as paramaters. Your seed is <span id="seed" class="yellow"></span> and your
+            both as parameters. Your seed is <span id="seed" class="yellow"></span> and your
             starting input is <span id="start" class="yellow"></span>.
         </p>
         <p>If you did it correctly, the server will respond with something like this:</p>
@@ -318,18 +318,21 @@ Wholly Guacamole</code></pre>
                     ];
                 document.getElementById("seed").innerText = seed;
                 document.getElementById("start").innerText = startingBrand;
-            }
-            function checkAnswer2024apr1() {
-                alert("incorrect");
-            }
-            document.getElementById("checkAnswerButton2024apr1").addEventListener("click", () => {
-                checkAnswer2024apr1();
-            });
-            document.getElementById("checkAnswer2024apr1").addEventListener("keypress", e => {
-                if (e.code == "Enter") {
-                    checkAnswer2024apr1();
+
+                function checkAnswer2024apr1() {
+                    alert("incorrect");
                 }
-            });
+                document
+                    .getElementById("checkAnswerButton2024apr1")
+                    .addEventListener("click", () => {
+                        checkAnswer2024apr1();
+                    });
+                document.getElementById("checkAnswer2024apr1").addEventListener("keypress", e => {
+                    if (e.code == "Enter") {
+                        checkAnswer2024apr1();
+                    }
+                });
+            }
         </script>
     </body>
 </html>
