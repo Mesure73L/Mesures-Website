@@ -1,16 +1,16 @@
 /*
-- 
+-
 - TWELVE OF CODE
 - --------------
-- 
+-
 - Twelve of Code ©️ 2024 by Mesure73L is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
 - Source code is available at https://github.com/Mesure73L/mesure.x10.mx/tree/main.
-- 
+-
 - Thank you for your understanding.
-- 
+-
 */
 const a = "as";
-const active = {};
+const active = {pack: {manifest: "http://localhost:8000/challenges/manifest.json"}};
 let cman;
 let hashChange = true;
 let yearsToHighlight = [],
@@ -20,11 +20,8 @@ let yearsToHighlight = [],
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 const ErrorToast = Swal.mixin({
     icon: "error",
-    confirmButtonText: "Continue",
-    confirmButtonColor: "#009eff",
     toast: true,
     position: "top-end",
-    showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
     didOpen: toast => {
@@ -47,12 +44,9 @@ window.addEventListener("message", event => {
             event.source.postMessage({response: "seed", value: cman.user.seed});
             break;
     }
-    // if (event.data ==") {
-    //     event.source.postMessage({message: "sure!", CookieManager: cman});
-    // }
 });
 
-// Fetching information.json
+// Fetching manifest.json
 function ajax(url) {
     return new Promise(function (resolve, reject) {
         const xhr = new XMLHttpRequest();
@@ -64,12 +58,12 @@ function ajax(url) {
         xhr.send();
     });
 }
-
 // Initializing the page
-ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
-    .then(function (result) {
+new ajax(`${active.pack.manifest}?n=${crypto.randomUUID()}`)
+    .then(result => {
         cman = new CookieManager(JSON.parse(result));
         // Steps to do after information.json loads
+        active.pack.url = cman.information.metadata.url;
         initializeCookies();
         createDOMYears();
         highlightChallenges();
@@ -369,7 +363,7 @@ function challengeSelect(challenge, changeHash) {
             } catch {}
             const iframe = document.createElement("iframe");
             iframe.id = "challengeIframe";
-            iframe.src = `./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`;
+            iframe.src = `${active.pack.url}/${active.year}/${active.month}/${active.challenge}.html`;
             document.getElementById("challenge").appendChild(iframe);
             iframe.style.overflowY = "visible";
             iframe.setAttribute("scrolling", "no");
@@ -390,6 +384,7 @@ function createDOMYears() {
     const noteContainer = document.getElementById("notes");
     // For every year in information.json,
     for (const year in cman.information) {
+        if (year === "metadata") continue;
         // Create a year element, with a title and description if there is one.
         const yearElement = document.createElement("tr");
         yearElement.id = "syear-" + year;
