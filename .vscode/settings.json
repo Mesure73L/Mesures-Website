@@ -1,6 +1,6 @@
 {
-    "githubPullRequests.ignoredPullRequestBranches": [
-        "main"
-    ],
-    "liveServer.settings.port": 5501
+    "githubPullRequests.ignoredPullRequestBranches": ["main"],
+    "liveServer.settings.port": 5000,
+    "liveServer.settings.host": "localhost",
+    "liveServer.settings.root": "/pages"
 }
