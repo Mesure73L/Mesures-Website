@@ -9,7 +9,6 @@
 - Thank you for your understanding.
 -
 */
-const a = "as";
 const active = {pack: {manifest: "http://localhost:8000/challenges/manifest.json"}};
 let cman;
 let hashChange = true;
