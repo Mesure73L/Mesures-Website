@@ -9,7 +9,6 @@
 - Thank you for your understanding.
 - 
 */
-const a = "as";
 const active = {};
 let cman;
 let hashChange = true;
@@ -47,11 +46,7 @@ window.addEventListener("message", event => {
             event.source.postMessage({response: "seed", value: cman.user.seed});
             break;
     }
-    // if (event.data ==") {
-    //     event.source.postMessage({message: "sure!", CookieManager: cman});
-    // }
 });
-
 // Fetching information.json
 function ajax(url) {
     return new Promise(function (resolve, reject) {
