@@ -67,6 +67,7 @@ class CookieManager {
     get blankCookie() {
         const blankCookie = {};
         for (const year in this.information) {
+            if (year === "metadata") continue;
             blankCookie[year] = {};
             for (let i = 0; i < this.information[year].months.length; i++) {
                 const month = this.information[year].months[i];

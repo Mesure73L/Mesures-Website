@@ -29,6 +29,7 @@ const ErrorToast = Swal.mixin({
     }
 });
 let dataInputUUID;
+const iframeHeight = {};
 
 Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
     element.addEventListener("mouseout", () => {
@@ -38,10 +39,16 @@ Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
 
 // Handle messages from challenge iframes
 window.addEventListener("message", event => {
-    switch (event.data.request) {
-        case "seed":
-            event.source.postMessage({response: "seed", value: cman.user.seed});
-            break;
+    if (event.data.request) {
+        switch (event.data.request) {
+            case "seed":
+                event.source.postMessage({response: "seed", value: cman.user.seed});
+                break;
+        }
+    } else if (event.data.response) {
+        switch (event.data.response) {
+            case "height":
+        }
     }
 });
 
@@ -61,7 +68,7 @@ function ajax(url) {
 new ajax(`${active.pack.manifest}?n=${crypto.randomUUID()}`)
     .then(result => {
         cman = new CookieManager(JSON.parse(result));
-        // Steps to do after information.json loads
+        // Steps to do after manifest.json loads
         active.pack.url = cman.information.metadata.url;
         initializeCookies();
         createDOMYears();
@@ -728,4 +735,8 @@ function validateData(data) {
     } catch {
         return false;
     }
+}
+
+async function resizeIframe(element) {
+    element.contentWindow.postMessage({request: "height"});
 }

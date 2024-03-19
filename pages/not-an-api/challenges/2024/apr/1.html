@@ -110,12 +110,22 @@ Wholly Guacamole</code></pre>
         <script>
             let seed;
             parent.postMessage({request: "seed"});
-            window.addEventListener("message", event => {
-                switch (event.data.response) {
-                    case "seed":
-                        seed = event.data.value;
-                        initializeChallenge();
-                        break;
+            addEventListener("message", event => {
+                if (event.data.request) {
+                    switch (event.data.request) {
+                        case "height":
+                            event.source.postMessage({
+                                response: "height",
+                                value: document.body.scrollHeight + 100
+                            });
+                    }
+                } else if (event.data.response) {
+                    switch (event.data.response) {
+                        case "seed":
+                            seed = event.data.value;
+                            initializeChallenge();
+                            break;
+                    }
                 }
             });
             function initializeChallenge() {
