@@ -1,15 +1,15 @@
 function RNG(seed) {
-  this.m = 0x80000000;
-  this.a = 1103515245;
-  this.c = 12345;
-  this.state = seed ? seed : Math.floor(Math.random() * (this.m - 1));
+  this.m = BigNumber(0x80000000);
+  this.a = BigNumber(1103515245);
+  this.c = BigNumber(12345);
+  this.state = BigNumber(seed);
 }
 RNG.prototype.nextInt = function () {
-  this.state = (this.a * this.state + this.c) % this.m;
+  this.state = this.a.times(this.state).plus(this.c).modulo(this.m);
   return this.state;
 }
 RNG.prototype.nextFloat = function () {
-  return this.nextInt() / (this.m - 1);
+  return this.nextInt().dividedBy((this.m.minus(1)));
 }
 
 class SeedManager {

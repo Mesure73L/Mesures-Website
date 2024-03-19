@@ -25,10 +25,10 @@
             "description": "2024 is a preview year. There are only 6 challenges over 2 months."
         },
         "overall": true,
-        "months": ["mar", "aug"],
-        "mar": {
-            "overall": false,
-            "1": false,
+        "months": ["apr", "aug"],
+        "apr": {
+            "overall": true,
+            "1": true,
             "2": false,
             "3": false
         },

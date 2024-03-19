@@ -388,9 +388,11 @@ label {
     margin-bottom: 1rem !important;
 }
 
-#challenge {
+#challengeIframe {
     margin: unset auto;
-    text-align: center;
+    border: 0px;
+    outline: none;
+    width: 90%;
 }
 
 @-webkit-keyframes hvr-bob {
@@ -513,4 +515,28 @@ label {
 label[for="hiddenFileUpload"] {
     width: 100%;
     height: 100%;
+}
+
+.checkAnswer {
+    outline: none;
+    border: 1px solid white;
+    border-radius: 0.25rem;
+    background-color: #000e43;
+    color: white;
+    width: 200px;
+    height: 16px;
+}
+.checkAnswerButton {
+    outline: none;
+    border: 1px solid white;
+    border-radius: 0.25rem;
+    background-color: #000e43;
+    color: white;
+    width: 80px;
+    height: 20px;
+    text-align: center;
+    font-size: 12px;
+}
+.checkAnswerButton:hover {
+    background-color: #001b82;
 }

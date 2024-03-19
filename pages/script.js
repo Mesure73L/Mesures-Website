@@ -1,15 +1,15 @@
 /*
-- 
+-
 - TWELVE OF CODE
 - --------------
-- 
+-
 - Twelve of Code ©️ 2024 by Mesure73L is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
 - Source code is available at https://github.com/Mesure73L/mesure.x10.mx/tree/main.
-- 
+-
 - Thank you for your understanding.
-- 
+-
 */
-const active = {};
+const active = {pack: {manifest: "http://localhost:8000/challenges/manifest.json"}};
 let cman;
 let hashChange = true;
 let yearsToHighlight = [],
@@ -19,11 +19,8 @@ let yearsToHighlight = [],
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 const ErrorToast = Swal.mixin({
     icon: "error",
-    confirmButtonText: "Continue",
-    confirmButtonColor: "#009eff",
     toast: true,
     position: "top-end",
-    showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
     didOpen: toast => {
@@ -39,7 +36,16 @@ Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
     });
 });
 
-// Fetching information.json
+// Handle messages from challenge iframes
+window.addEventListener("message", event => {
+    switch (event.data.request) {
+        case "seed":
+            event.source.postMessage({response: "seed", value: cman.user.seed});
+            break;
+    }
+});
+
+// Fetching manifest.json
 function ajax(url) {
     return new Promise(function (resolve, reject) {
         const xhr = new XMLHttpRequest();
@@ -51,12 +57,12 @@ function ajax(url) {
         xhr.send();
     });
 }
-
 // Initializing the page
-ajax(`./not-an-api/challenges/information.json?n=${crypto.randomUUID()}`)
-    .then(function (result) {
+new ajax(`${active.pack.manifest}?n=${crypto.randomUUID()}`)
+    .then(result => {
         cman = new CookieManager(JSON.parse(result));
         // Steps to do after information.json loads
+        active.pack.url = cman.information.metadata.url;
         initializeCookies();
         createDOMYears();
         highlightChallenges();
@@ -239,7 +245,7 @@ function monthSelect(month, changeHash) {
     if (!monthElement.hasAttribute("data-unreleased")) {
         // If the month that was clicked on is the active month, hide everything.
         if (month == active.month) {
-            if (active.challenge != undefined) {
+            if (active.challenge) {
                 challengeSelect(active.challenge, false);
             }
             monthElement.classList.remove("select-active");
@@ -341,24 +347,32 @@ function challengeSelect(challenge, changeHash) {
             }
             // Then, give the newly selected challenge select-active.
             document.getElementById(`schallenge-${challenge}`).classList.add("select-active");
-            // Unhide the challlenge.
-            document.getElementById("challenge").classList.remove("noDisplay");
+            // Hide the challlenge.
+            document.getElementById("challenge").classList.add("noDisplay");
+            // Unhide the challenge load animation.
+            document.getElementById("challenge-loading").classList.remove("noDisplay");
             // Then, set the active challenge to the current challenge.
             active.challenge = challenge;
             if (changeHash) {
                 hashChange = false;
                 window.location.hash = `${active.year}-${active.month}-${active.challenge}`;
             }
-            fetch(`./not-an-api/challenges/${active.year}/${active.month}/${active.challenge}.html`)
-                .then(res => res.text())
-                .then(text => {
-                    // Next, set the contents of the challenge element to the challenge specified at the challenge page for the selected challenge.
-                    document.getElementById("challenge").innerHTML = text;
-                    const F = new Function(
-                        document.getElementById("challenge-javascript").innerText
-                    );
-                    F();
-                });
+            try {
+                document.getElementById("challengeIframe").remove();
+            } catch {}
+            const iframe = document.createElement("iframe");
+            iframe.id = "challengeIframe";
+            iframe.src = `${active.pack.url}/${active.year}/${active.month}/${active.challenge}.html`;
+            document.getElementById("challenge").appendChild(iframe);
+            iframe.style.overflowY = "visible";
+            iframe.setAttribute("scrolling", "no");
+            iframe.addEventListener("load", () => {
+                if (iframe.src != "about:blank") {
+                    document.getElementById("challenge").classList.remove("noDisplay");
+                    document.getElementById("challenge-loading").classList.add("noDisplay");
+                    iframe.height = iframe.contentWindow.document.body.scrollHeight + 100;
+                }
+            });
         }
     }
 }
@@ -369,6 +383,7 @@ function createDOMYears() {
     const noteContainer = document.getElementById("notes");
     // For every year in information.json,
     for (const year in cman.information) {
+        if (year === "metadata") continue;
         // Create a year element, with a title and description if there is one.
         const yearElement = document.createElement("tr");
         yearElement.id = "syear-" + year;
@@ -530,7 +545,6 @@ function initializeSettings() {
     settingsButton.addEventListener("click", () => {
         // Toggle the display of the settings
         settingsElement.classList.toggle("noDisplay");
-        window.location.hash = "#settings";
         // Reset the hovered class on the import and export data buttons
         Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
             element.classList.remove("hovered");

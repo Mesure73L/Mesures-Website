@@ -1,0 +1,338 @@
+<!--
+- 
+- TWELVE OF CODE
+- --------------
+- 
+- Twelve of Code © 2024 by Mesure73L is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
+- Source code is available at https://github.com/Mesure73L/My-Website/tree/main.
+- 
+- Thank you for your understanding.
+- 
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>April 2024, Challenge 1</title>
+        <link href="../../../../style.css" rel="stylesheet" />
+        <link href="../../../libraries/prism/prism.css" rel="stylesheet" />
+        <script src="../../../libraries/prism/prism.js" defer></script>
+        <script src="../../../libraries/bignumber/bignumber.js"></script>
+    </head>
+    <body>
+        <h2>April 2024, Challenge 1</h2>
+        <p>
+            Your boss wants to know what companies are owned by other companies. To help you out
+            with this, you found an API that takes a company as an input and returnes the company
+            that owns it. While testing the API, you realized that it didn't use the right results
+            because it resulted in a loop. You decided to go on their GitHub page to report this,
+            but they ask for how many companies are in the loop.
+        </p>
+        <h3>Your Goal</h3>
+        <p>Figure out the total number of companies that are in the loop.</p>
+        <p>
+            For example, if we start with <code class="inline language-txt">Lay's</code>, and it
+            outputs <code class="inline language-txt">Doritos</code>, then that means
+            <code class="inline language-txt">Doritos</code> owns
+            <code class="inline language-txt">Lay's</code>. (Obviously, this is fictional and
+            completely inaccurate.)
+        </p>
+        <p>Let's say we have a list that looks like the following.</p>
+        <pre><code class="language-txt">Lay's
+Doritos
+Wholly Guacamole
+Fritos
+Whole Foods
+Wholly Guacamole</code></pre>
+        <p>
+            You can see that a loop will start because
+            <code class="inline language-txt">Wholly Guacamole</code> appears twice. Your goal is to
+            detect this loop and how many companies are in the loop. In this example, there are 3
+            companies in the loop: <code class="inline language-txt">Wholly Guacamole</code>,
+            <code class="inline language-txt">Fritos</code>, and
+            <code class="inline language-txt">Whole Foods</code>.
+        </p>
+        <p>
+            The API is at
+            <span class="blue"
+                >https://mesure.x10.mx/twelve-of-code/api/challenges/2024/apr/1/api.php</span
+            >. However, this is not enough information. You need to input your seed and the input,
+            both as parameters. Your seed is <span id="seed" class="yellow"></span> and your
+            starting input is <span id="start" class="yellow"></span>.
+        </p>
+        <p>If you did it correctly, the server will respond with something like this:</p>
+        <pre><code class="language-json">{
+    "input": {
+        "seed": YOUR_SEED,
+        "input": YOUR_INPUT
+    },
+    "output": OUTPUT_COMPANY
+}</code></pre>
+        <p>
+            The output is the name of the company that owns the company that you inputted. Keep in
+            mind that the server needs your seed to give you the correct response, and if you input
+            the seed incorrectly, you will not be able to complete the challenge.
+        </p>
+        <p>
+            With the example from before, if we started with
+            <code class="inline language-txt">Lay's</code>, and our seed is
+            <code class="inline language-txt">TEST_SEED</code>, the server would output the
+            following:
+        </p>
+        <pre><code class="language-json">{
+    "input": {
+        "seed": "TEST_SEED",
+        "input": "Lay's"
+    },
+    "output": "Doritos"
+}</code></pre>
+        <p>
+            Your program will have to continue this until it finds a loop. Then, it will have to
+            tell you how many companies are in the loop. With the example from before, the correct
+            answer would be <code class="inline language-txt">3</code>.
+        </p>
+        <p>
+            If you would like to test your program with the example, you can input your seed as
+            <span class="green bold">TEST_SEED</span> and the API will make sure you are getting the
+            challenge from the example, so you can easily test your program and not have to submit
+            the answer until you have a working program.
+        </p>
+        <label for="checkAnswer2024apr1">Amount of brands in the loop: </label>
+        <input id="checkAnswer2024apr1" type="text" class="checkAnswer" />
+        <input
+            id="checkAnswerButton2024apr1"
+            type="button"
+            class="checkAnswerButton"
+            value="Submit" />
+
+        <script src="../../../CookieManager.js"></script>
+        <script src="../../../SeedManager.js"></script>
+        <script>
+            let seed;
+            parent.postMessage({request: "seed"});
+            window.addEventListener("message", event => {
+                switch (event.data.response) {
+                    case "seed":
+                        seed = event.data.value;
+                        initializeChallenge();
+                        break;
+                }
+            });
+            function initializeChallenge() {
+                const nachoToppingBrands = [
+                    "Amy's",
+                    "Applegate Organics",
+                    "Artesano",
+                    "Balaji Wafers",
+                    "Banana Chips",
+                    "Beehive Cheese",
+                    "Bel Brand",
+                    "BelGioioso",
+                    "Black Creek",
+                    "Boar's Head",
+                    "Borden",
+                    "Boulder Canyon",
+                    "Breakstone's",
+                    "Bugles",
+                    "Cabo Fresh",
+                    "Cabot",
+                    "Calavo",
+                    "California Sun-Dry",
+                    "Cape Cod",
+                    "Cento",
+                    "Cheetos",
+                    "Chex Mix",
+                    "Chi-Chi's",
+                    "Cilantro Crisps",
+                    "Clint's",
+                    "Colavita",
+                    "Contadina",
+                    "Cracker Barrel",
+                    "Cypress Grove",
+                    "Dairyland",
+                    "Daisy",
+                    "Darigold",
+                    "Dean's",
+                    "Deep River",
+                    "Del Monte",
+                    "Delallo",
+                    "Desert Pepper Trading Co.",
+                    "Dirty",
+                    "Dona apria",
+                    "Doritos",
+                    "Dragone",
+                    "El Pato",
+                    "Elma Chips",
+                    "Embasa",
+                    "Friendly Farms",
+                    "Friendship Dairies",
+                    "Frigo",
+                    "Fritos",
+                    "Frontera",
+                    "Funyuns",
+                    "Garden Time",
+                    "Gay Lea",
+                    "Giant",
+                    "Golden Wonder",
+                    "Good & Gather",
+                    "Good Foods",
+                    "Good Health",
+                    "Goya",
+                    "Great Midwest",
+                    "Great Value",
+                    "Green Mountain Gringo",
+                    "H-E-B",
+                    "Happy Harvest",
+                    "Herdez",
+                    "Herr's",
+                    "Homeboy",
+                    "Hood",
+                    "Horizon Organic",
+                    "Hunt's",
+                    "Jays Foods",
+                    "Joan of Arc",
+                    "Kalona",
+                    "Kemps",
+                    "Kerrygold",
+                    "Kerrygold",
+                    "Kettle Brand",
+                    "Kirkland Signature",
+                    "Knudsen",
+                    "Kraft",
+                    "Kroger",
+                    "L'oven Fresh",
+                    "La Costena",
+                    "La Victoria",
+                    "Land O' Lakes",
+                    "Las Palmas",
+                    "Late July Snacks",
+                    "Lay's",
+                    "Lucerne",
+                    "aprket Pantry",
+                    "aprketside",
+                    "Meijer",
+                    "Mi Rancho",
+                    "Miss Vickie's",
+                    "Monster Munch",
+                    "Montchevre",
+                    "Muir Glen Organic",
+                    "Munchos",
+                    "Murray's Private Label",
+                    "Mutti",
+                    "NatureSweet",
+                    "Newman's Own",
+                    "Nikos",
+                    "On the Border",
+                    "Organic Valley",
+                    "Pace",
+                    "Park Street Deli",
+                    "Plantain Chips",
+                    "Pom-Bear",
+                    "Pop Chips",
+                    "Popchips",
+                    "President",
+                    "Pringles",
+                    "Private Selection",
+                    "Publix",
+                    "Quavers",
+                    "Rancho La California",
+                    "Red Gold",
+                    "Ro-Tel",
+                    "Rock Deli",
+                    "Rotel",
+                    "Ruffles",
+                    "S&W",
+                    "Sabra",
+                    "Sabritas",
+                    "Salemville",
+                    "Samboy",
+                    "San aprcos",
+                    "Santa Sweets",
+                    "Saputo",
+                    "Sargento",
+                    "Sartori",
+                    "Sea Salt Chips",
+                    "Shop Rite",
+                    "Signature Brands",
+                    "Simba Chips",
+                    "Simple Truth Organic",
+                    "Sprouts",
+                    "Stacy's Pita Chips",
+                    "Stella",
+                    "Sun Chips",
+                    "Sunset",
+                    "Sweet Charms",
+                    "Symphony",
+                    "Take Root Organics",
+                    "Takis",
+                    "Tangy Toms",
+                    "Taste of Inspirations",
+                    "Terra",
+                    "Tillamook",
+                    "Tostitos",
+                    "Tostitos",
+                    "Trader Joe's",
+                    "Treasure Cave",
+                    "Turtle Chips",
+                    "Uncle Chipps",
+                    "Uplands Cheese",
+                    "Utz",
+                    "Val Vita",
+                    "Veggie Straws",
+                    "Velveeta",
+                    "Village Farms",
+                    "Vitalite",
+                    "Walkers",
+                    "We Love Guac",
+                    "Whole Foods",
+                    "Wholly Guacamole",
+                    "Wise",
+                    "Wise Foods",
+                    "Wotsits",
+                    "Yucatan",
+                    "Zaaschila",
+                    "Zapp's"
+                ];
+
+                let randomValues2024apr1 = [];
+                const FINAL_BRANDS_NUMBER = Math.floor(nachoToppingBrands.length * (3 / 4));
+
+                for (let i = 0; i < FINAL_BRANDS_NUMBER; i++) {
+                    randomValues2024apr1.push(`randomValue${i}`);
+                }
+
+                let smanRandom2024apr1 = randomValues2024apr1;
+                smanRandom2024apr1.push("startingBrand");
+                const sman2024apr1 = new SeedManager(seed, smanRandom2024apr1);
+                let finalBrandNames = [];
+                for (let i = 0; i < FINAL_BRANDS_NUMBER; i++) {
+                    const randomBrandIndex = Math.floor(
+                        sman2024apr1[`randomValue${i}`] * nachoToppingBrands.length
+                    );
+                    finalBrandNames.push(nachoToppingBrands[randomBrandIndex]);
+                    nachoToppingBrands.splice(randomBrandIndex, 1);
+                }
+                const startingBrand =
+                    finalBrandNames[
+                        Math.floor(sman2024apr1.startingBrand * finalBrandNames.length)
+                    ];
+                document.getElementById("seed").innerText = seed;
+                document.getElementById("start").innerText = startingBrand;
+
+                function checkAnswer2024apr1() {
+                    alert("incorrect");
+                }
+                document
+                    .getElementById("checkAnswerButton2024apr1")
+                    .addEventListener("click", () => {
+                        checkAnswer2024apr1();
+                    });
+                document.getElementById("checkAnswer2024apr1").addEventListener("keypress", e => {
+                    if (e.code == "Enter") {
+                        checkAnswer2024apr1();
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
