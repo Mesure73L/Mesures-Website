@@ -29,7 +29,7 @@ const ErrorToast = Swal.mixin({
     }
 });
 let dataInputUUID;
-const iframeHeight = {};
+let heightMessageResolver;
 
 Array.from(document.getElementsByClassName("hvr-bob")).forEach(element => {
     element.addEventListener("mouseout", () => {
@@ -42,12 +42,16 @@ window.addEventListener("message", event => {
     if (event.data.request) {
         switch (event.data.request) {
             case "seed":
-                event.source.postMessage({response: "seed", value: cman.user.seed});
+                event.source.postMessage(
+                    {response: "seed", value: cman.user.seed},
+                    "http://localhost:8000"
+                );
                 break;
         }
     } else if (event.data.response) {
         switch (event.data.response) {
             case "height":
+                heightMessageResolver(event.data.value);
         }
     }
 });
@@ -377,7 +381,7 @@ function challengeSelect(challenge, changeHash) {
                 if (iframe.src != "about:blank") {
                     document.getElementById("challenge").classList.remove("noDisplay");
                     document.getElementById("challenge-loading").classList.add("noDisplay");
-                    iframe.height = iframe.contentWindow.document.body.scrollHeight + 100;
+                    resizeIframe(iframe);
                 }
             });
         }
@@ -738,5 +742,14 @@ function validateData(data) {
 }
 
 async function resizeIframe(element) {
-    element.contentWindow.postMessage({request: "height"});
+    element.contentWindow.postMessage({request: "height"}, "http://localhost:8000");
+    element.height = (await waitForHeightMessage()) + 100;
+}
+
+function waitForHeightMessage() {
+    return new Promise(resolve => {
+        heightMessageResolver = value => {
+            resolve(value);
+        };
+    });
 }
