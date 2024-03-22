@@ -1,28 +1,229 @@
-<h1 align="center">Mesure's Website</h1>
+<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 
-<p align="center"><img src="https://img.shields.io/badge/Code%20Size-gray?style=for-the-badge" alt="Code Size"><img src="https://img.shields.io/github/languages/code-size/mesure73l/mesures-website?style=for-the-badge&amp;label=&amp;color=blue" alt="GitHub code size in bytes">
-<img src="https://img.shields.io/badge/Commits-gray?style=for-the-badge" alt="Commits"><img src="https://img.shields.io/github/commit-activity/t/mesure73l/mesures-website?style=for-the-badge&amp;label=&amp;color=blue" alt="GitHub commit activity">
-<img src="https://img.shields.io/badge/Forks-gray?style=for-the-badge" alt="Forks"><img src="https://img.shields.io/github/forks/mesure73l/mesures-website?style=for-the-badge&amp;label=&amp;color=blue" alt="GitHub forks">
-<img src="https://img.shields.io/badge/Contributors-gray?style=for-the-badge" alt="Contributors"><img src="https://img.shields.io/github/contributors/mesure73l/mesures-website?style=for-the-badge&amp;label=&amp;color=blue" alt="GitHub contributors"><br>
-<img src="https://img.shields.io/badge/Issues-gray?style=for-the-badge" alt="Issues"><img src="https://img.shields.io/github/issues/mesure73l/mesures-website?style=for-the-badge&amp;label=&amp;color=orange" alt="GitHub open issues"><img src="https://img.shields.io/github/issues-closed/mesure73l/mesures-website?style=for-the-badge&amp;label=&amp;color=orange" alt="GitHub closed issues">
-<img src="https://img.shields.io/badge/Pull%20Requests-gray?style=for-the-badge" alt="Pull Requests"><img src="https://img.shields.io/github/issues-pr/mesure73l/mesures-website?style=for-the-badge&amp;label=&amp;color=red" alt="GitHub open pull requests"><img src="https://img.shields.io/github/issues-pr-closed/mesure73l/mesures-website?style=for-the-badge&amp;label=&amp;color=red" alt="GitHub closed pull requests">
+<h1 align="center" name="readme-top">
+
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![GPL-3.0 License][license-shield]][license-url]
+</h1>
 
 
-<p align="center">This is the source code for my website.<br>
-Licensed with CC BY-NC-SA 4.0.</p>
 
-## Website
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/twelve-of-code-official">
+    <img src="https://mesure.x10.mx/twelve-of-code/favicon.png" alt="Logo" width="120" height="120">
+  </a>
 
-[![View in Browser](https://github.com/Mesure73L/Mesures-Website/assets/115181664/b59a70c1-d8f6-44ca-9bd7-d6ba508d517a)](https://mesure.x10.mx/)
-Link doesn't work? <https://mesure.x10.mx>
+<h3 align="center">Twelve of Code</h3>
 
-## Hosting
+  <p align="center">
+    Twelve of Code is a free and open-source coding challenge.
+    <br />
+    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://mesure.x10.mx/twelve-of-code">Challenge Yourself</a>
+    ·
+    <a href="https://github.com/twelve-of-code-official/website/issues/new?assignees=&labels=bug&projects=&template=1-bug-report.yml">Report a Bug</a>
+    ·
+    <a href="https://github.com/twelve-of-code-official/website/issues/new?assignees=&labels=quality+of+life%2Csuggestion&projects=&template=2-feature-request.yml">Request a Feature</a>
+  </p>
+</div>
 
-To host this website, I use x10hosting.
 
-[![Go to x10hosting](https://github.com/Mesure73L/Mesures-Website/assets/115181664/ce7312be-77f1-4e1a-83cb-51fa31c10edd)](https://x10hosting.com)
-Link doesn't work? <https://x10hosting.com>
 
-## Credits
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-This website was made by **[@Mesure73L](https://github.com/Mesure73L)**, with **a lot** of help from **[@BeepBot99](https://github.com/BeepBot99)**.
+
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+[![Product Name Screen Shot][product-screenshot]](https://example.com)
+
+Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+### Built With
+
+* [![Next][Next.js]][Next-url]
+* [![React][React.js]][React-url]
+* [![Vue][Vue.js]][Vue-url]
+* [![Angular][Angular.io]][Angular-url]
+* [![Svelte][Svelte.dev]][Svelte-url]
+* [![Laravel][Laravel.com]][Laravel-url]
+* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* [![JQuery][JQuery.com]][JQuery-url]
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
+
+### Prerequisites
+
+This is an example of how to list things you need to use the software and how to install them.
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
+
+### Installation
+
+1. Get a free API Key at [https://example.com](https://example.com)
+2. Clone the repo
+   ```sh
+   git clone https://github.com/github_username/repo_name.git
+   ```
+3. Install NPM packages
+   ```sh
+   npm install
+   ```
+4. Enter your API in `config.js`
+   ```js
+   const API_KEY = 'ENTER YOUR API';
+   ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+
+_For more examples, please refer to the [Documentation](https://example.com)_
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [ ] Feature 1
+- [ ] Feature 2
+- [ ] Feature 3
+    - [ ] Nested Feature
+
+See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTACT -->
+## Contact
+
+Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+
+Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* []()
+* []()
+* []()
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/twelve-of-code-official/website.svg?style=for-the-badge
+[contributors-url]: https://github.com/twelve-of-code-official/website/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/twelve-of-code-official/website.svg?style=for-the-badge
+[forks-url]: https://github.com/twelve-of-code-official/website/network/members
+[stars-shield]: https://img.shields.io/github/stars/twelve-of-code-official/website.svg?style=for-the-badge
+[stars-url]: https://github.com/twelve-of-code-official/website/stargazers
+[issues-shield]: https://img.shields.io/github/issues/twelve-of-code-official/website.svg?style=for-the-badge
+[issues-url]: https://github.com/twelve-of-code-official/website/issues
+[license-shield]: https://img.shields.io/github/license/twelve-of-code-official/website.svg?style=for-the-badge
+[license-url]: https://github.com/twelve-of-code-official/website/blob/main/LICENSE.txt
+[product-screenshot]: images/screenshot.png
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+[Vue-url]: https://vuejs.org/
+[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
+[Angular-url]: https://angular.io/
+[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
+[Svelte-url]: https://svelte.dev/
+[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
+[Laravel-url]: https://laravel.com
+[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
+[Bootstrap-url]: https://getbootstrap.com
+[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
+[JQuery-url]: https://jquery.com 
